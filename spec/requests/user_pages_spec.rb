@@ -181,7 +181,7 @@ describe "User pages" do
     end
 
     describe "with invalid information" do
-      before { click_button "Save changes" }
+      before { click_button "Save the changes" }
 
       it { should have_content('error') }
     end
@@ -194,7 +194,7 @@ describe "User pages" do
         fill_in "Email",            with: new_email
         fill_in "Password",         with: user.password
         fill_in "Confirm Password", with: user.password
-        click_button "Save changes"
+        click_button "Save the changes"
       end
 
       it { should have_selector('title', text: new_name) }
