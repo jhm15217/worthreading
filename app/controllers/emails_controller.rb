@@ -35,6 +35,7 @@ class EmailsController < ApplicationController
     )
 
     @email.save
+    render text: 'Email received'
   end
 
   # DELETE /emails/1
