@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       respond_to do |format|
         if @user.save
           # Tell the UserMailer to send a welcome Email after save
-          flash[:success] = "Welcome to the Sample App!"
+          flash[:success] = "Welcome to Worth Reading!"
           sign_in @user
           UserMailer.welcome_email(@user).deliver
 
