@@ -45,28 +45,23 @@ describe EmailsController do
   describe "GET show" do
     it "assigns the requested email as @email" do
       email = Email.create! valid_attributes
-      get :show, {:id => email.to_param}, valid_session
+      get :show, {id: email.to_param}, valid_session
       assigns(:email).should eq(email)
     end
   end
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new Email" do
-        expect {
-          post :create, {:email => valid_attributes}, valid_session
-        }.to change(Email, :count).by(1)
-      end
-
       it "assigns a newly created email as @email" do
         post :create, {:email => valid_attributes}, valid_session
         assigns(:email).should be_a(Email)
         assigns(:email).should be_persisted
       end
 
-      it "redirects to the created email" do
-        post :create, {:email => valid_attributes}, valid_session
-        response.should redirect_to(Email.last)
+      it "creates a new Email" do
+        expect {
+          post :create, {:email => valid_attributes}, valid_session
+        }.to change(Email, :count).by(1)
       end
     end
 
@@ -76,57 +71,6 @@ describe EmailsController do
         Email.any_instance.stub(:save).and_return(false)
         post :create, {:email => {}}, valid_session
         assigns(:email).should be_a_new(Email)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Email.any_instance.stub(:save).and_return(false)
-        post :create, {:email => {}}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested email" do
-        email = Email.create! valid_attributes
-        # Assuming there are no other emails in the database, this
-        # specifies that the Email created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Email.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => email.to_param, :email => {'these' => 'params'}}, valid_session
-      end
-
-      it "assigns the requested email as @email" do
-        email = Email.create! valid_attributes
-        put :update, {:id => email.to_param, :email => valid_attributes}, valid_session
-        assigns(:email).should eq(email)
-      end
-
-      it "redirects to the email" do
-        email = Email.create! valid_attributes
-        put :update, {:id => email.to_param, :email => valid_attributes}, valid_session
-        response.should redirect_to(email)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the email as @email" do
-        email = Email.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Email.any_instance.stub(:save).and_return(false)
-        put :update, {:id => email.to_param, :email => {}}, valid_session
-        assigns(:email).should eq(email)
-      end
-
-      it "re-renders the 'edit' template" do
-        email = Email.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Email.any_instance.stub(:save).and_return(false)
-        put :update, {:id => email.to_param, :email => {}}, valid_session
-        response.should render_template("edit")
       end
     end
   end
