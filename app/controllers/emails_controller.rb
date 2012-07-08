@@ -33,9 +33,7 @@ class EmailsController < ApplicationController
       subject: params['subject'],
       body: params['body-plain']
     )
-    
     @email.save
-    puts "email is #{@email.from}"
     render text: "Email Received"
   end
 
