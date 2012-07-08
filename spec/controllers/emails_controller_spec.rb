@@ -53,7 +53,7 @@ describe EmailsController do
   describe "POST create" do
     describe "with valid params" do
       it "assigns a newly created email as @email" do
-        post :create, {:email => valid_attributes}, valid_session
+        post :create, {:email => {sender: "jhm", recipient:"jxc", subject: "s", 'body-plain' => "b"}}, valid_session
         assigns(:email).should be_a(Email)
         assigns(:email).should be_persisted
       end
