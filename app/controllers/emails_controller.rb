@@ -36,6 +36,7 @@ class EmailsController < ApplicationController
     
     @email.save
     puts "email is #{@email.from}"
+    render text: "Email Received"
   end
 
   # DELETE /emails/1
