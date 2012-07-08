@@ -33,9 +33,9 @@ class EmailsController < ApplicationController
       subject: params['subject'],
       body: params['body-plain']
     )
-
+    
     @email.save
-    render text: 'Email received'
+    puts "email is #{@email.from}"
   end
 
   # DELETE /emails/1
