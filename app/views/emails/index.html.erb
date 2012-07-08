@@ -6,7 +6,6 @@
     <th>From</th>
     <th>To</th>
     <th>Subject</th>
-    <th>Body</th>
     <th></th>
     <th></th>
     <th></th>
@@ -18,12 +17,10 @@
     <td><%= email.from %></td>
     <td><%= email.to %></td>
     <td><%= email.subject %></td>
-    <td><%= email.body %></td>
     <td><%= link_to 'Show', email %></td>
     <td><%= link_to 'Destroy', email, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
 
-<br />
 

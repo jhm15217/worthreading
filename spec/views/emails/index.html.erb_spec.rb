@@ -24,6 +24,5 @@ describe "emails/index" do
     assert_select "tr>td", :text => "From".to_s, :count => 2
     assert_select "tr>td", :text => "To".to_s, :count => 2
     assert_select "tr>td", :text => "Subject".to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
   end
 end
