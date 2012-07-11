@@ -2,14 +2,15 @@
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  admin       :boolean
-#  password_digest      :string(255)
-#  remember_token       :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  email           :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  password_digest :string(255)
+#  remember_token  :string(255)
+#  admin           :boolean         default(FALSE)
+#  likes           :integer
 #
 
 require 'spec_helper'
@@ -156,10 +157,34 @@ describe User do
       subject { other_user }
       its(:followers) { should include(@user) }
     end
+
+  end
+  
+  describe "likes" do
+    let(:default_likes) { 50 }
+    before { @user.save }
+
+    it "should have the correct likes when saved initially" do 
+      @user.likes.should == default_likes
+    end
+  end
+
+  describe "likes incrementor/decrementor" do
+    let(:other_user) { FactoryGirl.create(:user) }    
+    let(:default_likes ) { 50 }
+    let(:incrementor) { 5 }
+    let(:decrementor) { 5 }
+    before do
+      @user.save
+      @user.incr_decr_likes(other_user)
+    end
+
+    it "should increment the likes of one user and decrement the likes of the other" do
+      @user.likes.should == default_likes + incrementor
+      other_user.likes.should == default_likes - decrementor
+    end
   end
 end
-
-
 
 
 

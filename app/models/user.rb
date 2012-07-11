@@ -2,18 +2,19 @@
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  password       :string(255)
-#  password_confirmation      :string(255)
-#  admin       boolean
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  email           :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  password_digest :string(255)
+#  remember_token  :string(255)
+#  admin           :boolean         default(FALSE)
+#  likes           :integer
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :name, :email, :password, :password_confirmation, :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :admin, :likes
   has_secure_password
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
@@ -36,8 +37,16 @@ class User < ActiveRecord::Base
   def unfollow!(other_user)
     relationships.find_by_followed_id(other_user.id).destroy
   end
+  
+  def incr_decr_likes(user_who_likes)
+      self.increment!(:likes, 5)
+      user_who_likes.decrement!(:likes, 5)
+  end
 
-  before_save { |user| user.email = email.downcase }
+  before_save { |user| 
+    user.email = email.downcase
+    user.likes = 50 if user.new_record? 
+  }
   before_save :create_remember_token
 
   private
@@ -51,6 +60,6 @@ class User < ActiveRecord::Base
   validates :email, presence:   true,
                     format:     { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  validates :password, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 } 
   validates :password_confirmation, presence: true
 end
