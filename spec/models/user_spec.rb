@@ -172,16 +172,16 @@ describe User do
   describe "likes incrementor/decrementor" do
     let(:other_user) { FactoryGirl.create(:user) }    
     let(:default_likes ) { 50 }
-    let(:incrementor) { 5 }
-    let(:decrementor) { 5 }
+    let(:incr_by) { 5 }
+    let(:decr_by) { 2 }
     before do
       @user.save
-      @user.incr_decr_likes(other_user)
+      @user.incr_decr_likes(other_user, incr_by, decr_by)
     end
 
     it "should increment the likes of one user and decrement the likes of the other" do
-      @user.likes.should == default_likes + incrementor
-      other_user.likes.should == default_likes - decrementor
+      @user.likes.should == default_likes + incr_by
+      other_user.likes.should == default_likes - decr_by
     end
   end
 end

@@ -75,6 +75,19 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def likes
+    if signed_in? 
+      liked_user = User.find_by_id!(params[:id])
+      user_who_likes = current_user
+      current_user.incr_decr_likes(liked_user, user_who_likes)
+      sign_in user_who_likes
+      redirect_to root_path 
+    else
+      redirect_to new_session_path, flash: { notice: 'Hey, we need to know who you are first' }
+    end
+
+  end
+
   private
 
     def correct_user

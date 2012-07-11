@@ -224,4 +224,15 @@ describe "User pages" do
       it { should have_link(user.name, href: user_path(user)) }
     end
   end
+
+  # TODO Change redirection later
+  describe "user liking another user's message" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    it "should increase a user's number of likes" do
+      sign_in user
+      put "/users/#{other_user.id}/likes" 
+      response.should redirect_to(root_path)
+    end
+  end
 end

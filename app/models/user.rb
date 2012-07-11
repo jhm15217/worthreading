@@ -38,9 +38,9 @@ class User < ActiveRecord::Base
     relationships.find_by_followed_id(other_user.id).destroy
   end
   
-  def incr_decr_likes(user_who_likes)
-      self.increment!(:likes, 5)
-      user_who_likes.decrement!(:likes, 5)
+  def incr_decr_likes(user_who_likes, incr_by, decr_by)
+      self.increment!(:likes, incr_by)
+      user_who_likes.decrement!(:likes, decr_by)
   end
 
   before_save { |user| 
