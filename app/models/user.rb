@@ -33,14 +33,14 @@ class User < ActiveRecord::Base
   def follow!(other_user)
     relationships.create!(followed_id: other_user.id)
   end
-  
+
   def unfollow!(other_user)
     relationships.find_by_followed_id(other_user.id).destroy
   end
-  
+
   def incr_decr_likes(user_who_likes, incr_by, decr_by)
-      self.increment!(:likes, incr_by)
-      user_who_likes.decrement!(:likes, decr_by)
+    self.increment!(:likes, incr_by)
+    user_who_likes.decrement!(:likes, decr_by)
   end
 
   before_save { |user| 
@@ -51,15 +51,15 @@ class User < ActiveRecord::Base
 
   private
 
-    def create_remember_token
-      self.remember_token = SecureRandom.urlsafe_base64
-    end
+  def create_remember_token
+    self.remember_token = SecureRandom.urlsafe_base64
+  end
 
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence:   true,
-                    format:     { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+    format:     { with: VALID_EMAIL_REGEX },
+    uniqueness: { case_sensitive: false }
   validates :password, length: { minimum: 6 } 
   validates :password_confirmation, presence: true
 end
