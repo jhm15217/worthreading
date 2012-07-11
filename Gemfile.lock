@@ -147,6 +147,7 @@ GEM
       libwebsocket (~> 0.1.3)
       multi_json (~> 1.0)
       rubyzip
+    spork (0.9.0)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -185,6 +186,7 @@ DEPENDENCIES
   rb-fsevent (= 0.9.1)
   rspec-rails (= 2.10.0)
   sass-rails (= 3.2.4)
+  spork (= 0.9.0)
   sqlite3 (= 1.3.5)
   uglifier (= 1.2.3)
   will_paginate (= 3.0.3)

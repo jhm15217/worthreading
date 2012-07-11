@@ -110,7 +110,7 @@ describe "User pages" do
       end
     end
   end
- 
+
 
   describe "signup page" do
     before { visit signup_path }
@@ -148,14 +148,14 @@ describe "User pages" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
       describe "after saving the user" do
-            before { click_button submit }
-            let(:user) { User.find_by_email('user@example.com') }
+        before { click_button submit }
+        let(:user) { User.find_by_email('user@example.com') }
 
-            it { should have_selector('title', text: user.name) }
-            it { should have_selector('div.alert.alert-success', text: 'Welcome') }
-            it { should have_link('Sign out') }
-          end
-      
+        it { should have_selector('title', text: user.name) }
+        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_link('Sign out') }
+      end
+
     end
   end
 
@@ -165,7 +165,7 @@ describe "User pages" do
       sign_in user
       visit edit_user_path(user)
     end
-  
+
     describe "page" do
       it { should have_selector('h1',    text: "Update your profile") }
       it { should have_selector('title', text: "Edit user") }
@@ -222,6 +222,23 @@ describe "User pages" do
       it { should have_selector('title', text: full_title('Followers')) }
       it { should have_selector('h3', text: 'Followers') }
       it { should have_link(user.name, href: user_path(user)) }
+    end
+  end
+
+  # TODO Change redirection later
+  describe "user liking another user's message" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+
+    it "should increase a user's number of likes" do
+      sign_in user
+      put likes_user_path(other_user.id) 
+      response.should redirect_to(root_path)
+    end
+
+    it "should redirect if user not signed in" do
+      put likes_user_path(other_user.id)
+      response.should redirect_to(signin_path)
     end
   end
 end
