@@ -229,10 +229,16 @@ describe "User pages" do
   describe "user liking another user's message" do
     let(:user) { FactoryGirl.create(:user) }
     let(:other_user) { FactoryGirl.create(:user) }
+
     it "should increase a user's number of likes" do
       sign_in user
-      put "/users/#{other_user.id}/likes" 
+      put likes_user_path(other_user.id) 
       response.should redirect_to(root_path)
+    end
+
+    it "should redirect if user not signed in" do
+      put likes_user_path(other_user.id)
+      response.should redirect_to(signin_path)
     end
   end
 end
