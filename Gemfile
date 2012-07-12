@@ -10,6 +10,7 @@ gem 'bootstrap-will_paginate', '0.0.6'
 
 # Backend Gems
 gem 'bcrypt-ruby', '3.0.1'
+gem 'thin' 
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
