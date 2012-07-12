@@ -39,6 +39,7 @@ describe User do
   it { should respond_to(:follow!) }
   it { should respond_to(:unfollow!) }
   it { should respond_to(:likes) }
+  it { should respond_to(:emails) }
   
   it { should be_valid }
   it { should_not be_admin }
@@ -64,19 +65,27 @@ describe User do
     it { should_not be_valid }
   end
   
-  describe "remember token" do
+  describe "after saving" do
+    let(:default_likes) { 50 }
     before { @user.save }
-    its(:remember_token) { should_not be_blank }
+
+    context "remember_token" do
+      its(:remember_token) { should_not be_blank }
+    end
+
+    context "number_of likes" do
+      its(:likes) { should == default_likes}
+    end
   end
 
   describe "when email format is invalid" do
     it "should be invalid" do
       addresses = %w[user@foo,com user_at_foo.org example.user@foo.
                      foo@bar_baz.com foo@bar+baz.com]
-      addresses.each do |invalid_address|
-        @user.email = invalid_address
-        @user.should_not be_valid
-      end      
+                     addresses.each do |invalid_address|
+                       @user.email = invalid_address
+                       @user.should_not be_valid
+                     end      
     end
   end
 
@@ -99,17 +108,17 @@ describe User do
 
     it { should_not be_valid }
   end
-  
+
   describe "when password is not present" do
     before { @user.password = @user.password_confirmation = " " }
     it { should_not be_valid }
   end
-  
+
   describe "when password doesn't match confirmation" do
     before { @user.password_confirmation = "mismatch" }
     it { should_not be_valid }
   end
-  
+
   describe "when password confirmation is nil" do
     before { @user.password_confirmation = nil }
     it { should_not be_valid }
@@ -135,7 +144,7 @@ describe User do
       specify { user_for_invalid_password.should be_false }
     end
   end
-    
+
   describe "following" do
     let(:other_user) { FactoryGirl.create(:user) }    
     before do
@@ -159,15 +168,6 @@ describe User do
     end
 
   end
-  
-  describe "likes" do
-    let(:default_likes) { 50 }
-    before { @user.save }
-
-    it "should have the correct likes when saved initially" do 
-      @user.likes.should == default_likes
-    end
-  end
 
   describe "likes incrementor/decrementor" do
     let(:other_user) { FactoryGirl.create(:user) }    
@@ -182,6 +182,30 @@ describe User do
     it "should increment the likes of one user and decrement the likes of the other" do
       @user.likes.should == default_likes + incr_by
       other_user.likes.should == default_likes - decr_by
+    end
+  end
+
+  describe "email associations" do
+
+    before { @user.save }
+    let!(:older_email) do 
+      FactoryGirl.create(:email, user: @user, created_at: 1.day.ago)
+    end
+
+    let!(:newer_email) do
+      FactoryGirl.create(:email, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right emails in the right order" do
+      @user.emails.should == [newer_email, older_email]
+    end
+
+    it "should destroy dependent emails" do
+      emails = @user.emails
+      @user.destroy
+      emails.each do |email|
+        Email.find_by_id(email.id).should be_nil
+      end
     end
   end
 end

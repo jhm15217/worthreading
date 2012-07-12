@@ -27,18 +27,25 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    puts params
-    puts params['email']
-    puts params['email']['sender']
-    @email = Email.new(
-      from: params['email']['sender'], 
-      to: params['email']['recipient'], 
-      subject: params['email']['subject'],
-      body: params['email']['body-plain']
-    )
-    puts @email.from
-    @email.save
-    render text: "Email Received"
+    if @user = User.find_by_email(params['sender'])
+      @email = @user.emails.new(
+        from: params['sender'], 
+        to: params['recipient'], 
+        subject: params['subject'],
+        body: params['body-plain']
+      )
+    # NOTE Eventually, the else statment below should handle unregistered users
+    # Do we automatically register them or do we just simply deny their email request
+    else
+      @email = Email.new(
+        from: params['sender'], 
+        to: params['recipient'], 
+        subject: params['subject'],
+        body: params['body-plain']
+      )
+    end
+
+    @email.save ? (render text: "Email Received") : (redirect_to root_path)
   end
 
   # DELETE /emails/1

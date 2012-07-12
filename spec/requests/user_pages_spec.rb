@@ -230,7 +230,7 @@ describe "User pages" do
     let(:user) { FactoryGirl.create(:user) }
     let(:other_user) { FactoryGirl.create(:user) }
 
-    it "should increase a user's number of likes" do
+    it "should redirect to correct page" do
       sign_in user
       put likes_user_path(other_user.id) 
       response.should redirect_to(root_path)
