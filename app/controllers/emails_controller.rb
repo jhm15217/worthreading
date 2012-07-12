@@ -29,16 +29,18 @@ class EmailsController < ApplicationController
   def create
     puts params
     puts params['email']
-    puts params['email']['sender']
+#    puts params['email']['sender']
     @email = Email.new(
-      from: params['email']['sender'], 
-      to: params['email']['recipient'], 
-      subject: params['email']['subject'],
-      body: params['email']['body-plain']
+      from: params['sender'], 
+      to: params['recipient'], 
+      subject: params['subject'],
+      body: params['body-plain']
     )
-    puts @email.from
-    @email.save
-    render text: "Email Received"
+    if @email.save
+      render text: "Email Received"
+    else 
+      redirect_to root_path
+    end
   end
 
   # DELETE /emails/1
