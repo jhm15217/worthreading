@@ -25,12 +25,23 @@ require 'spec_helper'
    end
 
    describe "receiving an email from via a POST request from Mailgun" do
-     it "should render a text 'Email Received' after a successful save" do
-       post :create, {'sender' => "user@example.com", 
-         'recipient' => "janedoe@email.com", 
-         'subject' => "Nothing", 
-         'body-plain' => "Lorem Ipsum" }
-       response.should be_successful 
+     context "and user is registered" do
+       it "should render a text 'Email Received' after a successful save" do
+         post :create, {'sender' => "user@example.com", 
+           'recipient' => "janedoe@email.com", 
+           'subject' => "Nothing", 
+           'body-plain' => "Lorem Ipsum" }
+         response.should be_successful 
+       end
+     end
+     context "and user is not registered" do
+       it "should still render a text 'Email Received' after a successful save" do
+         post :create, {'sender' => "sup@example.com", 
+           'recipient' => "janedoe@email.com", 
+           'subject' => "Nothing", 
+           'body-plain' => "Lorem Ipsum" }
+         response.should be_successful 
+       end
      end
 
      it "should redirect if Email could not be saved" do

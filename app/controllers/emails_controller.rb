@@ -34,9 +34,8 @@ class EmailsController < ApplicationController
         subject: params['subject'],
         body: params['body-plain']
       )
-    
-    # NOTE Delete code below after it can be assured that heroku app can receive emails
-    # The code above is the needed code since it will associate users with an email
+    # NOTE Eventually, the else statment below should handle unregistered users
+    # Do we automatically register them or do we just simply deny their email request
     else
       @email = Email.new(
         from: params['sender'], 
