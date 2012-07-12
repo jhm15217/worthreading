@@ -18,76 +18,108 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-# describe EmailsController do
-# 
-#   # This should return the minimal set of attributes required to create a valid
-#   # Email. As you add validations to Email, be sure to
-#   # update the return value of this method accordingly.
-#   def valid_attributes
-#     {}
-#   end
-#   
-#   # This should return the minimal set of values that should be in the session
-#   # in order to pass any filters (e.g. authentication) defined in
-#   # EmailsController. Be sure to keep this updated too.
-#   def valid_session
-#     {}
-#   end
-# 
-#   describe "GET index" do
-#     it "assigns all emails as @emails" do
-#       email = Email.create! valid_attributes
-#       get :index, {}, valid_session
-#       assigns(:emails).should eq([email])
-#     end
-#   end
-# 
-#   describe "GET show" do
-#     it "assigns the requested email as @email" do
-#       email = Email.create! valid_attributes
-#       get :show, {id: email.to_param}, valid_session
-#       assigns(:email).should eq(email)
-#     end
-#   end
-# 
-#   describe "POST create" do
-#     describe "with valid params" do
-#       it "assigns a newly created email as @email" do
-#         post :create, {:email => valid_attributes}, valid_session
-#         assigns(:email).should be_a(Email)
-#         assigns(:email).should be_persisted
-#       end
-# 
-#       it "creates a new Email" do
-#         expect {
-#           post :create, {:email => valid_attributes}, valid_session
-#         }.to change(Email, :count).by(1)
-#       end
-#     end
-# 
-#     describe "with invalid params" do
-#       it "assigns a newly created but unsaved email as @email" do
-#         # Trigger the behavior that occurs when invalid params are submitted
-#         Email.any_instance.stub(:save).and_return(false)
-#         post :create, {:email => {}}, valid_session
-#         assigns(:email).should be_a_new(Email)
-#       end
-#     end
-#   end
-# 
-#   describe "DELETE destroy" do
-#     it "destroys the requested email" do
-#       email = Email.create! valid_attributes
-#       expect {
-#         delete :destroy, {:id => email.to_param}, valid_session
-#       }.to change(Email, :count).by(-1)
-#     end
-# 
-#     it "redirects to the emails list" do
-#       email = Email.create! valid_attributes
-#       delete :destroy, {:id => email.to_param}, valid_session
-#       response.should redirect_to(emails_url)
-#     end
-#   end
-# 
-# end
+ describe EmailsController do
+   before do
+    @user = User.create(name: "Example User", email: "user@example.com", 
+                     password: "foobar", password_confirmation: "foobar")
+   end
+
+   describe "receiving an email from via a POST request from Mailgun" do
+     context "and user is registered" do
+       it "should render a text 'Email Received' after a successful save" do
+         post :create, {'sender' => "user@example.com", 
+           'recipient' => "janedoe@email.com", 
+           'subject' => "Nothing", 
+           'body-plain' => "Lorem Ipsum" }
+         response.should be_successful 
+       end
+     end
+     context "and user is not registered" do
+       it "should still render a text 'Email Received' after a successful save" do
+         post :create, {'sender' => "sup@example.com", 
+           'recipient' => "janedoe@email.com", 
+           'subject' => "Nothing", 
+           'body-plain' => "Lorem Ipsum" }
+         response.should be_successful 
+       end
+     end
+
+     it "should redirect if Email could not be saved" do
+       post :create, {'sender' => " ", 
+         'recipient' => "janmail.com", 
+         'subject' => "Nothing"}
+       response.should be_redirect
+     end
+   end
+   # 
+   #   # This should return the minimal set of attributes required to create a valid
+   #   # Email. As you add validations to Email, be sure to
+   #   # update the return value of this method accordingly.
+   #   def valid_attributes
+   #     {}
+   #   end
+   #   
+   #   # This should return the minimal set of values that should be in the session
+   #   # in order to pass any filters (e.g. authentication) defined in
+   #   # EmailsController. Be sure to keep this updated too.
+   #   def valid_session
+   #     {}
+   #   end
+   # 
+   #   describe "GET index" do
+   #     it "assigns all emails as @emails" do
+   #       email = Email.create! valid_attributes
+   #       get :index, {}, valid_session
+   #       assigns(:emails).should eq([email])
+   #     end
+   #   end
+   # 
+   #   describe "GET show" do
+   #     it "assigns the requested email as @email" do
+   #       email = Email.create! valid_attributes
+   #       get :show, {id: email.to_param}, valid_session
+   #       assigns(:email).should eq(email)
+   #     end
+   #   end
+   # 
+   #   describe "POST create" do
+   #     describe "with valid params" do
+   #       it "assigns a newly created email as @email" do
+   #         post :create, {:email => valid_attributes}, valid_session
+   #         assigns(:email).should be_a(Email)
+   #         assigns(:email).should be_persisted
+   #       end
+   # 
+   #       it "creates a new Email" do
+   #         expect {
+   #           post :create, {:email => valid_attributes}, valid_session
+   #         }.to change(Email, :count).by(1)
+   #       end
+   #     end
+   # 
+   #     describe "with invalid params" do
+   #       it "assigns a newly created but unsaved email as @email" do
+   #         # Trigger the behavior that occurs when invalid params are submitted
+   #         Email.any_instance.stub(:save).and_return(false)
+   #         post :create, {:email => {}}, valid_session
+   #         assigns(:email).should be_a_new(Email)
+   #       end
+   #     end
+   #   end
+   # 
+   #   describe "DELETE destroy" do
+   #     it "destroys the requested email" do
+   #       email = Email.create! valid_attributes
+   #       expect {
+   #         delete :destroy, {:id => email.to_param}, valid_session
+   #       }.to change(Email, :count).by(-1)
+   #     end
+   # 
+   #     it "redirects to the emails list" do
+   #       email = Email.create! valid_attributes
+   #       delete :destroy, {:id => email.to_param}, valid_session
+   #       response.should redirect_to(emails_url)
+   #     end
+   #   end
+   # 
+ end
