@@ -75,6 +75,24 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  # This will handle a like request; i.e. User hits like button and the user 
+  # their likes decreased while the user whom they liked will have their likes increased
+  # TODO Allow an ajax request to handle the like request to circumvent redirection
+  def likes
+    if signed_in? 
+      liked_user = User.find_by_id!(params[:id])
+      user_who_likes = current_user
+      incr_likes = 6
+      decr_likes = 5
+      current_user.incr_decr_likes(liked_user, incr_likes, decr_likes) 
+      sign_in user_who_likes
+      redirect_to root_path 
+    else
+      redirect_to signin_path, flash: { notice: 'Hey, we need to know who you are first' }
+    end
+
+  end
+
   private
 
     def correct_user

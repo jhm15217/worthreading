@@ -2,6 +2,7 @@ WorthReading::Application.routes.draw do
   resources :users do
     member do
       get :following, :followers
+      put :likes
     end
   end
   resources :sessions, only: [:new, :create, :destroy]
