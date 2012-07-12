@@ -19,10 +19,14 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
  describe EmailsController do
+   before do
+    @user = User.create(name: "Example User", email: "user@example.com", 
+                     password: "foobar", password_confirmation: "foobar")
+   end
 
    describe "receiving an email from via a POST request from Mailgun" do
      it "should render a text 'Email Received' after a successful save" do
-       post :create, {'sender' => "johndoe@email.com", 
+       post :create, {'sender' => "user@example.com", 
          'recipient' => "janedoe@email.com", 
          'subject' => "Nothing", 
          'body-plain' => "Lorem Ipsum" }

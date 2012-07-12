@@ -27,20 +27,26 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    puts params
-    puts params['email']
-#    puts params['email']['sender']
-    @email = Email.new(
-      from: params['sender'], 
-      to: params['recipient'], 
-      subject: params['subject'],
-      body: params['body-plain']
-    )
-    if @email.save
-      render text: "Email Received"
-    else 
-      redirect_to root_path
+    if @user = User.find_by_email(params['sender'])
+      @email = @user.emails.new(
+        from: params['sender'], 
+        to: params['recipient'], 
+        subject: params['subject'],
+        body: params['body-plain']
+      )
+    
+    # NOTE Delete code below after it can be assured that heroku app can receive emails
+    # The code above is the needed code since it will associate users with an email
+    else
+      @email = Email.new(
+        from: params['sender'], 
+        to: params['recipient'], 
+        subject: params['subject'],
+        body: params['body-plain']
+      )
     end
+
+    @email.save ? (render text: "Email Received") : (redirect_to root_path)
   end
 
   # DELETE /emails/1
