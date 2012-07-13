@@ -38,6 +38,8 @@ describe User do
   it { should respond_to(:subscribed_by?)}
   it { should respond_to(:add_subscriber!)}
   it { should respond_to(:rem_subscriber!)}
+  it { should respond_to(:reverse_relationships) }
+  it { should respond_to(:subscribed_users) }
   it { should respond_to(:likes) }
   it { should respond_to(:emails) }
   
@@ -196,11 +198,17 @@ describe User do
     it { should be_subscribed_by(other_user) }
     its(:subscribers) { should include(other_user) }
 
+    describe "subscriber" do
+      subject { other_user }
+      its(:subscribed_users) { should include(@user) }
+    end
+
     describe "and removing a subscriber" do
       before { @user.rem_subscriber!(other_user) }
       its(:subscribers) { should_not include(other_user) }
     end
   end
+
 end
 
 
