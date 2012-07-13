@@ -17,33 +17,32 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation
   has_secure_password
   has_many :emails, dependent: :destroy
-  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
-  has_many :followed_users, through: :relationships, source: :followed
-  has_many :reverse_relationships, foreign_key: "followed_id",
-                                   class_name:  "Relationship",
-                                   dependent:   :destroy
-  has_many :followers, through: :reverse_relationships, source: :follower
+  has_many :relationships, foreign_key: "subscribed_id", dependent: :destroy
+  has_many :subscribers, through: :relationships
 
   def feed
   end
 
-  def following?(other_user)
-    relationships.find_by_followed_id(other_user.id)
-  end
-
-  def follow!(other_user)
-    relationships.create!(followed_id: other_user.id)
-  end
-
-  def unfollow!(other_user)
-    relationships.find_by_followed_id(other_user.id).destroy
-  end
-
+  # Like Incrementor Methods
   def incr_decr_likes(user_who_likes, incr_by, decr_by)
     self.increment!(:likes, incr_by)
     user_who_likes.decrement!(:likes, decr_by)
   end
 
+  # Subscriber Methods
+  def add_subscriber!(subscriber) 
+    self.relationships.create!(subscriber_id: subscriber.id)
+  end
+
+  def subscribed_by?(subscriber)
+    self.relationships.find_by_subscriber_id(subscriber.id)
+  end
+  
+  def rem_subscriber!(subscriber)
+    self.relationships.find_by_subscriber_id(subscriber.id).destroy
+  end
+
+  # Active Record Callbacks
   before_save { |user| 
     user.email = email.downcase
     user.likes = 50 if user.new_record? 
@@ -56,6 +55,7 @@ class User < ActiveRecord::Base
     self.remember_token = SecureRandom.urlsafe_base64
   end
 
+  # Validataions
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence:   true,
