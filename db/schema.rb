@@ -24,17 +24,12 @@ ActiveRecord::Schema.define(:version => 20120713174541) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.integer  "follower_id"
-    t.integer  "followed_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "subscriber_id"
     t.integer  "subscribed_id"
   end
 
-  add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
-  add_index "relationships", ["follower_id", "followed_id"], :name => "index_relationships_on_follower_id_and_followed_id", :unique => true
-  add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
   add_index "relationships", ["subscribed_id", "subscriber_id"], :name => "index_relationships_on_subscribed_id_and_subscriber_id", :unique => true
   add_index "relationships", ["subscribed_id"], :name => "index_relationships_on_subscribed_id"
   add_index "relationships", ["subscriber_id"], :name => "index_relationships_on_subscriber_id"
