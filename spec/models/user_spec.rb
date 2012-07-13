@@ -34,10 +34,12 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:feed) }
   it { should respond_to(:relationships) }
-  it { should respond_to(:followed_users) }
-  it { should respond_to(:following?) }
-  it { should respond_to(:follow!) }
-  it { should respond_to(:unfollow!) }
+  it { should respond_to(:subscribers) }
+  it { should respond_to(:subscribed_by?)}
+  it { should respond_to(:add_subscriber!)}
+  it { should respond_to(:rem_subscriber!)}
+  it { should respond_to(:reverse_relationships) }
+  it { should respond_to(:subscribed_users) }
   it { should respond_to(:likes) }
   it { should respond_to(:emails) }
   
@@ -145,30 +147,6 @@ describe User do
     end
   end
 
-  describe "following" do
-    let(:other_user) { FactoryGirl.create(:user) }    
-    before do
-      @user.save
-      @user.follow!(other_user)
-    end
-
-    it { should be_following(other_user) }
-    its(:followed_users) { should include(other_user) }
-
-    describe "and unfollowing" do
-      before { @user.unfollow!(other_user) }
-
-      it { should_not be_following(other_user) }
-      its(:followed_users) { should_not include(other_user) }
-    end
-
-    describe "followed user" do
-      subject { other_user }
-      its(:followers) { should include(@user) }
-    end
-
-  end
-
   describe "likes incrementor/decrementor" do
     let(:other_user) { FactoryGirl.create(:user) }    
     let(:default_likes ) { 50 }
@@ -184,6 +162,7 @@ describe User do
       other_user.likes.should == default_likes - decr_by
     end
   end
+
 
   describe "email associations" do
 
@@ -208,6 +187,28 @@ describe User do
       end
     end
   end
+
+  describe "Adding a subscriber" do
+    let(:other_user) { FactoryGirl.create(:user)}
+    before do
+      @user.save
+      @user.add_subscriber!(other_user)
+    end
+
+    it { should be_subscribed_by(other_user) }
+    its(:subscribers) { should include(other_user) }
+
+    describe "subscriber" do
+      subject { other_user }
+      its(:subscribed_users) { should include(@user) }
+    end
+
+    describe "and removing a subscriber" do
+      before { @user.rem_subscriber!(other_user) }
+      its(:subscribers) { should_not include(other_user) }
+    end
+  end
+
 end
 
 
