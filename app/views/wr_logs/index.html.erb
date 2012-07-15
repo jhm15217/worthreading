@@ -1,0 +1,33 @@
+<h1>Listing wr_logs</h1>
+
+<table>
+  <tr>
+    <th>Action</th>
+    <th>Sender</th>
+    <th>Receiver</th>
+    <th>Email</th>
+    <th>Email part</th>
+    <th>Responded</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @wr_logs.each do |wr_log| %>
+  <tr>
+    <td><%= wr_log.action %></td>
+    <td><%= wr_log.sender_id %></td>
+    <td><%= wr_log.receiver_id %></td>
+    <td><%= wr_log.email_id %></td>
+    <td><%= wr_log.email_part %></td>
+    <td><%= wr_log.responded %></td>
+    <td><%= link_to 'Show', wr_log %></td>
+    <td><%= link_to 'Edit', edit_wr_log_path(wr_log) %></td>
+    <td><%= link_to 'Destroy', wr_log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Wr log', new_wr_log_path %>

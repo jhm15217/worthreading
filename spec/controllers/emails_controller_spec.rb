@@ -25,24 +25,22 @@ require 'spec_helper'
    end
 
    describe "receiving an email from via a POST request from Mailgun" do
-     context "and user is registered" do
-       it "should render a text 'Email Received' after a successful save" do
+     it "should render a text 'Email Received' after a successful save" do
+       post :create, {'sender' => "user@example.com", 
+         'recipient' => "janedoe@email.com", 
+         'subject' => "Nothing", 
+         'body-plain' => "Lorem Ipsum" }
+       response.should be_successful 
+     end
+
+     it "should add an entry to WrLog" do
+       expect do
          post :create, {'sender' => "user@example.com", 
-           'recipient' => "janedoe@email.com", 
-           'subject' => "Nothing", 
-           'body-plain' => "Lorem Ipsum" }
-         response.should be_successful 
-       end
-     end
-     context "and user is not registered" do
-       it "should still render a text 'Email Received' after a successful save" do
-         post :create, {'sender' => "sup@example.com", 
-           'recipient' => "janedoe@email.com", 
-           'subject' => "Nothing", 
-           'body-plain' => "Lorem Ipsum" }
-         response.should be_successful 
-       end
-     end
+         'recipient' => "janedoe@email.com", 
+         'subject' => "Nothing", 
+         'body-plain' => "Lorem Ipsum" }
+      end.to change(WrLog, :count).by(1)
+    end
 
      it "should redirect if Email could not be saved" do
        post :create, {'sender' => " ", 

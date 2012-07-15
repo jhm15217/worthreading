@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120713174541) do
+ActiveRecord::Schema.define(:version => 20120715174940) do
 
   create_table "emails", :force => true do |t|
     t.string   "from"
@@ -47,5 +47,16 @@ ActiveRecord::Schema.define(:version => 20120713174541) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "wr_logs", :force => true do |t|
+    t.string   "action"
+    t.integer  "sender_id"
+    t.integer  "receiver_id"
+    t.integer  "email_id"
+    t.integer  "email_part"
+    t.boolean  "responded"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
 end

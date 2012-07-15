@@ -1,4 +1,6 @@
 WorthReading::Application.routes.draw do
+  resources :wr_logs
+
   resources :users do
     member do
       get :following, :followers

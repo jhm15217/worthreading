@@ -4,6 +4,15 @@ class EmailsController < ApplicationController
   # since we are receiving post data from mailgun
   skip_before_filter :verify_authenticity_token, only: [:create]
 
+  def find_or_register(email_address)
+    if result = User.find_by_email(email_address)
+      result
+    else
+      result = User.new(name:"Unknown", email:email_address, password:"Unknown", password_confirmation:"Unknown")
+      result.save
+    end
+  end
+
   # GET /emails
   def index
     @emails = Email.all
@@ -27,25 +36,20 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    if @user = User.find_by_email(params['sender'])
-      @email = @user.emails.new(
-        from: params['sender'], 
-        to: params['recipient'], 
-        subject: params['subject'],
-        body: params['body-plain']
-      )
-    # NOTE Eventually, the else statment below should handle unregistered users
-    # Do we automatically register them or do we just simply deny their email request
+      if @user = find_or_register(params['sender'])
+        @email = @user.emails.new(
+          from: params['sender'], 
+          to: params['recipient'], 
+          subject: params['subject'],
+          body: params['body-plain']
+        )
+        @email.save ? (render text: "Email Received") : ()
+        wr_log_entry = WrLog.new(action:"email", sender_id:find_or_register(@email.from),
+                                 receiver_id:find_or_register(@email.to), email_id:@email.id, responded: false)
+        wr_log_entry.save
     else
-      @email = Email.new(
-        from: params['sender'], 
-        to: params['recipient'], 
-        subject: params['subject'],
-        body: params['body-plain']
-      )
+      redirect_to root_path  ## params['sender'] is bad 
     end
-
-    @email.save ? (render text: "Email Received") : (redirect_to root_path)
   end
 
   # DELETE /emails/1

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Action:</b>
+  <%= @wr_log.action %>
+</p>
+
+<p>
+  <b>Sender:</b>
+  <%= @wr_log.sender_id %>
+</p>
+
+<p>
+  <b>Receiver:</b>
+  <%= @wr_log.receiver_id %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @wr_log.email_id %>
+</p>
+
+<p>
+  <b>Email part:</b>
+  <%= @wr_log.email_part %>
+</p>
+
+<p>
+  <b>Responded:</b>
+  <%= @wr_log.responded %>
+</p>
+
+
+<%= link_to 'Edit', edit_wr_log_path(@wr_log) %> |
+<%= link_to 'Back', wr_logs_path %>
