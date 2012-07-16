@@ -1,17 +1,10 @@
 class EmailsController < ApplicationController
+  
+  include UsersHelper
 
   # This is used to disable Rails request forger protection for this controller
   # since we are receiving post data from mailgun
   skip_before_filter :verify_authenticity_token, only: [:create]
-
-  def find_or_register(email_address)
-    if result = User.find_by_email(email_address)
-      result
-    else
-      result = User.new(name:"Unknown", email:email_address, password:"Unknown", password_confirmation:"Unknown")
-      result.save
-    end
-  end
 
   # GET /emails
   def index
