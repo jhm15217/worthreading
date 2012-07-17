@@ -1,4 +1,5 @@
 class EmailsController < ApplicationController
+  before_filter :signed_in_user
   
   include UsersHelper
 
@@ -9,7 +10,7 @@ class EmailsController < ApplicationController
   # GET /emails
   def index
     # TODO Need to ensure only correct user access or may need to rethink this
-    if current_user.admin?
+    if signed_in? && current_user.admin?
       @emails = Email.all
     else
       @emails = current_user.emails

@@ -8,13 +8,12 @@
                                         :type => "text", 
                                         :placeholder => "Enter email"}
       %button.btn{type: "submit"} Add 
-%br
 - if !@subscribers.empty?
   - @subscribers.each do |subscriber|
     %table
       %tr
         %td #{subscriber.email} &nbsp;&nbsp;&nbsp;&nbsp; 
-        %td= link_to "Log[unimplemented]", "#"
+        %td= link_to "Log", "#"
 
 - else
   Add a subscriber

@@ -5,11 +5,23 @@
         <%= render 'shared/user_info' %>
       </section>
     </aside>
-  </div>  
+    <aside class="span4">
+      <section>
+        <h3> A log detailing user's statistics will go here</h3>
+      </section>
+    </aside>
+  </div>
+  <div class="row">
+    <aside class="span4 offset4">
+      <section>
+        <h3>Recent Emails sent out:</h3>
+        <%= render 'shared/emails' %>
+      </section>
+    </aside>
+  </div>
 <% else %>
   <div class="center hero-unit">
     <h1>Welcome to Worth Reading</h1>
-
 
     <%= link_to "Sign up now!", signup_path, 
                                 class: "btn btn-large btn-primary" %>

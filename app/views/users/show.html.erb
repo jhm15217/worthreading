@@ -16,13 +16,26 @@
       </b>
         <%= @user.likes %>
     </section>
+    <section>
+      <%= render 'shared/stats' %>
+    </section>
   </aside>
   <div class="span4">
+    <br />
+    <br />
+    <h3>Emails sent:</h3>
     <%= render 'shared/emails' %>
   </div>
   <div class="span4">
+    <br />
+    <br />
     <% if current_user?(@user) %>
       <%= render 'shared/subscriber_list' %>
     <% end %>
   </div>
+</div>
+
+<div class="row">
+  <aside class="span3">
+  </aside>
 </div>
