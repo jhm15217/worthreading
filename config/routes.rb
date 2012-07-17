@@ -2,6 +2,7 @@ WorthReading::Application.routes.draw do
   resources :wr_logs
 
   resources :users do
+    resources :emails, only: [:index, :show, :create, :destroy]
     member do
       get :following, :followers
       put :likes

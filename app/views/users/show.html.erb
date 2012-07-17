@@ -1,11 +1,28 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="span4">
+  <aside class="span3">
     <section>
       <h1>
         <%= gravatar_for @user %>
         <%= @user.name %>
       </h1>
+      <b>
+        Email:
+      </b>
+        <%= @user.email %>
+        <br />
+      <b>
+        Likes: 
+      </b>
+        <%= @user.likes %>
     </section>
   </aside>
+  <div class="span4">
+    <%= render 'shared/emails' %>
+  </div>
+  <div class="span4">
+    <% if current_user?(@user) %>
+      <%= render 'shared/subscriber_list' %>
+    <% end %>
+  </div>
 </div>

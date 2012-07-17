@@ -8,7 +8,12 @@ class EmailsController < ApplicationController
 
   # GET /emails
   def index
-    @emails = Email.all
+    # TODO Need to ensure only correct user access or may need to rethink this
+    if current_user.admin?
+      @emails = Email.all
+    else
+      @emails = current_user.emails
+    end
 
     respond_to do |format|
       format.html # index.html.erb

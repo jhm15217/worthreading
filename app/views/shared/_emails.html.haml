@@ -1,0 +1,16 @@
+
+%h3 Emails:
+- if !@emails.empty?
+  %table
+    %tr
+      %th To
+      %th Subject
+      %th
+      %th
+    - @emails.each do |email|
+      %tr
+        %td= email.to
+        %td= email.subject
+        %td= link_to 'Show', user_email_path(@user, email)
+- else
+  No emails yet. Send an email.
