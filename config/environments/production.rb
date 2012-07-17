@@ -11,12 +11,12 @@ WorthReading::Application.configure do
   # Mailer
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.mailgun.org",
-    :port                 => 587,
-    :domain               => 'app5229487.mailgun.org',
-    :user_name            => 'postmaster@app5229487.mailgun.org',
-    :password             => '4qm39zvc0md0',
-    :authentication       => 'plain',
+    :port           => ENV['MAILGUN_SMTP_PORT'], 
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         => 'evening-fog-9503.heroku.com',
+    :authentication => :plain,
     :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
