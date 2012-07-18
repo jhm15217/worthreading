@@ -31,9 +31,9 @@ WorthReading::Application.configure do
   config.action_mailer.smtp_settings = {
     :address              => "smtp.mailgun.org",
     :port                 => 587,
-    :domain               => 'app5229487.mailgun.org',
-    :user_name            => 'postmaster@app5229487.mailgun.org',
-    :password             => '4qm39zvc0md0',
+    :domain               => 'evening-fog-9503.heroku.com',
+    :user_name            => 'postmaster@worthreading.org.mailgun.org',
+    :password             => 'psommga1',
     :authentication       => 'plain',
     :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true
