@@ -15,7 +15,7 @@ class RelationshipsController < ApplicationController
                 flash: { error: "Invalid email address"}) and return if @user.new_record?
 
     if @user && current_user.subscribed_by?(@user) 
-      flash[:error] = "That email address is already on your list"
+      flash[:error] = "That email address is already on your list."
     elsif !params[:email].blank?
       current_user.add_subscriber!(@user)
     end

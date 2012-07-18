@@ -17,12 +17,13 @@ def make_users
   puts "Creating 99 other users..."
   99.times do |n|
     name  = Faker::Name.name
-    email = "example#{n+1}@helloworld.org"
+    email = "example#{n+1}@worth-reading.org"
     password  = "password"
-    User.create!(name:     name,
-                 email:    email,
-                 password: password,
-                 password_confirmation: password)
+    u = User.create!(name:     name,
+                     email:    email,
+                     password: password,
+                     password_confirmation: password)
+    u.likes = rand(25..200) and u.save
   end
 end
 
@@ -44,9 +45,9 @@ def make_emails
   users[0..25].each do |user|
     rand(15..40).times.each do |n|
       user.emails.create(to: "mailinglist@worthreading.org", 
-                       from: user.email, 
-                       subject: "HelloWorld #{n}",
-                       body: Faker::Lorem.paragraph)
+                         from: user.email, 
+                         subject: "HelloWorld #{n}",
+                         body: Faker::Lorem.paragraph)
     end
   end
 end

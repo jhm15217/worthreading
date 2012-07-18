@@ -8,15 +8,35 @@ describe RelationshipsController do
   before { sign_in user }
 
   describe "creating a subscriber" do
-    it "should increase subscribers by 1" do
-      expect do
+    context "with a valid email" do
+      it "should increase subscribers by 1" do
+        expect do
+          post :create, { email: other_user.email }
+        end.should change(Relationship, :count).by(1)
+      end
+
+      it "should respond with a redirect" do
         post :create, { email: other_user.email }
-      end.should change(Relationship, :count).by(1)
+        response.should be_redirect
+      end
     end
 
-    it "should respond with a redirect" do
-      post :create, { email: other_user.email }
-      response.should be_redirect
+    context "when already subscribed to user" do
+      before { user.add_subscriber!(other_user) }
+      it "should redirect with a flash msg 'the email is already on the list'" do
+        post :create, { email: other_user.email }
+        response.should be_redirect
+        flash[:error].should =~ /^.* email address .* list./i
+      end
+    end
+
+    context "with an invalid email" do
+      before { other_user.email = " " }
+      it "should redirect with a flash message 'Invalid email address'" do
+        post :create, { email: other_user.email }
+        response.should be_redirect
+        flash[:error].should =~ /invalid email address/i
+      end
     end
   end
 

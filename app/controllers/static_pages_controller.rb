@@ -6,6 +6,7 @@ class StaticPagesController < ApplicationController
       @emails = @user.emails.where("created_at >= ?", two_weeks_ago )
       @email_count = @user.emails.count
     end
+    @users = User.all order: 'likes DESC'
   end
 
   def help
