@@ -11,6 +11,7 @@
 #  remember_token  :string(255)
 #  admin           :boolean         default(FALSE)
 #  likes           :integer
+#  confirmed       :boolean
 #
 
 require 'spec_helper'
@@ -19,7 +20,7 @@ describe User do
 
   before do
     @user = User.new(name: "Example User", email: "user@example.com", 
-                     password: "foobar", password_confirmation: "foobar")
+                     password: "foobar", password_confirmation: "foobar" )
   end
 
   subject { @user }
@@ -42,6 +43,7 @@ describe User do
   it { should respond_to(:subscribed_users) }
   it { should respond_to(:likes) }
   it { should respond_to(:emails) }
+  it { should respond_to(:confirmed)}
   
   it { should be_valid }
   it { should_not be_admin }
@@ -75,8 +77,12 @@ describe User do
       its(:remember_token) { should_not be_blank }
     end
 
-    context "number_of likes" do
+    context "for the first time, number_of likes" do
       its(:likes) { should == default_likes}
+    end
+    
+    context "for the first time, confirmed" do
+      its(:confirmed) { should be_false }
     end
   end
 

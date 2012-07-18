@@ -11,6 +11,7 @@
 #  remember_token  :string(255)
 #  admin           :boolean         default(FALSE)
 #  likes           :integer
+#  confirmed       :boolean
 #
 
 class User < ActiveRecord::Base
@@ -48,7 +49,9 @@ class User < ActiveRecord::Base
   # Active Record Callbacks
   before_save { |user| 
     user.email = email.downcase
-    user.likes = 50 if user.new_record? 
+    if user.new_record? 
+      user.likes = 50 
+    end
   }
   before_save :create_remember_token
 

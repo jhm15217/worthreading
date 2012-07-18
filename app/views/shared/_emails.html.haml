@@ -1,0 +1,13 @@
+
+- if !@emails.empty?
+  %table.table.table-condensed
+    %tr
+      %th Subject
+      %th
+      %th
+    - @emails.each do |email|
+      %tr
+        %td= email.subject
+        %td= link_to 'Show', user_email_path(@user, email)
+- else
+  No emails yet. Send an email.

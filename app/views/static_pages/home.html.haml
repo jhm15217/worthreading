@@ -1,0 +1,52 @@
+- if signed_in?
+  .row
+    %aside.span3
+      %section
+        = render 'shared/user_info'
+    %aside.span5
+      %section
+        %h3 Message Statistics
+        = render 'shared/user_email_stats'
+    %aside.span4
+      %section
+        %h2 News Feed
+        %br/
+        %b Note: Dummy information below atm
+        %ul
+          %li
+            Mike liked an email #{time_ago_in_words(Time.now)}
+          %li
+            Mike opened email #{time_ago_in_words(Time.now - 30.minutes)}
+  .row
+    %aside.span5.offset3
+      %section
+        %h3 Recent Emails sent out:
+        = render 'shared/emails'
+- else
+  .row
+    .span8
+      .hero-unit
+        %h2 Welcome to Worth Reading
+        %p
+          When you send the same message to several people would you like to:
+          %ul
+            %li send individual messages to each of them?
+            %li discover when they open the message?
+            %li discover if they like the message? 
+          Then sign up for WorthReading which can give you these features
+          %br/
+        %p.center
+          = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
+    .span3
+      %h2 Top Ten People On Worth Reading
+      %table.table
+        %tr
+          %th Name
+          %th Likes
+
+        - @users.first(10).each do |user|
+          - if current_user != user
+            %tr
+              %td= user.name
+              %td= user.likes
+
