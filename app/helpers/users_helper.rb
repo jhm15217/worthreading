@@ -5,7 +5,7 @@ module UsersHelper
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
     size = options[:size]
     gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
-    image_tag(gravatar_url, alt: user.name, class: "gravatar")
+    image_tag(gravatar_url, alt: "Profile pic", class: "gravatar")
   end
   
   def find_or_register(email_address)
@@ -14,6 +14,7 @@ module UsersHelper
     else
       result = User.new(name:"Unknown", email:email_address, password:"Unknown", password_confirmation:"Unknown")
       result.save
+      result
     end
   end
 end

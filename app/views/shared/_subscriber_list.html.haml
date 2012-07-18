@@ -1,0 +1,22 @@
+%h3 Subscribers:
+%br/
+%p
+  = form_tag('/relationships', class: 'form-horizontal') do |f|
+    .input-append
+      %input#appendedInputButton.span2{ :name => "email",
+                                        :size => "18", 
+                                        :type => "text", 
+                                        :placeholder => "Enter email"}
+      %button.btn{type: "submit"} Add 
+- if !@subscribers.empty?
+  - @subscribers.each do |subscriber|
+    %table.table.table-condensed
+      %tr
+        %td #{subscriber.email} &nbsp;&nbsp;&nbsp;&nbsp; 
+        %td= link_to "Log", "#"
+        %td
+          = form_for(current_user.relationships.find_by_subscriber_id(subscriber), 
+            html: { method: :delete }) do |f|                                            
+            = f.submit "Delete", class: "btn btn-small"
+- else
+  Add a subscriber
