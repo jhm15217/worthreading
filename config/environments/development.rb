@@ -19,8 +19,8 @@ WorthReading::Application.configure do
   #   :address              => "smtp.gmail.com",
   #   :port                 => 587,
   #   :domain               => 'baci.lindsaar.net',
-  #   :user_name            => 'james.morris@gmail.com',
-  #    :password             => 'psomgma2',
+  #   :user_name            => '####' 
+  #    :password             => '####',
   #   :authentication       => 'plain',
   #   :enable_starttls_auto => true  }
   #  config.action_mailer.perform_deliveries = true
