@@ -1,8 +1,6 @@
 class EmailsController < ApplicationController
   before_filter :signed_in_user
   
-  include UsersHelper
-
   # This is used to disable Rails request forger protection for this controller
   # since we are receiving post data from mailgun
   skip_before_filter :verify_authenticity_token, only: [:create]
@@ -11,9 +9,9 @@ class EmailsController < ApplicationController
   def index
     # TODO Need to ensure only correct user access or may need to rethink this
     if signed_in? && current_user.admin?
-      @emails = Email.all
+      @emails = Email.paginate(page: params[:page])
     else
-      @emails = current_user.emails
+      @emails = current_user.emails.paginate(page: params[:page])
     end
 
     respond_to do |format|

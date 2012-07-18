@@ -3,13 +3,14 @@ WorthReading::Application.routes.draw do
 
   resources :users do
     resources :emails, only: [:index, :show, :create, :destroy]
+    resources :relationships, only: [:create, :destroy, :index]
     member do
       get :following, :followers
       put :likes
     end
   end
   resources :sessions, only: [:new, :create, :destroy]
-  resources :relationships, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy, :index]
   resources :emails, only: [:index, :show, :create, :destroy]
 
   root to: 'static_pages#home'

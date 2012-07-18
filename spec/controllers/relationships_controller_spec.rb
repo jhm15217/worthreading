@@ -20,21 +20,20 @@ describe RelationshipsController do
     end
   end
 
-# TODO Finish tests
-#   describe "removing a subscriber" do 
-#     before { user.add_subscriber!(other_user) }
-#     let(:relationship) { user.relationships.find_by_subscriber_id(other_user.id) }
-#     it "should decrease subscriber count by 1" do
-#       expect do
-#         delete :destroy, { id: relationship.id }
-#       end.should change(Relationship, :count).by(-1)
-#     end
-# 
-#     it "should respond with a redirect" do
-#       delete :destroy, { subscriber: relationship.id }
-#       response.should be_redirect
-#     end
-#   end
+  describe "removing a subscriber" do 
+    before { user.add_subscriber!(other_user) }
+    let(:relationship) { user.relationships.find_by_subscriber_id(other_user) }
+    it "should decrease subscriber count by 1" do
+      expect do
+        delete :destroy, { id: relationship.id }
+      end.should change(Relationship, :count).by(-1)
+    end
+
+    it "should respond with a redirect" do
+      delete :destroy, { id: relationship.id }
+      response.should be_redirect
+    end
+  end
 
   # TODO Rewrite tests
   #  describe "creating a relationship with Ajax" do

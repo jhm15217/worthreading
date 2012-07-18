@@ -1,18 +1,30 @@
 <% if signed_in? %>
   <div class="row">
-    <aside class="span4">
+    <aside class="span3">
       <section>
         <%= render 'shared/user_info' %>
       </section>
     </aside>
+    <aside class="span5">
+      <section>
+        <h3>Message Statistics</h3>
+        <%= render 'shared/user_email_stats' %>
+      </section>
+    </aside>
     <aside class="span4">
       <section>
-        <h3> A log detailing user's statistics will go here</h3>
+      <h2>News Feed</h2>
+      <br />
+      <b>Note: Dummy information below atm</b>
+      <ul>
+        <li>Mike liked an email <%= time_ago_in_words(Time.now) %></li>
+        <li>Mike opened email <%= time_ago_in_words(Time.now - 30.minutes) %></li>
+      </ul>
       </section>
     </aside>
   </div>
   <div class="row">
-    <aside class="span4 offset4">
+    <aside class="span5 offset3">
       <section>
         <h3>Recent Emails sent out:</h3>
         <%= render 'shared/emails' %>

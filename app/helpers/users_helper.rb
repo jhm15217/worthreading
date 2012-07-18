@@ -14,6 +14,7 @@ module UsersHelper
     else
       result = User.new(name:"Unknown", email:email_address, password:"Unknown", password_confirmation:"Unknown")
       result.save
+      result
     end
   end
 end

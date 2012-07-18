@@ -31,9 +31,9 @@ def make_relationships
   users = User.all
 
   users[0..25].each do |user|
-    n = user.id + 1
-    subscribers = users[n..30]
-    subscribers.each { |subscriber| user.add_subscriber!(subscriber) }
+    n_subscribers = rand(5..75)
+    subscribers = users[0..n_subscribers]
+    subscribers.each { |subscriber| user.add_subscriber!(subscriber) unless subscriber.id == user.id }
   end
 end
 
@@ -42,7 +42,7 @@ def make_emails
   users = User.all
 
   users[0..25].each do |user|
-    rand(1...25).times.each do |n|
+    rand(15..40).times.each do |n|
       user.emails.create(to: "mailinglist@worthreading.org", 
                        from: user.email, 
                        subject: "HelloWorld #{n}",

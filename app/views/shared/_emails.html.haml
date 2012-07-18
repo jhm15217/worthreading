@@ -1,14 +1,12 @@
 
 - if !@emails.empty?
-  %table
+  %table.table.table-condensed
     %tr
-      %th To
       %th Subject
       %th
       %th
     - @emails.each do |email|
       %tr
-        %td= email.to
         %td= email.subject
         %td= link_to 'Show', user_email_path(@user, email)
 - else
