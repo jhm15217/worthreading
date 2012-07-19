@@ -1,5 +1,5 @@
 class EmailsController < ApplicationController
-  before_filter :signed_in_user
+  before_filter :signed_in_user, except: [:create]
 
   # This is used to disable Rails request forger protection for this controller
   # since we are receiving post data from mailgun
