@@ -4,14 +4,14 @@
       = link_to "WorthReading", root_path, id: "logo"
       %nav
         %ul.nav.pull-left
-          - unless signed_in?
+          - if !signed_in? && !current_page?(signin_path)
             = form_for(:session, url: sessions_path, html: { class: "navbar-form pull-right" }) do |f|
               = f.text_field :email, placeholder: 'Email', 
                   class: "input-medium sign-in"
               = f.password_field :password, placeholder: 'Password', 
                   class: "input-medium sign-in"
               = f.submit "Sign in", class: "btn-info"
-          - else
+          - elsif signed_in? && !current_page?(signin_path)
             %li.divider-vertical
             %li= link_to "Home", root_path
             %li.divider-vertical
@@ -27,8 +27,12 @@
                   = link_to "Sign out", signout_path, method: "delete"
             %li.divider-vertical
         %ul.nav.pull-right
-          %li.divider-vertical
-          %li= link_to "Users", users_path
+          - if signed_in?
+            %li.divider-vertical
+            %li= link_to "Users", users_path
+          - elsif !signed_in? && current_page?(signin_path)
+            %li.divider-vertical
+            %li= link_to "Home", root_path
           %li.divider-vertical
           %li= link_to "Help", help_path
           %li.divider-vertical
