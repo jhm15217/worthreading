@@ -9,11 +9,6 @@ module UsersHelper
   end
   
   def find_or_register(email_address)
-    if result = User.find_by_email(email_address)
-      result
-    else
-      result = User.new(name:"Unknown", email:email_address, password:"Unknown", password_confirmation:"Unknown")
-      result.save
-    end
+   User.where(email: email_address).first_or_create(name:"Unknown",password:"Unknown", password_confirmation:"Unknown")
   end
 end
