@@ -80,6 +80,13 @@ class UsersController < ApplicationController
     end
   end
 
+  # 
+  def confirm_email
+    confirmation_token = params[:confirmation_token]
+    user = User.find_by_id(params[:id])
+    user.confirmed = true
+  end
+
   private
 
     def correct_user
