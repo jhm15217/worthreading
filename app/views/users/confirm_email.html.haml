@@ -1,4 +1,8 @@
-%p
-  Thank you #{@user.name} for registering with WorthReading. Click 
-  = link_to "here", user_path(@user)
-  to access your profile page. 
+- unless flash[:error]
+  %p
+    Thank you #{@user.name} for registering with WorthReading. Click 
+    = link_to "here", user_path(@user)
+    to access your profile page. 
+-else
+  %p
+    Thank you come again.
