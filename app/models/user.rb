@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
     user.email = email.downcase
     if user.new_record? 
       user.likes = 50 
+      user.confirmation_token = SecureRandom.urlsafe_base64
     end
   }
   before_save :create_remember_token
@@ -61,6 +62,7 @@ class User < ActiveRecord::Base
   def create_remember_token
     self.remember_token = SecureRandom.urlsafe_base64
   end
+
 
   # Validataions
   validates :name, presence: true, length: { maximum: 50 }
