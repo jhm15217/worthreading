@@ -1,6 +1,6 @@
 class EmailsController < ApplicationController
   before_filter :signed_in_user
-  
+
   # This is used to disable Rails request forger protection for this controller
   # since we are receiving post data from mailgun
   skip_before_filter :verify_authenticity_token, only: [:create]
@@ -33,17 +33,21 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-      if @user = find_or_register(params['sender'])
-        @email = @user.emails.new(
-          from: params['sender'], 
-          to: params['recipient'], 
-          subject: params['subject'],
-          body: params['body-plain']
-        )
-        @email.save ? (render text: "Email Received") : ()
-        wr_log_entry = WrLog.new(action:"email", sender_id:find_or_register(@email.from),
-                                 receiver_id:find_or_register(@email.to), email_id:@email.id, responded: false)
-        wr_log_entry.save
+    if @user = find_or_register(params['sender'])
+      @email = @user.emails.new(
+        from: params['sender'], 
+        to: params['recipient'], 
+        subject: params['subject'],
+        body: params['body-plain']
+      )
+      @email.save ? (render text: "Email Received") : ()
+
+      # NOTE Need to create has_many and belongs_to assocations such that @email.wrlogs.new
+      # should work as opposed to just using WrLog.new
+      # Id should be an integer that references a user
+      wr_log_entry = WrLog.new(action:"email", sender_id:find_or_register(@email.from),
+                               receiver_id:find_or_register(@email.to), email_id:@email.id, responded: false)
+      wr_log_entry.save
     else
       redirect_to root_path  ## params['sender'] is bad 
     end

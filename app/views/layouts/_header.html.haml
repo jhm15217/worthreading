@@ -1,0 +1,38 @@
+%header.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      = link_to "WorthReading", root_path, id: "logo"
+      %nav
+        %ul.nav.pull-left
+          - if !signed_in? && !current_page?(signin_path)
+            = form_for(:session, url: sessions_path, html: { class: "navbar-form pull-right" }) do |f|
+              = f.text_field :email, placeholder: 'Email', 
+                  class: "input-medium sign-in"
+              = f.password_field :password, placeholder: 'Password', 
+                  class: "input-medium sign-in"
+              = f.submit "Sign in", class: "btn-info"
+          - elsif signed_in? && !current_page?(signin_path)
+            %li.divider-vertical
+            %li= link_to "Home", root_path
+            %li.divider-vertical
+            %li#fat-menu.dropdown
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                #{current_user.name}
+                %b.caret
+              %ul.dropdown-menu
+                %li= link_to "Profile", current_user
+                %li= link_to "Account Settings", edit_user_path(current_user)
+                %li.divider
+                %li
+                  = link_to "Sign out", signout_path, method: "delete"
+            %li.divider-vertical
+        %ul.nav.pull-right
+          - if signed_in?
+            %li.divider-vertical
+            %li= link_to "Users", users_path
+          - elsif !signed_in? && current_page?(signin_path)
+            %li.divider-vertical
+            %li= link_to "Home", root_path
+          %li.divider-vertical
+          %li= link_to "Help", help_path
+          %li.divider-vertical

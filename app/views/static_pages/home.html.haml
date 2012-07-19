@@ -3,10 +3,14 @@
     %aside.span3
       %section
         = render 'shared/user_info'
-    %aside.span5
+      %br/
       %section
         %h3 Message Statistics
         = render 'shared/user_email_stats'
+    %aside.span5
+      %section
+        %h3 Recent Emails sent out:
+        = render 'shared/emails'
     %aside.span4
       %section
         %h2 News Feed
@@ -17,11 +21,6 @@
             Mike liked an email #{time_ago_in_words(Time.now)}
           %li
             Mike opened email #{time_ago_in_words(Time.now - 30.minutes)}
-  .row
-    %aside.span5.offset3
-      %section
-        %h3 Recent Emails sent out:
-        = render 'shared/emails'
 - else
   .row
     .span8
