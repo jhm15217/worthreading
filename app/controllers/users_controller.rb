@@ -5,6 +5,8 @@ class UsersController < ApplicationController
     
   def show
     @user = User.find(params[:id])
+    @emails = @user.emails
+    @subscribers = @user.subscribers
   end
 
   def new
@@ -61,20 +63,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def following
-    @title = "Following"
-    @user = User.find(params[:id])
-    @users = @user.followed_users.paginate(page: params[:page])
-    render 'show_follow'
-  end
-
-  def followers
-    @title = "Followers"
-    @user = User.find(params[:id])
-    @users = @user.followers.paginate(page: params[:page])
-    render 'show_follow'
-  end
-
   # This will handle a like request; i.e. User hits like button and the user 
   # their likes decreased while the user whom they liked will have their likes increased
   # TODO Allow an ajax request to handle the like request to circumvent redirection
@@ -90,7 +78,6 @@ class UsersController < ApplicationController
     else
       redirect_to signin_path, flash: { notice: 'Hey, we need to know who you are first' }
     end
-
   end
 
   private
