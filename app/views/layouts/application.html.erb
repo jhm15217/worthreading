@@ -10,9 +10,13 @@
   <body>
     <%= render 'layouts/header' %>
     <div class="container">
-      <% flash.each do |key, value| %>
-      <%= content_tag(:div, value, class: "alert alert-#{key}") %>
-      <% end %>
+      <div class="row">
+        <div class="span8 offset2">
+            <% flash.each do |key, value| %>
+              <%= content_tag(:div, value, class: "alert alert-#{key} center") %>
+            <% end %>
+        </div>
+      </div>
       <%= yield %>
       <%= render 'layouts/footer' %>
       <%= debug(params) if Rails.env.development? %>
