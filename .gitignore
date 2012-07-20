@@ -21,3 +21,4 @@ doc/
 .project
 .DS_Store
 bundler_stubs/
+dev_env_vars.rb

@@ -80,6 +80,20 @@ class UsersController < ApplicationController
     end
   end
 
+  # Confirms the email address of a user by matching confirmation token 
+  def confirm_email
+    confirmation_token = params[:confirmation_token]
+    @user = User.find_by_id(params[:id])
+    if @user.confirmation_token == confirmation_token && !@user.confirmed
+      @user.confirmed = true 
+      @user.save(validate: false)
+    elsif @user.confirmed 
+      redirect_to @user, flash: { notice: "You already validated your email"}
+    else
+      flash[:error] = "Access denied"
+    end
+  end
+
   private
 
     def correct_user
