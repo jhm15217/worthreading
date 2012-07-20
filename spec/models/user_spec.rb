@@ -12,7 +12,7 @@
 #  admin              :boolean         default(FALSE)
 #  likes              :integer
 #  confirmed          :boolean         default(FALSE)
-#  confirmation_token :integer
+#  confirmation_token :string(255)
 #
 
 require 'spec_helper'
@@ -45,6 +45,7 @@ describe User do
   it { should respond_to(:likes) }
   it { should respond_to(:emails) }
   it { should respond_to(:confirmed)}
+  it { should respond_to(:confirmation_token) }
   
   it { should be_valid }
   it { should_not be_admin }
@@ -215,8 +216,4 @@ describe User do
       its(:subscribers) { should_not include(other_user) }
     end
   end
-
 end
-
-
-

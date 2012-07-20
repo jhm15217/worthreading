@@ -12,7 +12,7 @@
 #  admin              :boolean         default(FALSE)
 #  likes              :integer
 #  confirmed          :boolean         default(FALSE)
-#  confirmation_token :integer
+#  confirmation_token :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -62,7 +62,6 @@ class User < ActiveRecord::Base
   def create_remember_token
     self.remember_token = SecureRandom.urlsafe_base64
   end
-
 
   # Validataions
   validates :name, presence: true, length: { maximum: 50 }

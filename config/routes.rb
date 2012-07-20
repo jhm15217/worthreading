@@ -2,7 +2,7 @@ WorthReading::Application.routes.draw do
   resources :wr_logs
 
   resources :users do
-    resources :emails, only: [:index, :show, :create, :destroy]
+    resources :emails, only: [:index, :show, :destroy]
     resources :relationships, only: [:create, :destroy, :index]
     member do
       put :likes
@@ -20,9 +20,10 @@ WorthReading::Application.routes.draw do
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
   
-  match 'users/:id/confirm/:confirmation_token', to: 'users#confirm_email'
+  match 'users/:id/confirm/:confirmation_token', 
+    to: 'users#confirm_email', 
+    as: :confirm_email
  
-    
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

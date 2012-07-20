@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20120719211513) do
     t.boolean  "admin",              :default => false
     t.integer  "likes"
     t.boolean  "confirmed",          :default => false
-    t.integer  "confirmation_token"
+    t.string   "confirmation_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

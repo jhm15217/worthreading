@@ -164,4 +164,28 @@ describe "User pages" do
       response.should redirect_to(signin_path)
     end
   end
+
+  describe "when confirming an email with confirmation link" do 
+    let(:user) { FactoryGirl.create(:user) }
+    let(:confirmation_token) { user.confirmation_token }
+
+    it "should confirm user with correct confirmation token" do
+      visit confirm_email_path(id: user.id, confirmation_token: confirmation_token)
+
+      user.reload
+      user.confirmed.should be_true
+    end
+
+    it "should redirect to user profile page if already confirmed" do
+      user.confirmed = true
+      user.save(validate: false)
+      visit confirm_email_path(id: user.id, confirmation_token: confirmation_token)
+    end
+
+    it "shouldn't confirm user with incorrect confirmation token" do
+      visit confirm_email_path(id: user.id, confirmation_token: "132afsdljksfd;kj")
+      
+      user.confirmed.should be_false
+    end
+  end
 end
