@@ -8,7 +8,8 @@ class UserMailer < ActionMailer::Base
     @url  = "https://evening-fog-9503.herokuapp.com/users/#{user.id}/confirm/#{user.confirmation_token}"
     @url2 =  confirm_email_url(host: "evening-fog-9503.herokuapp.com", 
                                id: user.id, 
-                               confirmation_token: user.confirmation_token)
+                               confirmation_token: user.confirmation_token,
+                               protocol: 'https')
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 end
