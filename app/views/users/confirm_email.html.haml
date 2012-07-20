@@ -3,8 +3,8 @@
     - unless flash[:error]
       %p
         Thank you #{@user.name} for registering with WorthReading. Click 
-        = link_to "here", user_path(@user)
-        to access your profile page. 
+        = link_to "here", signin_path
+        to sign in or sign in at the top.
     -else
       %h2
         No touching what isn't yours.
