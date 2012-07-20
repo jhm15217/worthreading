@@ -3,7 +3,9 @@ class UserMailer < ActionMailer::Base
  
   def welcome_email(user)
     @user = user
-    @url  = "http://worth-reading.org/login"
+
+    # NOTE Try and find a way to determine host name versus manually defining host domain
+    @url  = "https://evening-fog-9503.herokuapp.com/users/#{user.id}/confirm/#{user.confirmation}"
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 end
