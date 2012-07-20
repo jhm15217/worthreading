@@ -2,16 +2,17 @@
 #
 # Table name: users
 #
-#  id              :integer         not null, primary key
-#  name            :string(255)
-#  email           :string(255)
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#  password_digest :string(255)
-#  remember_token  :string(255)
-#  admin           :boolean         default(FALSE)
-#  likes           :integer
-#  confirmed       :boolean
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime        not null
+#  updated_at         :datetime        not null
+#  password_digest    :string(255)
+#  remember_token     :string(255)
+#  admin              :boolean         default(FALSE)
+#  likes              :integer
+#  confirmed          :boolean         default(FALSE)
+#  confirmation_token :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -51,6 +52,7 @@ class User < ActiveRecord::Base
     user.email = email.downcase
     if user.new_record? 
       user.likes = 50 
+      user.confirmation_token = SecureRandom.urlsafe_base64
     end
   }
   before_save :create_remember_token
