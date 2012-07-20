@@ -1,10 +1,13 @@
 .row
-  .span12
-    - unless flash[:error]
-      %p
-        Thank you #{@user.name} for registering with WorthReading. Click 
-        = link_to "here", signin_path
-        to sign in or sign in at the top.
-    -else
-      %h2
-        No touching what isn't yours.
+  .span12.center
+    .hero-unit
+      - unless flash[:error]
+        %p
+          Thank you #{@user.name} for registering with WorthReading. 
+        %p
+          Click 
+          = link_to "here", signin_path
+          to sign in or sign in at the top.
+      -else
+        %h2
+          No touching what isn't yours.
