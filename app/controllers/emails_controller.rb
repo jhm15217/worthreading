@@ -33,8 +33,8 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    @user = find_or_register(params['sender'])
-    if @user.id  #will be nil if creation attempt failed
+    
+    if @user = find_or_register(params['sender'])  
       @email = @user.emails.new(
         from: params['sender'], 
         to: params['recipient'], 

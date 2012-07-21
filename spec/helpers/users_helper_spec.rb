@@ -18,5 +18,8 @@ describe UsersHelper do
         find_or_register("newuser@example.com")
       end.to change(User, :count).by(1)
     end
+    it "should return nil for a bad email address" do
+      find_or_register("") == nil
+    end
   end
 end
