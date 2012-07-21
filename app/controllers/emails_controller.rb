@@ -46,8 +46,8 @@ class EmailsController < ApplicationController
       # NOTE Need to create has_many and belongs_to assocations such that @email.wrlogs.new
       # should work as opposed to just using WrLog.new
       # Id should be an integer that references a user
-      wr_log_entry = WrLog.new(action:"email", sender_id:@user.id,
-                               receiver_id:find_or_register(@email.to), email_id:@email.id, responded: false)
+      wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id,
+                               receiver_id:find_or_register(@email.to).id, email_id:@email.id, responded: false)
       wr_log_entry.save
     else
       redirect_to root_path  ## params['sender'] is bad 
