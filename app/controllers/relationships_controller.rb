@@ -12,7 +12,7 @@ class RelationshipsController < ApplicationController
 
     # Checks if user saved and if it didn't, email was most likely invalid
     redirect_to(current_user, 
-                flash: { error: "Invalid email address"}) and return if @user.new_record?
+                flash: { error: "Invalid email address"}) and return if !@user
 
     if @user && current_user.subscribed_by?(@user) 
       flash[:error] = "That email address is already on your list."
