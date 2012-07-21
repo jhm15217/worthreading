@@ -2,16 +2,17 @@
 #
 # Table name: users
 #
-#  id              :integer         not null, primary key
-#  name            :string(255)
-#  email           :string(255)
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#  password_digest :string(255)
-#  remember_token  :string(255)
-#  admin           :boolean         default(FALSE)
-#  likes           :integer
-#  confirmed       :boolean
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime        not null
+#  updated_at         :datetime        not null
+#  password_digest    :string(255)
+#  remember_token     :string(255)
+#  admin              :boolean         default(FALSE)
+#  likes              :integer
+#  confirmed          :boolean         default(FALSE)
+#  confirmation_token :string(255)
 #
 
 require 'spec_helper'
@@ -44,6 +45,7 @@ describe User do
   it { should respond_to(:likes) }
   it { should respond_to(:emails) }
   it { should respond_to(:confirmed)}
+  it { should respond_to(:confirmation_token) }
   
   it { should be_valid }
   it { should_not be_admin }
@@ -214,8 +216,4 @@ describe User do
       its(:subscribers) { should_not include(other_user) }
     end
   end
-
 end
-
-
-
