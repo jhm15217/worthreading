@@ -11,6 +11,7 @@ WorthReading::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :relationships, only: [:create, :destroy, :index]
   resources :emails, only: [:index, :show, :create, :destroy]
+  resources :wr_logs
 
   root to: 'static_pages#home'
   match '/signup',  to: 'users#new'
