@@ -1,3 +1,4 @@
+
 namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
@@ -39,15 +40,19 @@ def make_relationships
 end
 
 def make_emails
-  puts "Creating Emails..." 
+  puts "Creating Emails with WRLog entries..." 
   users = User.all
 
   users[0..25].each do |user|
     rand(15..40).times.each do |n|
-      user.emails.create(to: "mailinglist@worthreading.org", 
+      recipient = users[rand(5..30)]
+      email = user.emails.create(to: recipient.email, 
                          from: user.email, 
                          subject: "HelloWorld #{n}",
                          body: Faker::Lorem.paragraph)
+      wr_log = email.wr_logs.create(action:"email", sender_id:user.id,
+                      receiver_id:recipient.id, email_part: 0, responded: false)
     end
   end
+
 end
