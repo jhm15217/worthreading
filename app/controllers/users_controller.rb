@@ -21,20 +21,27 @@ class UsersController < ApplicationController
     if signed_in?
       redirect_to home
     else
-      @user = User.new(params[:user])
+
+      # Checks if user already registered; i.e. User registered after sending an
+      # email or User adds a subscriber who isn't a user thus creating a user for
+      # that subscriber
+      if @user = User.find_by_email(params[:user][:email]) and !@user.confirmed 
+        @user.update_attributes(params[:user])
+      else
+        @user = User.new(params[:user])
+        @user.save
+      end
 
       respond_to do |format|
-        if @user.save
+        if !@user.new_record?
           # Tell the UserMailer to send a welcome Email after save
           flash[:success] = "Welcome to Worth Reading!"
-          sign_in @user
           UserMailer.welcome_email(@user).deliver
 
-          format.html { redirect_to(@user) }
-          format.json { render json: @user, status: :created, location: @user }
+          # User needs to confirm email first before being able to sign in
+          format.html { redirect_to(email_confirmation_path) }
         else
           format.html { render action: "new" }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -96,12 +103,12 @@ class UsersController < ApplicationController
 
   private
 
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user?(@user)
-    end
-    
-    def admin_user
-      redirect_to(root_path) unless current_user.admin?
-    end
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless current_user?(@user)
+  end
+
+  def admin_user
+    redirect_to(root_path) unless current_user.admin?
+  end
 end
