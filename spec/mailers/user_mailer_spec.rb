@@ -13,4 +13,14 @@ describe UserMailer do
     end
   end
 
+  describe "Parsed email" do 
+    it "should render the first part of the message email successfully" do 
+      lambda { UserMailer.first_pt_msg(user) }.should_not raise_error
+    end
+
+    it "should deliver successfully" do
+      lambda { UserMailer.first_pt_msg(user).deliver }.should_not raise_error
+    end
+  end
+
 end

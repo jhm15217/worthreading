@@ -1,5 +1,7 @@
 class UserMailer < ActionMailer::Base
   default from: "notifications@worth-reading.org"
+
+  HOST = "evening-fog-9503.herokuapp.com"
  
   def welcome_email(user)
     @user = user
@@ -19,6 +21,11 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
-  def message_part(user)
+  def first_pt_msg(user, email)
+    body = parse_message(email.body)
+
+    mail(from: email.from, 
+         to: user.email, 
+         subject: email.subject)
   end
 end
