@@ -18,4 +18,7 @@ class UserMailer < ActionMailer::Base
                                          end)
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
+
+  def message_part(user)
+  end
 end
