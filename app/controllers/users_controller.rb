@@ -33,15 +33,13 @@ class UsersController < ApplicationController
       end
 
       respond_to do |format|
-        # TODO User needs to confirm email before login. It should redirect to an 
-        # email confirmaton was sent page.
         if !@user.new_record?
           # Tell the UserMailer to send a welcome Email after save
           flash[:success] = "Welcome to Worth Reading!"
-          sign_in @user
           UserMailer.welcome_email(@user).deliver
 
-          format.html { redirect_to(@user) }
+          # User needs to confirm email first before being able to sign in
+          format.html { redirect_to(email_confirmation_path) }
         else
           format.html { render action: "new" }
         end
