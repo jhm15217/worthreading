@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       # Checks if user already registered; i.e. User registered after sending an
       # email or User adds a subscriber who isn't a user thus creating a user for
       # that subscriber
-      if @user = User.find_by_email(params[:user][:email])
+      if @user = User.find_by_email(params[:user][:email]) and !@user.confirmed 
         @user.update_attributes(params[:user])
       else
         @user = User.new(params[:user])

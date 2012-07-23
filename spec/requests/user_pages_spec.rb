@@ -101,20 +101,34 @@ describe "User pages" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
 
-      context "when a user is already registered through some previous registration" do
+      describe "when a user is already registered through some previous registration" do
         before do 
           @user = User.create(name: "No one", 
                               email: "user@example.com", 
                               password: "123456",
                               password_confirmation: "123456")
-          click_button submit
         end
 
-        it "should update the user attributes" do 
-          @user.reload.name.should  == name 
-          @user.reload.email.should == email 
-          @user.reload.authenticate(password).should be_true
+        context "when user isn't confirmed" do
+          it "should update the user attributes" do 
+            click_button submit
+            @user.reload.name.should  == name 
+            @user.reload.email.should == email 
+            @user.reload.authenticate(password).should be_true
+          end
         end
+
+        context "when user is confirmed" do
+          before do 
+            @user.toggle!(:confirmed) 
+            @user.reload
+            click_button submit
+          end
+          it { should have_selector('title', text: 'Sign up') }
+          it { should have_content('error') }
+        end
+
+
       end
 
       describe "after saving the user" do
