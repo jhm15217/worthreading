@@ -87,16 +87,36 @@ describe "User pages" do
       end    end
 
     describe "with valid information" do
+      let(:name) { "Example User" }
+      let(:email) { "user@example.com" }
+      let(:password) { "foobar" }
       before do
-        fill_in "Name",         with: "Example User"
-        fill_in "Email",        with: "user@example.com"
-        fill_in "Password",     with: "foobar"
-        fill_in "Confirm Password", with: "foobar"
+        fill_in "Name",         with: name
+        fill_in "Email",        with: email
+        fill_in "Password",     with: password
+        fill_in "Confirm Password", with: password
       end
 
       it "should create a user" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
+
+      context "when a user is already registered through some previous registration" do
+        before do 
+          @user = User.create(name: "No one", 
+                              email: "user@example.com", 
+                              password: "123456",
+                              password_confirmation: "123456")
+          click_button submit
+        end
+
+        it "should update the user attributes" do 
+          @user.reload.name.should  == name 
+          @user.reload.email.should == email 
+          @user.reload.authenticate(password).should be_true
+        end
+      end
+
       describe "after saving the user" do
         before { click_button submit }
         let(:user) { User.find_by_email('user@example.com') }
@@ -184,7 +204,7 @@ describe "User pages" do
 
     it "shouldn't confirm user with incorrect confirmation token" do
       visit confirm_email_path(id: user.id, confirmation_token: "132afsdljksfd;kj")
-      
+
       user.confirmed.should be_false
     end
   end
