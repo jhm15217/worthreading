@@ -20,6 +20,7 @@ WorthReading::Application.routes.draw do
   match '/help',    to: 'static_pages#help'
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
+  match '/email_confirmation', to: 'static_pages#email_confirmation_sent'
   
   match 'users/:id/confirm/:confirmation_token', 
     to: 'users#confirm_email', 

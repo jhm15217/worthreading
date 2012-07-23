@@ -17,4 +17,7 @@ class StaticPagesController < ApplicationController
 
   def contact
   end
+
+  def email_confirmation_sent
+  end
 end
