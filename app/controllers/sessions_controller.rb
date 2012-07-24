@@ -8,6 +8,9 @@ class SessionsController < ApplicationController
      if user && user.authenticate(params[:session][:password]) && user.confirmed
        sign_in user
        redirect_back_or user
+     elsif user && !user.confirmed
+       flash.now[:error] = "You haven't confirmed your email yet." 
+       render 'new'
      else
        flash.now[:error] = 'Invalid email/password combination' # Not quite right!
        render 'new'
