@@ -202,6 +202,8 @@ describe "User pages" do
     let(:user) { FactoryGirl.create(:user) }
     let(:confirmation_token) { user.confirmation_token }
 
+    before { user.toggle!(:confirmed) }
+
     it "should confirm user with correct confirmation token" do
       visit confirm_email_path(id: user.id, confirmation_token: confirmation_token)
 

@@ -22,10 +22,18 @@ class UserMailer < ActionMailer::Base
   end
 
   def first_pt_msg(user, email)
-    body = parse_message(email.body)
+    body = get_first_part(email.body)
 
     mail(from: email.from, 
          to: user.email, 
          subject: email.subject)
+  end
+
+  private 
+
+  def get_first_part(body)
+    more_indicator =  "<more>"
+    first_pt_regex = /(^.*#{more_indicator})/m
+    b = first_pt_regex.match(body)
   end
 end
