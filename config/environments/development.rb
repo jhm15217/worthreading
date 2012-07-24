@@ -28,16 +28,20 @@ WorthReading::Application.configure do
 
   # Mailer
   config.action_mailer.delivery_method = :smtp
+  puts "PORT="
+  puts ENV["WR_PORT"]
+  puts ENV["WR_ADDRESS"]
   config.action_mailer.smtp_settings = {
-    :port           => 587,
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain               => ENV['MAILGUN_DOMAIN'],
+    :port           => ENV["WR_PORT"], 
+    :address        => ENV["WR_ADDRESS"], 
+    :user_name      => ENV["WR_USER_NAME"],
+    :password       => ENV["WR_PASSWORD"],
+    :domain               => ENV["WR_DOMAIN"],
     :authentication       => :plain,
     :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+  puts config.action_mailer.smtp_settings
   
    # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
