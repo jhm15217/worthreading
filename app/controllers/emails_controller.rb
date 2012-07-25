@@ -42,8 +42,6 @@ class EmailsController < ApplicationController
       )
       @email.save ? (render text: "Email Received") : ()
 
-      # TODO Receiver_id: Because of our domain emails will be received with a 
-      # email@worth-reading.mailgun.org. We will be creating emails instead of 
       wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id,
                                receiver_id:find_or_register(@email.to).id, responded: false)
       wr_log_entry.save

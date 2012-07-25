@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   default from: "notifications@worth-reading.org"
 
   # Constants
-  MORE_INDICATOR = "<more>"
+#  MORE_INDICATOR = "<more>"
   PROD_URL = "evening-fog-9503.herokuapp.com"
   DEV_URL = "localhost:3000"
  
@@ -34,13 +34,13 @@ class UserMailer < ActionMailer::Base
     @worth_reading_url = user_email_url(user_id: @sender.id,
                                   id: email.id,
                                   host: (Rails.env.production? ? PROD_URL : DEV_URL),
-                                  protocol: Rails.env.production? ? 'https' : 'http'
-                                 )
+                                  protocol: Rails.env.production? ? 'https' : 'http')
     mail(from: email.from, 
          to: email.to, 
          subject: email.subject)
   end
 
+# NOTE Unimplemented for now but possible use in the future
 # Implementationg for parsing out an email with more than one more button
 # Utilizes regex to capture everything before the first more button and sends 
 # out that first part in an email
@@ -54,8 +54,7 @@ class UserMailer < ActionMailer::Base
 #    @see_more_url = user_email_url(user_id: @sender.id,
 #                                  id: email.id,
 #                                  host: (Rails.env.production? ? PROD_URL : DEV_URL),
-#                                  protocol: Rails.env.production? ? 'https' : 'http'
-#                                 )
+#                                  protocol: Rails.env.production? ? 'https' : 'http')
 #    mail(from: email.from, 
 #         to: email.to, 
 #         subject: email.subject)

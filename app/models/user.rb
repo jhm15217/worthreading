@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :subscribed_users, through: :reverse_relationships, source: :subscribed
 
   # WrLog Associations
+  # TODO Association might now work as needed; needs work
   has_many :sender_wr_logs, class_name: "WrLog", foreign_key: "sender_id"
 
   def feed
