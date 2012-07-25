@@ -4,6 +4,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "person_#{n}@example.com"}   
     password "foobar"
     password_confirmation "foobar"
+    confirmed true
 
     factory :admin do
       admin true
@@ -17,6 +18,7 @@ FactoryGirl.define do
     body  %Q{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam 
       sed ligula a orci gravida ornare. In laoreet orci sit amet lorem eleifend 
       pharetra. Nunc interdum eros in magna condimentum dignissim. Suspendisse 
-      sit amet metus neque.} 
+      sit amet metus neque.
+      <more>} 
   end
 end
