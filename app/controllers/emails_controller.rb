@@ -42,12 +42,12 @@ class EmailsController < ApplicationController
       )
       @email.save ? (render text: "Email Received") : ()
 
-      # NOTE Need to create has_many and belongs_to assocations such that @email.wrlogs.new
-      # should work as opposed to just using WrLog.new
-      # Id should be an integer that references a user
       wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id,
                                receiver_id:find_or_register(@email.to).id, responded: false)
       wr_log_entry.save
+
+      # TODO Uncomment once we can retrieve the correct email address to mail to.
+      # UserMailer.send_message(@email).deliver
     else
       redirect_to root_path  ## params['sender'] is bad 
     end

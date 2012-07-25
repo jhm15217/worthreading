@@ -19,11 +19,17 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation
   has_secure_password
   has_many :emails, dependent: :destroy
+
+  # Relationship Associations
   has_many :relationships, foreign_key: "subscribed_id", dependent: :destroy
   has_many :subscribers, through: :relationships
   has_many :reverse_relationships, foreign_key: "subscriber_id", 
     class_name: "Relationship", dependent: :destroy
   has_many :subscribed_users, through: :reverse_relationships, source: :subscribed
+
+  # WrLog Associations
+  # TODO Association might now work as needed; needs work
+  has_many :sender_wr_logs, class_name: "WrLog", foreign_key: "sender_id"
 
   def feed
   end

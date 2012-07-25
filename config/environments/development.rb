@@ -28,9 +28,6 @@ WorthReading::Application.configure do
 
   # Mailer
   config.action_mailer.delivery_method = :smtp
-  puts "PORT="
-  puts ENV["WR_PORT"]
-  puts ENV["WR_ADDRESS"]
   config.action_mailer.smtp_settings = {
     :port           => ENV["WR_PORT"], 
     :address        => ENV["WR_ADDRESS"], 
