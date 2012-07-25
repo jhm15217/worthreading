@@ -24,9 +24,11 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
-  def first_pt_msg(email)
+  def send_message(email)
     @email = email
-    @body = get_first_part(@email)
+
+    @body = @email.body
+
     @sender = User.find_by_email(@email.from)
 
     @see_more_url = user_email_url(user_id: @sender.id,
@@ -39,12 +41,35 @@ class UserMailer < ActionMailer::Base
          subject: email.subject)
   end
 
+# Implementationg for parsing out an email with more than one more button
+# Utilizes regex to capture everything before the first more button and sends 
+# out that first part in an email
+#  def first_pt_msg(email)
+#    @email = email
+#
+#    @body = get_first_part(@email)  
+#
+#    @sender = User.find_by_email(@email.from)
+#
+#    @see_more_url = user_email_url(user_id: @sender.id,
+#                                  id: email.id,
+#                                  host: (Rails.env.production? ? PROD_URL : DEV_URL),
+#                                  protocol: Rails.env.production? ? 'https' : 'http'
+#                                 )
+#    mail(from: email.from, 
+#         to: email.to, 
+#         subject: email.subject)
+#  end
+
   private 
 
-
-  def get_first_part(email)
-    first_pt_regex = /(^.*)#{MORE_INDICATOR}/m
-    match = first_pt_regex.match(email.body)
-    $1
-  end
+#  Method for parsing out a more button 
+#  def get_first_part(email)
+#    first_pt_regex = /(^.*)#{MORE_INDICATOR}/m
+#    if match = first_pt_regex.match(email.body)
+#      $1
+#    else
+#      email.body
+#    end
+#  end
 end
