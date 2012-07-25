@@ -48,6 +48,7 @@ class EmailsController < ApplicationController
                                receiver_id:find_or_register(@email.to).id, responded: false)
       wr_log_entry.save
 
+      # TODO Uncomment once we can retrieve the correct email address to mail to.
       # UserMailer.send_message(@email).deliver
     else
       redirect_to root_path  ## params['sender'] is bad 
