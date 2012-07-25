@@ -27,6 +27,10 @@ describe UserMailer do
     it "should render the message successfully" do 
       lambda { UserMailer.send_message(email) }.should_not raise_error
     end
+    
+    it "should have a Worth Reading Button" do
+      UserMailer.send_message(email).body.encoded.should match(/Worth Reading/m)
+    end
 
     it "should deliver successfully" do
       lambda { UserMailer.send_message(email).deliver }.should_not raise_error
