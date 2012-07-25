@@ -13,6 +13,7 @@ gem 'haml-rails'
 
 # Backend Gems
 gem 'bcrypt-ruby', '3.0.1'
+gem 'delayed_job_active_record'
 gem 'thin' 
 
 # Bundle edge Rails instead:
