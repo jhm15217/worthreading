@@ -36,7 +36,7 @@ class UsersController < ApplicationController
         if !@user.new_record?
           # Tell the UserMailer to send a welcome Email after save
           flash[:success] = "Welcome to Worth Reading!"
-          UserMailer.welcome_email(@user).deliver
+          UserMailer.delay.welcome_email(@user)
 
           # User needs to confirm email first before being able to sign in
           format.html { redirect_to(email_confirmation_path) }
