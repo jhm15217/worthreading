@@ -1,3 +1,11 @@
-= @body
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
 
-= link_to "See More", @see_more_url
+  %body
+    %p
+      = @body
+
+    %p
+      = link_to "See More", @see_more_url
