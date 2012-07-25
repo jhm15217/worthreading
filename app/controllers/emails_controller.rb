@@ -47,6 +47,8 @@ class EmailsController < ApplicationController
       wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id,
                                receiver_id:find_or_register(@email.to).id, responded: false)
       wr_log_entry.save
+
+      # UserMailer.send_message(@email).deliver
     else
       redirect_to root_path  ## params['sender'] is bad 
     end
