@@ -24,7 +24,7 @@ describe WrLogsController do
   # WrLog. As you add validations to WrLog, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {action: "email", sender_id: 1, receiver_id: 1, email_id: 1, email_part: 1, responded: false }
   end
   
   # This should return the minimal set of values that should be in the session
@@ -103,15 +103,30 @@ describe WrLogsController do
   end
 
   describe "PUT update" do
+#      let (:sender) { User.create(name: "Sender", email: "sender@email.com", password: "foobar", password_confirmation: "foobar") }
+#      let (:receiver) { User.create(name: "Receiver", email: "receiver@email.com", password: "foobar", password_confirmation: "foobar") }
+      let (:email) { Email.create(to: "receiver@email.com", from: "sender@email.com", subject: "Subject",
+                            body: "Blah, blah, blah. 
+                                   <more>
+                                   Bleh, bleh, bleh.
+                                   <more>
+                                   Blih.") }
+      let (:sender) { User.find_by_email("sender@email.com")}
+      let (:receiver) { User.find_by_email("receiver@email.com")}
+      
     describe "with valid params" do
       it "updates the requested wr_log" do
-        wr_log = WrLog.create! valid_attributes
-        # Assuming there are no other wr_logs in the database, this
-        # specifies that the WrLog created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        WrLog.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => wr_log.to_param, :wr_log => {'these' => 'params'}}, valid_session
+        wr_log = WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, email_part: 0, responded: true )
+        put :update, {:id => wr_log.id , :wr_log => { action: "more", email_part: 1}}
+        # There should be a new WrLog entry like wr_log
+        new_wr_log = WrLog.where("action = more AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND
+                                    email_part = 1 AND responded = true" ).first!
+        # We render a page containing "Bleh, bleh, bleh. <href: ....>" where the button is another more put with the new
+        #   entry's id and the command "more"
+        subject { page }
+        it {should have_link("more", href: "http://worth-reading.org/wr_log/#{new_wr_log.id}?request='more'") }
+        
+        
       end
 
       it "assigns the requested wr_log as @wr_log" do

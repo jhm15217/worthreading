@@ -28,9 +28,6 @@ WorthReading::Application.configure do
 
   # Mailer
   config.action_mailer.delivery_method = :smtp
-  puts "PORT="
-  puts ENV["WR_PORT"]
-  puts ENV["WR_ADDRESS"]
   config.action_mailer.smtp_settings = {
     :port           => ENV["WR_PORT"], 
     :address        => ENV["WR_ADDRESS"], 
@@ -41,7 +38,6 @@ WorthReading::Application.configure do
     :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  puts config.action_mailer.smtp_settings
   
    # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
