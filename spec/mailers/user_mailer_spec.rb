@@ -49,6 +49,10 @@ describe UserMailer do
       lambda { UserMailer.alert_change_in_wr_log(wr_log) }.should_not raise_error
     end
 
+    it "should idicate an email was worth reading" do
+      UserMailer.alert_change_in_wr_log(wr_log).body.encoded.should match(/worth reading/m)
+    end
+
     it "should deliver successfully" do
       lambda { UserMailer.alert_change_in_wr_log(wr_log).deliver }.should_not raise_error
     end

@@ -41,8 +41,8 @@ class UserMailer < ActionMailer::Base
   def alert_change_in_wr_log(wr_log)
     @wr_log = wr_log
     @sender = User.find_by_id(@wr_log.sender_id)
-    receipient = User.find_by_id(@wr_log.receiver_id)
-    mail(to: @sender.id, subject: "") 
+    @recipient = User.find_by_id(@wr_log.receiver_id)
+    mail(to: @sender.id, subject: "#{@recipient.name} found your email worth reading") 
   end
 
 # NOTE Unimplemented for now but possible use in the future

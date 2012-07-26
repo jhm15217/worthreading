@@ -55,34 +55,45 @@ describe WrLogsController do
       assigns(:wr_log).should eq(wr_log)
     end
 
-    describe "with unregistered receiver" do
-      before { receiver.toggle!(:confirmed) }
-      it "updates the requested wr_log" do
-        get :show, {  id: wr_log.id, action: "worthreading" }
-        # responded is set to true
-        wr_log.reload
-        wr_log.responded.should be_true
+    describe "Receiver following Worth Reading link in email" do
+      context "and receiver is unregistered" do
+        before { receiver.toggle!(:confirmed) }
+        it "updates the requested wr_log" do
+          get :show, {  id: wr_log.id, action: "worthreading" }
+          # responded is set to true
+          wr_log.reload
+          wr_log.action.should == "worth reading"
+          wr_log.responded.should be_true
 
-        # We render a page explaining what the worthreading button means and 
-        # inviting him to register
-        #
-        #  TODO Needs work
-        # response.should have_selector("a", href: "http://worth-reading.org/unregistered") 
+          # We render a page explaining what the worthreading button means and 
+          # inviting him to register
+          #
+          #  TODO Needs work
+          # response.should have_selector("a", href: "http://worth-reading.org/unregistered") 
+        end
       end
-    end
 
-    describe "with registered receiver" do
-      it "updates the requested wr_log" do
+      context "and receiver is register" do
+        it "updates the requested wr_log" do
+          get :show, { id: wr_log.id, action: "worthreading" }
+
+          # responded is set to true
+          wr_log.reload
+          wr_log.action.should == "worth reading"
+          wr_log.responded.should be_true
+
+          #  TODO Needs work
+          # response.should have_selector("a", href: "http://worth-reading.org/registered") 
+        end
+      end
+      
+      it "should send an email alerting Sender that the receiver liked their email" do
+        Delayed::Job.count.should == 0
         get :show, { id: wr_log.id, action: "worthreading" }
-
-        # responded is set to true
-        wr_log.reload
-        wr_log.responded.should be_true
-
-        #  TODO Needs work
-        # response.should have_selector("a", href: "http://worth-reading.org/registered") 
+        Delayed::Job.count.should == 1
       end
     end
+
   end
 
   describe "GET new" do

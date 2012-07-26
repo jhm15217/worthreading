@@ -16,7 +16,12 @@ class WrLogsController < ApplicationController
     @wr_log = WrLog.find(params[:id])
     @receiver = User.find_by_id(@wr_log.receiver_id) 
 
-    @wr_log.toggle!(:responded) if params[:action]
+   if params[:action]
+      @wr_log.toggle!(:responded)
+      @wr_log.action = "worth reading"
+      @wr_log.save(validate: false)
+      UserMailer.delay.alert_change_in_wr_log(@wr_log)
+   end
 
     respond_to do |format|
       format.html # show.html.erb
