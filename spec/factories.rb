@@ -21,4 +21,13 @@ FactoryGirl.define do
       sit amet metus neque.
       <more>} 
   end
+
+  factory :wr_log do
+    action "email"
+    sequence(:sender_id) { |n| n }
+    sequence(:receiver_id) { |n| n+1 }
+    sequence(:email_id) {|n| n }
+    email_part 1
+    responded false
+  end
 end

@@ -26,7 +26,7 @@ describe WrLogsController do
   def valid_attributes
     {action: "email", sender_id: 1, receiver_id: 1, email_id: 1, email_part: 1, responded: false }
   end
-  
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # WrLogsController. Be sure to keep this updated too.
@@ -44,43 +44,57 @@ describe WrLogsController do
 
   # get went to http://worth-reading/wr_log/id
   describe "GET show" do
-    let (:email) { Email.create(to: "receiver@email.com", from: "sender@email.com", subject: "Subject",
-                          body: "Blah, blah, blah.") }
-    let (:sender) { User.find_by_email("sender@email.com")}
-    let (:receiver) { User.find_by_email("receiver@email.com")}
-    
-    let(:wr_log) { WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, responded: false )}
+    let (:email) { FactoryGirl.create(:email) }
+    let (:sender) { FactoryGirl.create(:user) }
+    let (:receiver) { FactoryGirl.create(:user) }
+    let(:wr_log) { FactoryGirl.create(:wr_log) }
 
     it "assigns the requested wr_log as @wr_log" do
       wr_log = WrLog.create! valid_attributes
       get :show, {:id => wr_log.id}, valid_session
       assigns(:wr_log).should eq(wr_log)
     end
-      
-      describe "with unregistered receiver" do
+
+    describe "Receiver following Worth Reading link in email" do
+      context "and receiver is unregistered" do
+        before { receiver.toggle!(:confirmed) }
+        it "updates the requested wr_log" do
+          get :show, {  id: wr_log.id, action: "worthreading" }
+          # responded is set to true
+          wr_log.reload
+          wr_log.action.should == "worth reading"
+          wr_log.responded.should be_true
+
+          # We render a page explaining what the worthreading button means and 
+          # inviting him to register
+          #
+          #  TODO Needs work
+          # response.should have_selector("a", href: "http://worth-reading.org/unregistered") 
+        end
+      end
+
+      context "and receiver is register" do
         it "updates the requested wr_log" do
           get :show, { id: wr_log.id, action: "worthreading" }
+
           # responded is set to true
-          wr_log.responded.should == true
-          # We render a page esplaining what the worthreading button means and inviting him to register
-          #   entry's id and the command "more"
-          response.should have_selector("a", href: "http://worth-reading.org/unregistered") 
+          wr_log.reload
+          wr_log.action.should == "worth reading"
+          wr_log.responded.should be_true
+
+          #  TODO Needs work
+          # response.should have_selector("a", href: "http://worth-reading.org/registered") 
         end
+      end
+      
+      it "should send an email alerting Sender that the receiver liked their email" do
+        Delayed::Job.count.should == 0
+        get :show, { id: wr_log.id, action: "worthreading" }
+        Delayed::Job.count.should == 1
       end
     end
 
-      describe "with registered receiver" do
-        it "updates the requested wr_log" do
-          receiver.registered = true
-          get :show, { id: wr_log.id, action: "worthreading" }
-          # responded is set to true
-          wr_log.responded.should == true
-          # We render a page esplaining what the worthreading button means and inviting him to register
-          #   entry's id and the command "more"
-          response.should have_selector("a", href: "http://worth-reading.org/registered") 
-        end
-      end
-    end
+  end
 
   describe "GET new" do
     it "assigns a new wr_log as @wr_log" do
@@ -135,26 +149,27 @@ describe WrLogsController do
   end
 
   describe "PUT update" do
-      let (:email) { Email.create(to: "receiver@email.com", from: "sender@email.com", subject: "Subject",
-                            body: "Blah, blah, blah. 
+    let (:email) { Email.create(to: "receiver@email.com", from: "sender@email.com", subject: "Subject",
+                                body: "Blah, blah, blah. 
                                    <more>
                                    Bleh, bleh, bleh.
                                    <more>
                                    Blih.") }
-      let (:sender) { User.find_by_email("sender@email.com")}
-      let (:receiver) { User.find_by_email("receiver@email.com")}
-      
+    let (:sender) { User.find_by_email("sender@email.com")}
+    let (:receiver) { User.find_by_email("receiver@email.com")}
+
     describe "with valid params" do
-      it "updates the requested wr_log" do
-        wr_log = WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, email_part: 0, responded: true )
-        put :update, { id: wr_log.id, request: "more" }
-        # There should be a new WrLog entry like wr_log
-        new_wr_log = WrLog.where("action = more AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND
+      pending "is an incomplete/error filled test" do
+        it "updates the requested wr_log" do
+          wr_log = WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, email_part: 0, responded: true )
+          put :update, { id: wr_log.id, request: "more" }
+          # There should be a new WrLog entry like wr_log
+          new_wr_log = WrLog.where("action = more AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND
                                     email_part = 1 AND responded = true" ).first!
-        # We render a page containing "Bleh, bleh, bleh. <href: ....>" where the button is another more put with the new
-        #   entry's id and the command "more"
-        response.should have_selector("a", href: "http://worth-reading.org/wr_log/#{new_wr_log.id}", content: "request=more") 
-        
+                                    # We render a page containing "Bleh, bleh, bleh. <href: ....>" where the button is another more put with the new
+                                    #   entry's id and the command "more"
+                                    response.should have_selector("a", href: "http://worth-reading.org/wr_log/#{new_wr_log.id}", content: "request=more") 
+        end
       end
 
       it "assigns the requested wr_log as @wr_log" do

@@ -31,13 +31,18 @@ class UserMailer < ActionMailer::Base
 
     @sender = User.find_by_email(@email.from)
 
-    @worth_reading_url = user_email_url(user_id: @sender.id,
-                                  id: email.id,
-                                  host: (Rails.env.production? ? PROD_URL : DEV_URL),
+    @worth_reading_url = wr_log_url(action: "worth reading",
+                                  id: WrLog.find_by_sender_id(@sender.id),
+                                  host: Rails.env.production? ? PROD_URL : DEV_URL,
                                   protocol: Rails.env.production? ? 'https' : 'http')
-    mail(from: email.from, 
-         to: email.to, 
-         subject: email.subject)
+    mail(from: email.from, to: email.to, subject: email.subject)
+  end
+
+  def alert_change_in_wr_log(wr_log)
+    @wr_log = wr_log
+    @sender = User.find_by_id(@wr_log.sender_id)
+    @recipient = User.find_by_id(@wr_log.receiver_id)
+    mail(to: @sender.email, subject: "#{@recipient.email} found your email worth reading") 
   end
 
 # NOTE Unimplemented for now but possible use in the future
