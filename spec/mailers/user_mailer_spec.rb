@@ -34,8 +34,15 @@ describe UserMailer do
       lambda { UserMailer.send_message(email) }.should_not raise_error
     end
     
-    it "should have a Worth Reading Button" do
+    it "should have a Worth Reading link" do
       UserMailer.send_message(email).body.encoded.should match(/Worth Reading/m)
+    end
+    
+    it "should have the correct link for the Worth Reading link" do
+      UserMailer.send_message(email).body.
+        encoded.should include(wr_log_url(action: "worth reading", 
+                                          id: wr_log.id,
+                                          host: "localhost:3000" ))
     end
 
     it "should deliver successfully" do

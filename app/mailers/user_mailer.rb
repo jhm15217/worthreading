@@ -31,7 +31,7 @@ class UserMailer < ActionMailer::Base
 
     @sender = User.find_by_email(@email.from)
 
-    @worth_reading_url = wr_log_url(action: "worthreading",
+    @worth_reading_url = wr_log_url(action: "worth reading",
                                   id: WrLog.find_by_sender_id(@sender.id),
                                   host: Rails.env.production? ? PROD_URL : DEV_URL,
                                   protocol: Rails.env.production? ? 'https' : 'http')
