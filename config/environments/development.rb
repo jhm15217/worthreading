@@ -38,7 +38,6 @@ WorthReading::Application.configure do
     :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  puts config.action_mailer.smtp_settings
   
    # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
