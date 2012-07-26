@@ -42,7 +42,7 @@ class UserMailer < ActionMailer::Base
     @wr_log = wr_log
     @sender = User.find_by_id(@wr_log.sender_id)
     @recipient = User.find_by_id(@wr_log.receiver_id)
-    mail(to: @sender.email, subject: "#{@recipient.name} found your email worth reading") 
+    mail(to: @sender.email, subject: "#{@recipient.email} found your email worth reading") 
   end
 
 # NOTE Unimplemented for now but possible use in the future
