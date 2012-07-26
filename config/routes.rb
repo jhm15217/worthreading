@@ -1,5 +1,4 @@
 WorthReading::Application.routes.draw do
-  resources :wr_logs
 
   resources :users do
     resources :emails, only: [:index, :show, :destroy]
@@ -8,9 +7,12 @@ WorthReading::Application.routes.draw do
       put :likes
     end
   end
+
+  resources :emails, only: [:index, :show, :create, :destroy] do
+  end
+
   resources :sessions, only: [:new, :create, :destroy]
   resources :relationships, only: [:create, :destroy, :index]
-  resources :emails, only: [:index, :show, :create, :destroy]
   resources :wr_logs
 
   root to: 'static_pages#home'

@@ -2,7 +2,9 @@ require "spec_helper"
 
 describe UserMailer do
   let(:user) { FactoryGirl.create(:user) }
+  let(:other_user) { FactoryGirl.create(:user) }
   let(:email) { FactoryGirl.create(:email) }
+  let(:wr_log) { FactoryGirl.create(:wr_log) }
   let(:body)  { %Q{Hello world! Have to check the correct information is 
                    captured before.\n <more>\n This is more information after 
                    the more button. } }
@@ -11,6 +13,10 @@ describe UserMailer do
     email.from = user.email
     email.body = body
     email.save
+
+    wr_log.sender_id = user.id
+    wr_log.receiver_id = other_user.id
+    wr_log.save
   end
 
   describe "Welcome Email/Confirmation Email" do 
@@ -34,6 +40,17 @@ describe UserMailer do
 
     it "should deliver successfully" do
       lambda { UserMailer.send_message(email).deliver }.should_not raise_error
+    end
+  end
+
+  describe "Alerting user of a change in the wr_log" do
+
+    it "should render the alert of a change in the wr log email successfully" do
+      lambda { UserMailer.alert_change_in_wr_log(wr_log) }.should_not raise_error
+    end
+
+    it "should deliver successfully" do
+      lambda { UserMailer.alert_change_in_wr_log(wr_log).deliver }.should_not raise_error
     end
   end
 

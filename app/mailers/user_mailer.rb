@@ -35,9 +35,14 @@ class UserMailer < ActionMailer::Base
                                   id: email.id,
                                   host: (Rails.env.production? ? PROD_URL : DEV_URL),
                                   protocol: Rails.env.production? ? 'https' : 'http')
-    mail(from: email.from, 
-         to: email.to, 
-         subject: email.subject)
+    mail(from: email.from, to: email.to, subject: email.subject)
+  end
+
+  def alert_change_in_wr_log(wr_log)
+    @wr_log = wr_log
+    @sender = User.find_by_id(@wr_log.sender_id)
+    receipient = User.find_by_id(@wr_log.receiver_id)
+    mail(to: @sender.id, subject: "") 
   end
 
 # NOTE Unimplemented for now but possible use in the future

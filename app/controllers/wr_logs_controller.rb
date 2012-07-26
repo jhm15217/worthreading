@@ -14,6 +14,9 @@ class WrLogsController < ApplicationController
   # GET /wr_logs/1.json
   def show
     @wr_log = WrLog.find(params[:id])
+    @receiver = User.find_by_id(@wr_log.receiver_id) 
+
+    @wr_log.toggle!(:responded) if params[:action]
 
     respond_to do |format|
       format.html # show.html.erb
