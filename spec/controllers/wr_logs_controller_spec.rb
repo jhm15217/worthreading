@@ -159,16 +159,17 @@ describe WrLogsController do
     let (:receiver) { User.find_by_email("receiver@email.com")}
 
     describe "with valid params" do
-      it "updates the requested wr_log" do
-        wr_log = WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, email_part: 0, responded: true )
-        put :update, { id: wr_log.id, request: "more" }
-        # There should be a new WrLog entry like wr_log
-        new_wr_log = WrLog.where("action = more AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND
+      pending "is an incomplete/error filled test" do
+        it "updates the requested wr_log" do
+          wr_log = WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, email_part: 0, responded: true )
+          put :update, { id: wr_log.id, request: "more" }
+          # There should be a new WrLog entry like wr_log
+          new_wr_log = WrLog.where("action = more AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND
                                     email_part = 1 AND responded = true" ).first!
                                     # We render a page containing "Bleh, bleh, bleh. <href: ....>" where the button is another more put with the new
                                     #   entry's id and the command "more"
                                     response.should have_selector("a", href: "http://worth-reading.org/wr_log/#{new_wr_log.id}", content: "request=more") 
-
+        end
       end
 
       it "assigns the requested wr_log as @wr_log" do
