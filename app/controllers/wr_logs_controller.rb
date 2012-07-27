@@ -97,6 +97,7 @@ class WrLogsController < ApplicationController
     @wr_log.save
     @wr_log.reload
     puts @wr_log.action
+    puts @wr_log.id
 
     send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
   end
