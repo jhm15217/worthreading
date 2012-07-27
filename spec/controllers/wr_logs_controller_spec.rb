@@ -55,8 +55,6 @@ describe WrLogsController do
       assigns(:wr_log).should eq(wr_log)
     end
 
-    describe "when a Reciever opens his an email" do
-    end
 
     describe "Receiver following Worth Reading link in email" do
       context "and receiver is unregistered" do
@@ -95,6 +93,17 @@ describe WrLogsController do
       end
     end
 
+  end
+
+  describe "GET msg_opened" do
+    let(:wr_log) { FactoryGirl.create(:wr_log) }
+    before { get :msg_opened, {:id => wr_log.id} }
+
+    it "should update the wr_log indicating the user opened the email" do
+      wr_log.reload
+      wr_log.action.should == "opened"
+      wr_log.responded.should be_true
+    end
   end
 
   describe "GET new" do
