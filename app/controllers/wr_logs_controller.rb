@@ -17,9 +17,8 @@ class WrLogsController < ApplicationController
     @receiver = User.find_by_id(@wr_log.receiver_id) 
 
    if params[:action]
-      @wr_log.toggle!(:responded)
       @wr_log.action = "worth reading"
-      @wr_log.save(validate: false)
+      @wr_log.save
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
    end
 
@@ -91,7 +90,10 @@ class WrLogsController < ApplicationController
 
   # /wr_logs/1/open
   def msg_opened
-    # wr_log = WrLog.find(params[:id])
+    wr_log = WrLog.find(params[:id])
+    wr_log.responded.toggle!(:true)
+    wr_log.action = "opened"
+    wr_log.save
     send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
   end
 end

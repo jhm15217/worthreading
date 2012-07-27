@@ -55,6 +55,9 @@ describe WrLogsController do
       assigns(:wr_log).should eq(wr_log)
     end
 
+    describe "when a Reciever opens his an email" do
+    end
+
     describe "Receiver following Worth Reading link in email" do
       context "and receiver is unregistered" do
         before { receiver.toggle!(:confirmed) }
@@ -63,7 +66,6 @@ describe WrLogsController do
           # responded is set to true
           wr_log.reload
           wr_log.action.should == "worth reading"
-          wr_log.responded.should be_true
 
           # We render a page explaining what the worthreading button means and 
           # inviting him to register
@@ -80,7 +82,6 @@ describe WrLogsController do
           # responded is set to true
           wr_log.reload
           wr_log.action.should == "worth reading"
-          wr_log.responded.should be_true
 
           #  TODO Needs work
           # response.should have_selector("a", href: "http://worth-reading.org/registered") 
