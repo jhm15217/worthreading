@@ -91,7 +91,7 @@ class WrLogsController < ApplicationController
   # /wr_logs/1/open
   def msg_opened
     wr_log = WrLog.find(params[:id])
-    wr_log.responded.toggle!(:true)
+    wr_log.toggle!(:responded)
     wr_log.action = "opened"
     wr_log.save
 
