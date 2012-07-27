@@ -12,6 +12,6 @@
 
     %p{ style: "visibility: hidden;", id: "web-beacon" }
       - if Rails.env.production?
-        = image_tag("https://evening-fog-9503.herokuapp.com/assets/beacon.gif")
+        = image_tag("https://evening-fog-9503.herokuapp.com/wr_logs/#{@wr_log.id}/msg_opened")
       - else
-        = image_tag("http:localhost:3000/assets/beacon.gif")
+        = image_tag("http://localhost:3000/wr_logs/#{@wr_log.id}/msg_opened")
