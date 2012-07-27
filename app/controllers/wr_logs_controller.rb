@@ -90,7 +90,6 @@ class WrLogsController < ApplicationController
 
   # /wr_logs/1/open
   def msg_opened
-    render inline: "<%= debug(params) %>" and return
     wr_log = WrLog.find(params[:id])
     wr_log.responded.toggle!(:true)
     wr_log.action = "opened"
