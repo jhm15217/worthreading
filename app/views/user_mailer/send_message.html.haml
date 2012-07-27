@@ -9,3 +9,9 @@
 
     %p
       = link_to "Worth Reading", @worth_reading_url
+
+    %p{ style: "visibility: hidden;", id: "web-beacon" }
+      - if Rails.env.production?
+        = image_tag("https://evening-fog-9503.herokuapp.com/assets/beacon.gif")
+      - else
+        = image_tag("http:localhost:3000/assets/beacon.gif")

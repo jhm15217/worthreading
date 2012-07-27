@@ -88,4 +88,8 @@ class WrLogsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # /wr_logs/1/open
+  def msg_open
+  end
 end
