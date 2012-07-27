@@ -12,7 +12,11 @@ WorthReading::Application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :relationships, only: [:create, :destroy, :index]
-  resources :wr_logs
+  resources :wr_logs do
+    member do
+      get :msg_opened
+    end
+  end
 
   root to: 'static_pages#home'
   match '/signup',  to: 'users#new'
@@ -22,11 +26,11 @@ WorthReading::Application.routes.draw do
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
   match '/email_confirmation', to: 'static_pages#email_confirmation_sent'
-  
+
   match 'users/:id/confirm/:confirmation_token', 
     to: 'users#confirm_email', 
     as: :confirm_email
- 
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

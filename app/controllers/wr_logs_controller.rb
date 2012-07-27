@@ -17,9 +17,8 @@ class WrLogsController < ApplicationController
     @receiver = User.find_by_id(@wr_log.receiver_id) 
 
    if params[:action]
-      @wr_log.toggle!(:responded)
       @wr_log.action = "worth reading"
-      @wr_log.save(validate: false)
+      @wr_log.save
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
    end
 
@@ -87,5 +86,19 @@ class WrLogsController < ApplicationController
       format.html { redirect_to wr_logs_url }
       format.json { head :no_content }
     end
+  end
+
+  # GET /wr_logs/1/msg_opened
+  def msg_opened
+    @wr_log = WrLog.find(params[:id])
+    @wr_log.toggle!(:responded)
+    puts @wr_log.action
+    @wr_log.action = "opened"
+    @wr_log.save
+    @wr_log.reload
+    puts @wr_log.action
+    puts @wr_log.id
+
+    send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
   end
 end
