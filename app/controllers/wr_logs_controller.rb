@@ -90,10 +90,10 @@ class WrLogsController < ApplicationController
 
   # /wr_logs/1/open
   def msg_opened
-    wr_log = WrLog.find(params[:id])
-    wr_log.toggle!(:responded)
-    wr_log.action = "opened"
-    wr_log.save
+    @wr_log = WrLog.find(params[:id])
+    @wr_log.toggle!(:responded)
+    @wr_log.action = "opened"
+    @wr_log.save
 
     send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
   end
