@@ -14,6 +14,7 @@ def make_users
                        email:    "admin@email.com",
                        password: "foobar",
                        password_confirmation: "foobar")
+  admin.toggle!(:confirmed)
   admin.toggle!(:admin)
   puts "Creating 99 other users..."
   99.times do |n|
@@ -24,6 +25,7 @@ def make_users
                      email:    email,
                      password: password,
                      password_confirmation: password)
+    u.toggle!(:confirmed)
     u.likes = rand(25..200) and u.save
   end
 end
