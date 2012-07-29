@@ -1,11 +1,12 @@
-<h1>Events</h1>
+<h1>Summary of Interactions</h1>
 
 <table cellpadding="5">
   <tr>
+    <th>Email id</th>
     <th>Date/Time</th>
     <th>Sender</th>
-    <th>Receiver</th>
-	<th>Subject</th>
+    <th>Receiver Count</th>
+	<th>Subject<th>
     <th>Minutes to Open</th>
     <th>Minutes to Click</th>
     <th></th>
@@ -16,13 +17,15 @@
 
 <% @wr_logs.each do |wr_log| %>
   <tr>
+    <td><%= wr_log.email_id %></td>
     <td><%= wr_log.created_at %></td>
     <td><%= User.find(wr_log.sender_id).name %></td>
     <td><%= User.find(wr_log.receiver_id).name %></td>
-    <td><%= Email.find(wr_log.email_id).subject %></td>
     <td></td>
     <td></td>
   </tr>
 <% end %>
 </table>
 
+<br />
+<%= link_to 'New Wr log', new_wr_log_path %>

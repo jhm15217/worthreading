@@ -52,7 +52,7 @@ def make_emails
                          from: user.email, 
                          subject: "HelloWorld #{n}",
                          body: Faker::Lorem.paragraph)
-      wr_log = email.wr_logs.create(action:"email", sender_id:user.id,
+      wr_log = email.wr_logs.create(action:"email", sender_id: user.id,
                       receiver_id:recipient.id, email_part: 0, responded: false)
     end
   end
