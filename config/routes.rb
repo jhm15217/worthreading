@@ -28,7 +28,8 @@ WorthReading::Application.routes.draw do
   match '/email_confirmation', to: 'static_pages#email_confirmation_sent'
   match  '/by_sender', to: 'wr_logs#by_sender'
   match  '/by_receiver', to: 'wr_logs#by_receiver'
-
+  match  '/by_email', to: 'wr_logs#by_email'
+ 
   match 'users/:id/confirm/:confirmation_token', 
     to: 'users#confirm_email', 
     as: :confirm_email

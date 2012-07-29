@@ -1,0 +1,30 @@
+<h1>Emails</h1>
+
+<%= link_to 'Events', "wr_logs" %>
+
+<table cellpadding="5">
+  <tr>
+    <th>Date/Time</th>
+    <th>Sender</th>
+    <th>Subject</th>
+    <th>Receivers</th>
+    <th>Ave Minutes to Open</th>
+    <th>Ave Minutes to Click</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+
+<% WrLog.select('email_id, created_at, sender_id, count(receiver_id) as receiver_count').group('email_id').each do |line| %>
+  <tr>
+    <td><%= line.created_at %></td>
+    <td><%= User.find(line.sender_id).name %></td>
+    <td><%= Email.find(line.email_id).subject %></td>
+    <td><%= line.receiver_count %></td>
+    <td></td>
+    <td></td>
+  </tr>
+<% end %>
+</table>
+
