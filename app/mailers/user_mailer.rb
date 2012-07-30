@@ -42,6 +42,7 @@ class UserMailer < ActionMailer::Base
     @wr_log = wr_log
     @sender = User.find_by_id(@wr_log.sender_id)
     @recipient = User.find_by_id(@wr_log.receiver_id)
+
     case @wr_log.action
     when "worth reading"
       @alert = "found your email worth reading"
