@@ -95,6 +95,8 @@ class WrLogsController < ApplicationController
     @wr_log.action = "opened"
     @wr_log.save
     @wr_log.reload
+    
+    UserMailer.delay.alert_change_in_wr_log(@wr_log)
 
     send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
   end

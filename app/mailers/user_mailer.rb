@@ -42,7 +42,16 @@ class UserMailer < ActionMailer::Base
     @wr_log = wr_log
     @sender = User.find_by_id(@wr_log.sender_id)
     @recipient = User.find_by_id(@wr_log.receiver_id)
-    mail(to: @sender.email, subject: "#{@recipient.email} found your email worth reading") 
+    case @wr_log.action
+    when "worth reading"
+      @msg = "found your email worth reading"
+    when "opened"
+      @msg = "opened your email"
+    else
+      raise "Invalid action"
+    end
+
+    mail(to: @sender.email, subject: "#{@recipient.email}, #{@msg}")
   end
 
 # NOTE Unimplemented for now but possible use in the future

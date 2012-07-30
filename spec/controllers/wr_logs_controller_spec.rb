@@ -85,11 +85,9 @@ describe WrLogsController do
           # response.should have_selector("a", href: "http://worth-reading.org/registered") 
         end
       end
-      
+
       it "should send an email alerting Sender that the receiver liked their email" do
-        Delayed::Job.count.should == 0
-        get :show, { id: wr_log.id, action: "worthreading" }
-        Delayed::Job.count.should == 1
+        expect { get :show, { id: wr_log.id, action: "worthreading" } }.to change(Delayed::Job, :count).by(1)
       end
     end
 
@@ -103,6 +101,10 @@ describe WrLogsController do
       wr_log.reload
       wr_log.action.should == "opened"
       wr_log.responded.should be_true
+    end
+
+    it "should send an email alerting Sender that the receiver opened their email" do
+      expect { get :msg_opened, { id: wr_log.id } }.to change(Delayed::Job, :count).by(1)
     end
   end
 
