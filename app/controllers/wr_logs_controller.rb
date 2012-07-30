@@ -91,12 +91,15 @@ class WrLogsController < ApplicationController
   # GET /wr_logs/1/msg_opened
   def msg_opened
     @wr_log = WrLog.find(params[:id])
+    puts "Before DB change: #{@wr_log.action}"
     if @wr_log.action == "email"
       @wr_log.toggle!(:responded)
       @wr_log.action = "opened"
+      puts @wr_log.valid?
       @wr_log.save
       @wr_log.reload
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
+      puts "After DB change: #{@wr_log.action}"
     end
 
     send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
