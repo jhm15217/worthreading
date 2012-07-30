@@ -95,9 +95,9 @@ describe WrLogsController do
 
   describe "GET msg_opened" do
     let(:wr_log) { FactoryGirl.create(:wr_log) }
-    before { get :msg_opened, {:id => wr_log.id} }
 
     it "should update the wr_log indicating the user opened the email" do
+      get :msg_opened, {:id => wr_log.id}
       wr_log.reload
       wr_log.action.should == "opened"
       wr_log.responded.should be_true
@@ -105,6 +105,16 @@ describe WrLogsController do
 
     it "should send an email alerting Sender that the receiver opened their email" do
       expect { get :msg_opened, { id: wr_log.id } }.to change(Delayed::Job, :count).by(1)
+    end
+
+    context "when a message is already opened" do
+      before do 
+        wr_log.action = "opened"
+        wr_log.save
+      end
+      it "shouldn't send an email alert" do
+        expect { get :msg_opened, { id: wr_log.id } }.to change(Delayed::Job, :count).by(0)
+      end
     end
   end
 
