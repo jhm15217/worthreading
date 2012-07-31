@@ -85,11 +85,9 @@ describe WrLogsController do
           # response.should have_selector("a", href: "http://worth-reading.org/registered") 
         end
       end
-      
+
       it "should send an email alerting Sender that the receiver liked their email" do
-        Delayed::Job.count.should == 0
-        get :show, { id: wr_log.id, action: "worthreading" }
-        Delayed::Job.count.should == 1
+        expect { get :show, { id: wr_log.id, action: "worthreading" } }.to change(Delayed::Job, :count).by(1)
       end
     end
 
@@ -97,12 +95,38 @@ describe WrLogsController do
 
   describe "GET msg_opened" do
     let(:wr_log) { FactoryGirl.create(:wr_log) }
-    before { get :msg_opened, {:id => wr_log.id} }
 
-    it "should update the wr_log indicating the user opened the email" do
-      wr_log.reload
-      wr_log.action.should == "opened"
-      wr_log.responded.should be_true
+    context "when an wr_log token id is correct" do
+      it "should update the wr_log indicating the user opened the email" do
+        get :msg_opened, {:id => wr_log.id, token_identifier: wr_log.token_identifier}
+        wr_log.reload
+        wr_log.action.should == "opened"
+        wr_log.responded.should be_true
+      end
+
+      it "should send an email alerting Sender that the receiver opened their email" do
+        expect { get :msg_opened, { id: wr_log.id, token_identifier: wr_log.token_identifier } }.
+          to change(Delayed::Job, :count).by(1)
+      end
+    end
+
+    context "when an wr_log token id is incorrect" do
+      it "shouldn't update the wr_log indicating the user opened the email" do
+        get :msg_opened, {:id => wr_log.id, token_identifier: "1234lksad" }
+        wr_log.reload
+        wr_log.action.should_not == "opened"
+      end
+    end
+
+    context "when a message is already opened" do
+      before do 
+        wr_log.action = "opened"
+        wr_log.save
+      end
+      it "shouldn't send an email alert" do
+        expect { get :msg_opened, { id: wr_log.id, token_identifier: wr_log.token_identifier } }.
+          to change(Delayed::Job, :count).by(0)
+      end
     end
   end
 

@@ -24,17 +24,20 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
-  def send_message(email)
+  def send_message(email, wr_log)
     @email = email
     @body = @email.body
-
+    @wr_log =  wr_log
     @sender = User.find_by_email(@email.from)
-    @wr_log = WrLog.find_by_sender_id(@sender.id)
 
     @worth_reading_url = wr_log_url(action: "worth reading",
                                   id: WrLog.find_by_sender_id(@sender.id),
                                   host: Rails.env.production? ? PROD_URL : DEV_URL,
                                   protocol: Rails.env.production? ? 'https' : 'http')
+    @beacon_url = msg_opened_url(id: @wr_log.id, 
+                                 token_identifier: @wr_log.token_identifier, 
+                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                 protocol: Rails.env.production? ? 'https' : 'http')
     mail(from: email.from, to: email.to, subject: email.subject)
   end
 
@@ -42,7 +45,17 @@ class UserMailer < ActionMailer::Base
     @wr_log = wr_log
     @sender = User.find_by_id(@wr_log.sender_id)
     @recipient = User.find_by_id(@wr_log.receiver_id)
-    mail(to: @sender.email, subject: "#{@recipient.email} found your email worth reading") 
+
+    case @wr_log.action
+    when "worth reading"
+      @alert = "found your email worth reading"
+    when "opened"
+      @alert = "opened your email"
+    else
+      raise "Invalid action"
+    end
+
+    mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}")
   end
 
 # NOTE Unimplemented for now but possible use in the future

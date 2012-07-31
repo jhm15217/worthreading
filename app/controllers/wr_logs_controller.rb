@@ -88,14 +88,21 @@ class WrLogsController < ApplicationController
     end
   end
 
-  # GET /wr_logs/1/msg_opened
+  # GET /wr_logs/1/msg_opened/:token_identifier
   def msg_opened
     @wr_log = WrLog.find(params[:id])
-    @wr_log.toggle!(:responded)
-    @wr_log.action = "opened"
-    @wr_log.save
-    @wr_log.reload
+    token_identifier = params[:token_identifier]
+    puts "WrLog[#{@wr_log.id}]: Action before save '#{@wr_log.action}'"
 
-    send_file Rails.root.join("public", "images", "test.jpeg"), type: "image/jpeg", disposition: "inline"
+    if @wr_log.action == "email" && @wr_log.token_identifier == token_identifier
+      @wr_log.toggle!(:responded)
+      @wr_log.action = "opened"
+      @wr_log.save
+      @wr_log.reload
+      UserMailer.delay.alert_change_in_wr_log(@wr_log)
+      puts "WrLog[#{@wr_log.id}]: Action after save '#{@wr_log.action}'"
+    end
+
+    send_file Rails.root.join("public", "images", "beacon.gif"), type: "image/gif", disposition: "inline"
   end
 end

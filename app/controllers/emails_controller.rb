@@ -47,7 +47,7 @@ class EmailsController < ApplicationController
       wr_log_entry.save
 
       # TODO Uncomment once we can retrieve the correct email address to mail to.
-      # UserMailer.delay.send_message(@email)
+      # UserMailer.delay.send_message(@email, wr_log_entry)
     else
       redirect_to root_path  ## params['sender'] is bad 
     end
