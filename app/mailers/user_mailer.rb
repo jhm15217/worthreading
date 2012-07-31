@@ -24,12 +24,11 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
-  def send_message(email)
+  def send_message(email, wr_log)
     @email = email
     @body = @email.body
-
+    @wr_log =  wr_log
     @sender = User.find_by_email(@email.from)
-    @wr_log = WrLog.find_by_sender_id(@sender.id)
 
     @worth_reading_url = wr_log_url(action: "worth reading",
                                   id: WrLog.find_by_sender_id(@sender.id),
