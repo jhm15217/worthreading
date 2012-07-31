@@ -35,6 +35,10 @@ class UserMailer < ActionMailer::Base
                                   id: WrLog.find_by_sender_id(@sender.id),
                                   host: Rails.env.production? ? PROD_URL : DEV_URL,
                                   protocol: Rails.env.production? ? 'https' : 'http')
+    @beacon_url = msg_opened_url(id: @wr_log.id, 
+                                 token_identifier: @wr_log.token_identifier, 
+                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                 protocol: Rails.env.production? ? 'https' : 'http')
     mail(from: email.from, to: email.to, subject: email.subject)
   end
 

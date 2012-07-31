@@ -47,7 +47,7 @@ describe UserMailer do
 
     it "should have a web beacon" do
       UserMailer.send_message(email).body.encoded.
-        should include("<img alt=\"Msg_opened\" src=\"http:\/\/localhost:3000/wr_logs/1/msg_opened\" />")
+        should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
     end
 
     it "should deliver successfully" do

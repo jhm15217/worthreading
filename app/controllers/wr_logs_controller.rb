@@ -88,11 +88,13 @@ class WrLogsController < ApplicationController
     end
   end
 
-  # GET /wr_logs/1/msg_opened
+  # GET /wr_logs/1/msg_opened/:token_identifier
   def msg_opened
     @wr_log = WrLog.find(params[:id])
+    token_identifier = params[:token_identifier]
     puts "WrLog[#{@wr_log.id}]: Action before save '#{@wr_log.action}'"
-    if @wr_log.action == "email"
+
+    if @wr_log.action == "email" && @wr_log.token_identifier == token_identifier
       @wr_log.toggle!(:responded)
       @wr_log.action = "opened"
       @wr_log.save
