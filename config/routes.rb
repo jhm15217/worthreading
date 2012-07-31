@@ -30,6 +30,9 @@ WorthReading::Application.routes.draw do
   match  '/by_receiver', to: 'wr_logs#by_receiver'
   match  '/by_email', to: 'wr_logs#by_email'
  
+  match 'wr_logs/:id/msg_opened/:token_identifier', 
+    to: 'wr_logs#msg_opened',
+    as: :msg_opened
   match 'users/:id/confirm/:confirmation_token', 
     to: 'users#confirm_email', 
     as: :confirm_email

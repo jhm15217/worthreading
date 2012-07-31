@@ -31,42 +31,61 @@ describe UserMailer do
 
   describe "Sending a message" do
     it "should render the message successfully" do 
-      lambda { UserMailer.send_message(email) }.should_not raise_error
+      lambda { UserMailer.send_message(email, wr_log) }.should_not raise_error
     end
     
     it "should have a Worth Reading link" do
-      UserMailer.send_message(email).body.encoded.should match(/Worth Reading/m)
+      UserMailer.send_message(email, wr_log).body.encoded.should match(/Worth Reading/m)
     end
 
     it "should have the correct link for the Worth Reading link" do
-      UserMailer.send_message(email).body.
+      UserMailer.send_message(email, wr_log).body.
         encoded.should include(wr_log_url(action: "worth reading", 
                                           id: wr_log.id,
                                           host: "localhost:3000" ))
     end
 
     it "should have a web beacon" do
-      UserMailer.send_message(email).body.encoded.
-        should include("<img alt=\"Msg_opened\" src=\"http:\/\/localhost:3000/wr_logs/1/msg_opened\" />")
+      UserMailer.send_message(email, wr_log).body.encoded.
+        should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
     end
 
     it "should deliver successfully" do
-      lambda { UserMailer.send_message(email).deliver }.should_not raise_error
+      lambda { UserMailer.send_message(email, wr_log).deliver }.should_not raise_error
     end
   end
 
   describe "Alerting user of a change in the wr_log" do
 
-    it "should render the alert of a change in the wr log email successfully" do
-      lambda { UserMailer.alert_change_in_wr_log(wr_log) }.should_not raise_error
+
+    context "when a User finds an email worth reading" do 
+      before { wr_log.action = "worth reading" }
+      it "should indicate an email was worth reading" do
+        UserMailer.alert_change_in_wr_log(wr_log).body.encoded.should match(/worth reading/m)
+      end
+
+      it "should render the alert of a change in the wr log email successfully" do
+        lambda { UserMailer.alert_change_in_wr_log(wr_log) }.should_not raise_error
+      end
+
+      it "should deliver successfully" do
+        lambda { UserMailer.alert_change_in_wr_log(wr_log).deliver }.should_not raise_error
+      end
     end
 
-    it "should idicate an email was worth reading" do
-      UserMailer.alert_change_in_wr_log(wr_log).body.encoded.should match(/worth reading/m)
-    end
+    context "when a User opens an email" do 
+      before { wr_log.action = "opened" }
+      it "should indicate an email was opened" do
+        UserMailer.alert_change_in_wr_log(wr_log).body.encoded.should match(/opened/m)
+      end
 
-    it "should deliver successfully" do
-      lambda { UserMailer.alert_change_in_wr_log(wr_log).deliver }.should_not raise_error
+      it "should render the alert of a change in the wr log email successfully" do
+        lambda { UserMailer.alert_change_in_wr_log(wr_log) }.should_not raise_error
+      end
+
+      it "should deliver successfully" do
+        lambda { UserMailer.alert_change_in_wr_log(wr_log).deliver }.should_not raise_error
+      end
     end
   end
 
