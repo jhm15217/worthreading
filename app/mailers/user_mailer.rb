@@ -24,7 +24,7 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
-  def send_message(email, wr_log)
+  def send_message(email, wr_log, recipient)
     @email = email
     @body = @email.body
     @wr_log =  wr_log
@@ -38,7 +38,7 @@ class UserMailer < ActionMailer::Base
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: Rails.env.production? ? 'https' : 'http')
-    mail(from: email.from, to: email.to, subject: email.subject)
+    mail(from: email.from, to: recipient.email, subject: email.subject)
   end
 
   def alert_change_in_wr_log(wr_log)

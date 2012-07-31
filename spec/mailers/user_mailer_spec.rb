@@ -11,6 +11,7 @@ describe UserMailer do
 
   before do  
     email.from = user.email
+    email.to = other_user.email
     email.body = body
     email.save
 
@@ -31,27 +32,27 @@ describe UserMailer do
 
   describe "Sending a message" do
     it "should render the message successfully" do 
-      lambda { UserMailer.send_message(email, wr_log) }.should_not raise_error
+      lambda { UserMailer.send_message(email, wr_log, other_user) }.should_not raise_error
     end
     
     it "should have a Worth Reading link" do
-      UserMailer.send_message(email, wr_log).body.encoded.should match(/Worth Reading/m)
+      UserMailer.send_message(email, wr_log, other_user).body.encoded.should match(/Worth Reading/m)
     end
 
     it "should have the correct link for the Worth Reading link" do
-      UserMailer.send_message(email, wr_log).body.
+      UserMailer.send_message(email, wr_log, other_user).body.
         encoded.should include(wr_log_url(action: "worth reading", 
                                           id: wr_log.id,
                                           host: "localhost:3000" ))
     end
 
     it "should have a web beacon" do
-      UserMailer.send_message(email, wr_log).body.encoded.
+      UserMailer.send_message(email, wr_log, other_user).body.encoded.
         should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
     end
 
     it "should deliver successfully" do
-      lambda { UserMailer.send_message(email, wr_log).deliver }.should_not raise_error
+      lambda { UserMailer.send_message(email, wr_log, other_user).deliver }.should_not raise_error
     end
   end
 

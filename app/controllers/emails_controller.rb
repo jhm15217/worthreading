@@ -40,14 +40,15 @@ class EmailsController < ApplicationController
         subject: params['subject'],
         body: params['body-plain']
       )
-      @email.save ? (render text: "Email Received") : ()
+      render text: "Email Received" if @email.save
 
-      wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id,
-                               receiver_id:find_or_register(@email.to).id, responded: false)
-      wr_log_entry.save
+      default_wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id, responded: false)
+      default_wr_log_entry.save
 
       # TODO Uncomment once we can retrieve the correct email address to mail to.
       # UserMailer.delay.send_message(@email, wr_log_entry)
+      #
+      # @user.delay.send_msg_to_subscribers(@email, @user)
     else
       redirect_to root_path  ## params['sender'] is bad 
     end

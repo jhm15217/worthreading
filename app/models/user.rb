@@ -53,6 +53,16 @@ class User < ActiveRecord::Base
     self.relationships.find_by_subscriber_id(subscriber.id).destroy
   end
 
+  def send_msg_to_subcribers(email, sender)
+    self.subscribers.each do |subscriber|
+      wr_log = email.wr_logs.create(action: "email", 
+                                    sender_id: sender.id, 
+                                    receiver_id: subscriber.id, 
+                                    responded: false)
+      UserMailer.send_message(email, wr_log, subscriber)
+    end
+  end
+
   # Active Record Callbacks
   before_save { |user| 
     user.email = email.downcase
