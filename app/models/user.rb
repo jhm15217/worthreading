@@ -53,13 +53,13 @@ class User < ActiveRecord::Base
     self.relationships.find_by_subscriber_id(subscriber.id).destroy
   end
 
-  def send_msg_to_subcribers(email, sender)
+  def send_msg_to_subscribers(email)
     self.subscribers.each do |subscriber|
       wr_log = email.wr_logs.create(action: "email", 
-                                    sender_id: sender.id, 
+                                    sender_id: self.id,
                                     receiver_id: subscriber.id, 
                                     responded: false)
-      UserMailer.send_message(email, wr_log, subscriber)
+      UserMailer.send_message(email, wr_log, subscriber).deliver
     end
   end
 
