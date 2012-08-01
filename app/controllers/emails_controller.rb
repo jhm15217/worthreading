@@ -47,7 +47,7 @@ class EmailsController < ApplicationController
       else
 #         default_wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id, responded: false)
 #         default_wr_log_entry.save
-        @user.delay.send_msg_to_subscribers(@email, @user)
+        @user.delay.send_msg_to_subscribers(@email)
 
       end
     else
