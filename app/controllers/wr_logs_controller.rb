@@ -16,7 +16,7 @@ class WrLogsController < ApplicationController
     @wr_log = WrLog.find(params[:id])
     @receiver = User.find_by_id(@wr_log.receiver_id) 
 
-   if params[:action]
+   if params[:action] && @wr_log.action != "worth reading" 
       @wr_log.action = "worth reading"
       @wr_log.save
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
