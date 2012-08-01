@@ -23,6 +23,11 @@ describe EmailsController do
   after(:all)  { User.delete_all }
 
   let(:user) { FactoryGirl.create(:user) }
+  let(:other_user) { FactoryGirl.create(:user)}
+
+  before do
+    user.add_subscriber!(other_user)
+  end
 
 
   describe "receiving an email from via a POST request from Mailgun" do

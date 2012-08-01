@@ -41,14 +41,19 @@ class EmailsController < ApplicationController
         body: params['body-plain']
       )
       render text: "Email Received" if @email.save
+      if @user.subscribers.empty?
+        error = "There are no subscribers on your list. Please add subscribers to your list"
+        UserMailer.delay.send_error(error, @user, @email)
+      else
 
-      default_wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id, responded: false)
-      default_wr_log_entry.save
+        default_wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id, responded: false)
+        default_wr_log_entry.save
+        # @user.delay.send_msg_to_subscribers(@email, @user)
 
-      # TODO Uncomment once we can retrieve the correct email address to mail to.
-      # UserMailer.delay.send_message(@email, wr_log_entry)
-      #
-      # @user.delay.send_msg_to_subscribers(@email, @user)
+        # TODO Uncomment once we can retrieve the correct email address to mail to.
+        # UserMailer.delay.send_message(@email, wr_log_entry)
+        #
+      end
     else
       redirect_to root_path  ## params['sender'] is bad 
     end

@@ -4,13 +4,12 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
 
   %body
-    %p
-      Hi #{@sender.name},
+    %p Hi #{@sender.name},
 
-    %p
-      #{@recipient.email}, #{@alert}.
+    %p Your email could not be sent. #{@error}.
 
-    %p Thank you for utilizing our site.
-    %br/
-    %br/
+    %p You can follow #{@sign_url} to login in.
+    
+    %p Thanks,
     %p Your Friends at Worthreading
+

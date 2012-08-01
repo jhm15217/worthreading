@@ -90,6 +90,17 @@ describe UserMailer do
     end
   end
 
+  describe "when alerting a user of an error" do
+    let(:error) { "There is an error" }
+    it "should render the error email without erorr" do
+      lambda { UserMailer.send_error(error, user, email) }.should_not raise_error
+    end
+
+    it "should deliver successfully" do
+      lambda { UserMailer.send_error(error, user, email).deliver }.should_not raise_error
+    end
+  end
+
   # Parsing implementation tests 
   #  describe "Parsed email" do 
   #    it "should render the first part of the message email successfully" do 
