@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @emails = @user.emails
     @subscribers = @user.subscribers
+    @email_count = @user.emails.count
   end
 
   def new
