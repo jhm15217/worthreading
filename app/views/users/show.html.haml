@@ -1,0 +1,30 @@
+- provide(:title, @user.name)
+.row
+  %aside.span3
+    %section
+      %h1
+        = gravatar_for @user
+        = @user.name
+      %b
+        Email:
+      = @user.email
+      %br/
+      %b
+        Likes:
+      = @user.likes
+    %section
+      = render 'shared/stats'
+    %section
+      = render 'shared/user_email_stats'
+  .span4
+    %br/
+    %br/
+    %h3 Emails sent:
+    = render 'shared/emails'
+  .span4
+    %br/
+    %br/
+    - if current_user?(@user)
+      = render 'shared/subscriber_list'
+.row
+  %aside.span3
