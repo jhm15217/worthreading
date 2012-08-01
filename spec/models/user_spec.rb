@@ -217,4 +217,28 @@ describe User do
       its(:subscribers) { should_not include(other_user) }
     end
   end
+
+  describe "sending a message to all subscribers" do
+    let(:user1) { FactoryGirl.create(:user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let(:user3) { FactoryGirl.create(:user) }
+    let(:user4) { FactoryGirl.create(:user) }
+    let(:email) { FactoryGirl.create(:email) }
+
+    before do
+      email.from = user1.email
+      email.save
+
+      user1.add_subscriber!(user2)
+      user1.add_subscriber!(user3)
+      user1.add_subscriber!(user4)
+    end
+
+    it "should send a message to all subscribers" do
+      expect { user1.send_msg_to_subscribers(email) }.
+        to change(ActionMailer::Base.deliveries, :size).by(user1.subscribers.count)
+    end
+
+    it "should create a wr_log for each subscriber associated with message" 
+  end
 end
