@@ -5,6 +5,7 @@ class UserMailer < ActionMailer::Base
 #  MORE_INDICATOR = "<more>"
   PROD_URL = "evening-fog-9503.herokuapp.com"
   DEV_URL = "localhost:3000"
+  PROTOCOL = Rails.env.production? ? 'https' : 'http'
  
   def welcome_email(user)
     @user = user
@@ -24,7 +25,7 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
-  def send_message(email, wr_log)
+  def send_message(email, wr_log, recipient)
     @email = email
     @body = @email.body
     @wr_log =  wr_log
@@ -33,12 +34,12 @@ class UserMailer < ActionMailer::Base
     @worth_reading_url = wr_log_url(action: "worth reading",
                                   id: WrLog.find_by_sender_id(@sender.id),
                                   host: Rails.env.production? ? PROD_URL : DEV_URL,
-                                  protocol: Rails.env.production? ? 'https' : 'http')
+                                  protocol: PROTOCOL )
     @beacon_url = msg_opened_url(id: @wr_log.id, 
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
-                                 protocol: Rails.env.production? ? 'https' : 'http')
-    mail(from: email.from, to: email.to, subject: email.subject)
+                                 protocol: PROTOCOL)
+    mail(from: email.from, to: recipient.email, subject: email.subject)
   end
 
   def alert_change_in_wr_log(wr_log)
@@ -56,6 +57,15 @@ class UserMailer < ActionMailer::Base
     end
 
     mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}")
+  end
+
+  def send_error(error, user, email)
+    @sender = user
+    @error = error
+    @email = email
+    @signin_url = signin_url(protocol: PROTOCOL, host: Rails.env.production? ? PROD_URL : DEV_URL)
+
+    mail(to: @sender.email, subject: "Error: #@error")
   end
 
 # NOTE Unimplemented for now but possible use in the future
