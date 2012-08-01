@@ -26,8 +26,6 @@ describe EmailsController do
   let(:user2) { FactoryGirl.create(:user)}
   let(:user3) { FactoryGirl.create(:user)}
 
-
-
   describe "receiving an email from via a POST request from Mailgun" do
     it "should render a text 'Email Received' after a successful save" do
       post :create, {'sender' => user.email,
@@ -60,7 +58,7 @@ describe EmailsController do
       end
 
       it "should send out email to all subscribers" do
-        expect { post :create, {'sender' => "user@example.com", 
+        expect { post :create, {'sender' => user.email, 
           'recipient' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
@@ -69,16 +67,15 @@ describe EmailsController do
     end
 
     context "without any subscribers on the list" do
-      pending "Needs to be reworked" do 
-        let(:error) { "Error occured" }
+      let(:user4) { FactoryGirl.create(:user) }
+      let(:error) { "Error occured" }
 
-        it "should send out an error" do 
-          post :create, {'sender' => "user@example.com", 
-            'recipient' => "subscribers@worth-reading.org", 
-            'subject' => "Nothing", 
-            'body-plain' => "Lorem Ipsum" } 
-          UserMailer.should_receive(:send_error).with(error, user, @email)
-        end
+      it "should send out an error" do 
+        expect { post :create, {'sender' => user4.email, 
+          'recipient' => "subscribers@worth-reading.org", 
+          'subject' => "Nothing", 
+          'body-plain' => "Lorem Ipsum" } }.
+          to change(Delayed::Job, :count).by(1)
       end
     end
   end
