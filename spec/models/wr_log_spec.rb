@@ -12,6 +12,9 @@
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
 #  token_identifier :string(255)
+#  emailed          :datetime
+#  opened           :datetime
+#  worth_reading    :datetime
 #
 
 require 'spec_helper'
