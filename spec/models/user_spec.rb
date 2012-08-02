@@ -239,6 +239,9 @@ describe User do
         to change(ActionMailer::Base.deliveries, :size).by(user1.subscribers.count)
     end
 
-    it "should create a wr_log for each subscriber associated with message" 
+    it "should create a wr_log for each subscriber associated with message" do
+      user1.send_msg_to_subscribers(email)
+      email.wr_logs.first.emailed.should_not be_nil
+    end
   end
 end
