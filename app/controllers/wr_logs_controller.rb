@@ -20,6 +20,7 @@ class WrLogsController < ApplicationController
 
    if params[:action] && @wr_log.action != "worth reading" 
       @wr_log.action = "worth reading"
+      @wr_log.worth_reading = Time.now
       @wr_log.save
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
    end

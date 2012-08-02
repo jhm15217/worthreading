@@ -71,6 +71,7 @@ describe WrLogsController do
           # responded is set to true
           wr_log.reload
           wr_log.action.should == "worth reading"
+          wr_log.worth_reading.should_not be_nil
 
           # We render a page explaining what the worthreading button means and 
           # inviting him to register
