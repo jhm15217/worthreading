@@ -62,7 +62,8 @@ describe EmailsController do
           'recipient' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
-          to change(Delayed::Job, :count).by(1)
+          to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
+          # to change(Delayed::Job, :count).by(1)
       end
     end
 
@@ -75,7 +76,8 @@ describe EmailsController do
           'recipient' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
-          to change(Delayed::Job, :count).by(1)
+          to change(ActionMailer::Base.deliveries, :size).by(1)
+          # to change(Delayed::Job, :count).by(1)
       end
     end
   end

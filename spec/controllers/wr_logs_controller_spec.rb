@@ -57,7 +57,6 @@ describe WrLogsController do
     end
 
     it "assigns the requested wr_log as @wr_log" do
-      wr_log = WrLog.create! valid_attributes
       get :show, {:id => wr_log.id}, valid_session
       assigns(:wr_log).should eq(wr_log)
     end
@@ -95,14 +94,26 @@ describe WrLogsController do
       end
 
       it "should send an email alerting Sender that the receiver liked their email" do
-        expect { get :show, { id: wr_log.id, action: "worthreading" } }.to change(Delayed::Job, :count).by(1)
+        expect { get :show, { id: wr_log.id, action: "worthreading" } }.
+          to change(ActionMailer::Base.deliveries, :size).by(1)
+          # to change(Delayed::Job, :count).by(1)
       end
     end
 
   end
 
   describe "GET msg_opened" do
+    let (:email) { FactoryGirl.create(:email) }
+    let (:sender) { FactoryGirl.create(:user) }
+    let (:receiver) { FactoryGirl.create(:user) }
     let(:wr_log) { FactoryGirl.create(:wr_log) }
+
+    before do
+      wr_log.email_id = email.id
+      wr_log.receiver_id = receiver.id
+      wr_log.sender_id = sender.id
+      wr_log.save
+    end
 
     context "when an wr_log token id is correct" do
       it "should update the wr_log indicating the user opened the email" do
@@ -114,8 +125,11 @@ describe WrLogsController do
       end
 
       it "should send an email alerting Sender that the receiver opened their email" do
+        wr_log.reload
+        puts wr_log.action
         expect { get :msg_opened, { id: wr_log.id, token_identifier: wr_log.token_identifier } }.
-          to change(Delayed::Job, :count).by(1)
+          to change(ActionMailer::Base.deliveries, :size).by(1)
+          # to change(Delayed::Job, :count).by(1)
       end
     end
 
