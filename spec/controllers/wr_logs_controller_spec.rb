@@ -24,7 +24,7 @@ describe WrLogsController do
   # WrLog. As you add validations to WrLog, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {action: "email", sender_id: 1, receiver_id: 1, email_id: 1, email_part: 1, responded: false }
+    {action: "email", sender_id: 1, receiver_id: 1, email_id: 1, email_part: 1 }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -121,7 +121,6 @@ describe WrLogsController do
         wr_log.reload
         wr_log.action.should == "opened"
         wr_log.opened.should_not be_nil
-        wr_log.responded.should be_true
       end
 
       it "should send an email alerting Sender that the receiver opened their email" do

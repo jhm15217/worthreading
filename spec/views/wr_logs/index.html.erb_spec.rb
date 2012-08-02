@@ -11,16 +11,14 @@ describe "wr_logs/index" do
         :sender_id => user1.id,
         :receiver_id => user2.id,
         :email_id => email.id,
-        :email_part => 1,
-        :responded => false
+        :email_part => 1
       ),
       stub_model(WrLog,
         :action => "email",
         :sender_id => user1.id,
         :receiver_id => user2.id,
         :email_id => email.id,
-        :email_part => 1,
-        :responded => false
+        :email_part => 1
       )
     ])
   end

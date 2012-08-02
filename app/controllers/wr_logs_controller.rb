@@ -100,7 +100,6 @@ class WrLogsController < ApplicationController
     puts "WrLog[#{@wr_log.id}]: Action before save '#{@wr_log.action}'"
 
     if @wr_log.action == "email" && @wr_log.token_identifier == token_identifier
-      @wr_log.toggle!(:responded)
       @wr_log.action = "opened"
       @wr_log.opened = Time.now
       @wr_log.save
