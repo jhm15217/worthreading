@@ -55,10 +55,13 @@ class User < ActiveRecord::Base
 
   def send_msg_to_subscribers(email)
     self.subscribers.each do |subscriber|
-      wr_log = email.wr_logs.create(action: "email", 
-                                    sender_id: self.id,
-                                    receiver_id: subscriber.id, 
-                                    responded: false)
+      wr_log = email.wr_logs.create do |log|
+        log.action = "email"
+        log.sender_id = self.id
+        log.receiver_id = subscriber.id 
+        log.emailed = Time.now
+        log.responded = false
+      end
       UserMailer.send_message(email, wr_log, subscriber).deliver
     end
   end

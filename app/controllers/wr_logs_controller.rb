@@ -14,10 +14,13 @@ class WrLogsController < ApplicationController
   # GET /wr_logs/1.json
   def show
     @wr_log = WrLog.find(params[:id])
+    @email = Email.find(@wr_log.email_id)
     @receiver = User.find_by_id(@wr_log.receiver_id) 
+    @sender = User.find_by_id(@wr_log.sender_id)
 
-   if params[:action]
+   if params[:action] && @wr_log.action != "worth reading" 
       @wr_log.action = "worth reading"
+      @wr_log.worth_reading = Time.now
       @wr_log.save
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
    end
@@ -97,6 +100,7 @@ class WrLogsController < ApplicationController
     if @wr_log.action == "email" && @wr_log.token_identifier == token_identifier
       @wr_log.toggle!(:responded)
       @wr_log.action = "opened"
+      @wr_log.opened = Time.now
       @wr_log.save
       @wr_log.reload
       UserMailer.delay.alert_change_in_wr_log(@wr_log)
