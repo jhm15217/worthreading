@@ -49,6 +49,13 @@ describe WrLogsController do
     let (:receiver) { FactoryGirl.create(:user) }
     let(:wr_log) { FactoryGirl.create(:wr_log) }
 
+    before do
+      wr_log.email_id = email.id
+      wr_log.receiver_id = receiver.id
+      wr_log.sender_id = sender.id
+      wr_log.save
+    end
+
     it "assigns the requested wr_log as @wr_log" do
       wr_log = WrLog.create! valid_attributes
       get :show, {:id => wr_log.id}, valid_session
@@ -64,6 +71,7 @@ describe WrLogsController do
           # responded is set to true
           wr_log.reload
           wr_log.action.should == "worth reading"
+          wr_log.worth_reading.should_not be_nil
 
           # We render a page explaining what the worthreading button means and 
           # inviting him to register
@@ -101,6 +109,7 @@ describe WrLogsController do
         get :msg_opened, {:id => wr_log.id, token_identifier: wr_log.token_identifier}
         wr_log.reload
         wr_log.action.should == "opened"
+        wr_log.opened.should_not be_nil
         wr_log.responded.should be_true
       end
 

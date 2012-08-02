@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   def new
     if signed_in?
-      redirect_to home
+      redirect_to root_path
     else
       @user = User.new
     end

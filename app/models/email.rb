@@ -22,6 +22,15 @@ class Email < ActiveRecord::Base
     email.to = to.downcase
   }
 
+  # Email stats
+  def num_times_opened
+    self.wr_logs.where("action = 'opened'").count + self.num_times_liked
+  end
+
+  def num_times_liked
+    self.wr_logs.where("action = 'worth reading'").count
+  end
+
   default_scope order: 'emails.created_at DESC'
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
