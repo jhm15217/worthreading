@@ -108,6 +108,7 @@ describe WrLogsController do
         get :msg_opened, {:id => wr_log.id, token_identifier: wr_log.token_identifier}
         wr_log.reload
         wr_log.action.should == "opened"
+        wr_log.opened.should_not be_nil
         wr_log.responded.should be_true
       end
 
