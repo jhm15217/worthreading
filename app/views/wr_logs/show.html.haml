@@ -1,18 +1,36 @@
-%p
-  %b Action:
-  = @wr_log.action
-%p
-  %b Sender:
-  = @wr_log.sender_id
-%p
-  %b Receiver:
-  = @wr_log.receiver_id
-%p
-  %b Email:
-  = @wr_log.email_id
-%p
-  %b Email part:
-  = @wr_log.email_part
-%p
-  %b Responded:
-  = @wr_log.responded
+.row
+  %br/
+.row
+  %aside.span2
+    %h4 Message Stats:
+    %br/
+    %p
+      %b Message opened: 
+      #{@email.num_times_opened}
+
+    %p
+      %b Message liked:
+      #{@email.num_times_liked}
+
+  %aside.span8
+    .hero-unit
+      %h2 Thank you for liking the message. 
+      %br/
+      %p We will let #{@sender.name} know you enjoyed the email.
+
+      - unless @receiver.confirmed
+        %p 
+          We also noticed you aren't registered with our website. When you 
+          send messages to several people, would you like to:
+          %ul
+            %li send individual messages to each person?
+            %li discover when/if each person opens the message?
+            %li discover who likes the message?
+        %p
+          Then sign up 
+          = link_to "here", signup_path
+          \.
+      - else
+        %p You can close this window now.
+      %br/
+

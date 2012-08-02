@@ -14,7 +14,9 @@ class WrLogsController < ApplicationController
   # GET /wr_logs/1.json
   def show
     @wr_log = WrLog.find(params[:id])
+    @email = Email.find(@wr_log.email_id)
     @receiver = User.find_by_id(@wr_log.receiver_id) 
+    @sender = User.find_by_id(@wr_log.sender_id)
 
    if params[:action] && @wr_log.action != "worth reading" 
       @wr_log.action = "worth reading"
