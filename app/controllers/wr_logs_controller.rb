@@ -18,12 +18,14 @@ class WrLogsController < ApplicationController
     @receiver = User.find_by_id(@wr_log.receiver_id) 
     @sender = User.find_by_id(@wr_log.sender_id)
 
-   if params[:action] && @wr_log.action != "worth reading" 
+    if params[:action] && @wr_log.action != "worth reading" 
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save
-      UserMailer.delay.alert_change_in_wr_log(@wr_log)
-   end
+      UserMailer.alert_change_in_wr_log(@wr_log).deliver
+
+      # UserMailer.delay.alert_change_in_wr_log(@wr_log)
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -98,12 +100,11 @@ class WrLogsController < ApplicationController
     puts "WrLog[#{@wr_log.id}]: Action before save '#{@wr_log.action}'"
 
     if @wr_log.action == "email" && @wr_log.token_identifier == token_identifier
-      @wr_log.toggle!(:responded)
       @wr_log.action = "opened"
       @wr_log.opened = Time.now
       @wr_log.save
       @wr_log.reload
-      UserMailer.delay.alert_change_in_wr_log(@wr_log)
+      UserMailer.alert_change_in_wr_log(@wr_log).deliver
       puts "WrLog[#{@wr_log.id}]: Action after save '#{@wr_log.action}'"
     end
 

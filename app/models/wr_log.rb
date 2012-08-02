@@ -8,7 +8,6 @@
 #  receiver_id      :integer
 #  email_id         :integer
 #  email_part       :integer
-#  responded        :boolean
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
 #  token_identifier :string(255)

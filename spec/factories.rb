@@ -28,6 +28,5 @@ FactoryGirl.define do
     sequence(:receiver_id) { |n| n+1 }
     sequence(:email_id) {|n| n }
     email_part 1
-    responded false
   end
 end
