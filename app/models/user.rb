@@ -60,7 +60,6 @@ class User < ActiveRecord::Base
         log.sender_id = self.id
         log.receiver_id = subscriber.id 
         log.emailed = Time.now
-        log.responded = false
       end
       UserMailer.send_message(email, wr_log, subscriber).deliver
     end

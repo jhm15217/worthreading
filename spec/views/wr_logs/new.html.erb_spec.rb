@@ -7,8 +7,7 @@ describe "wr_logs/new" do
       :sender_id => 1,
       :receiver_id => 1,
       :email_id => 1,
-      :email_part => 1,
-      :responded => false
+      :email_part => 1
     ).as_new_record)
   end
 
@@ -22,7 +21,6 @@ describe "wr_logs/new" do
       assert_select "input#wr_log_receiver_id", :name => "wr_log[receiver_id]"
       assert_select "input#wr_log_email_id", :name => "wr_log[email_id]"
       assert_select "input#wr_log_email_part", :name => "wr_log[email_part]"
-      assert_select "input#wr_log_responded", :name => "wr_log[responded]"
     end
   end
 end

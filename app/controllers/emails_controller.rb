@@ -43,11 +43,13 @@ class EmailsController < ApplicationController
       render text: "Email Received" if @email.save
       if @user.subscribers.empty?
         error = "There are no subscribers on your list. Please add subscribers to your list"
-        UserMailer.delay.send_error(error, @user, @email)
+        UserMailer.send_error(error, @user, @email).deliver
+
+        #UserMailer.delay.send_error(error, @user, @email)
       else
-#         default_wr_log_entry = @email.wr_logs.new(action:"email", sender_id:@user.id, responded: false)
-#         default_wr_log_entry.save
-        @user.delay.send_msg_to_subscribers(@email)
+        @user.send_msg_to_subscribers(@email)
+
+        # @user.delay.send_msg_to_subscribers(@email)
 
       end
     else

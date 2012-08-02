@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120802185927) do
+ActiveRecord::Schema.define(:version => 20120802220803) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(:version => 20120802185927) do
     t.integer  "receiver_id"
     t.integer  "email_id"
     t.integer  "email_part"
-    t.boolean  "responded"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.string   "token_identifier"
