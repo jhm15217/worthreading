@@ -77,7 +77,7 @@ class UserMailer < ActionMailer::Base
                                       DEV_URL
                                     end,
                                id: user.id, 
-                               confirmation: user.confirmation_token,
+                               confirmation_token: user.confirmation_token,
                                protocol: if Rails.env.production?
                                            'https'
                                          else
