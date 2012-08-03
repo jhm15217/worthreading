@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   # on the email
   def send_password_reset
     generate_confirmation_token
-    password_reset_sent_at = Time.now
+    self.password_reset_sent_at = Time.now
     save!(validate: false)
 
     UserMailer.password_reset(self).deliver

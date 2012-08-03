@@ -47,6 +47,7 @@ describe User do
   it { should respond_to(:emails) }
   it { should respond_to(:confirmed)}
   it { should respond_to(:confirmation_token) }
+  it { should respond_to(:password_reset_sent_at)}
   it { should respond_to(:sender_wr_logs) }
   
   it { should be_valid }
