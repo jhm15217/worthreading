@@ -70,10 +70,21 @@ class User < ActiveRecord::Base
     user.email = email.downcase
     if user.new_record? 
       user.likes = 50 
-      user.confirmation_token = SecureRandom.urlsafe_base64
+      user.generate_confirmation_token
     end
   }
   before_save :create_remember_token
+
+  def send_password_reset
+    generate_confirmation_token
+    save!(validate: false)
+
+    UserMailer.password_reset(self).deliver
+  end
+
+  def generate_confirmation_token
+    self.confirmation_token = SecureRandom.urlsafe_base64
+  end
 
   private
 
