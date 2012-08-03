@@ -1,2 +1,5 @@
-%h1 PasswordResets#new
-%p Find me in app/views/password_resets/new.html.haml
+= form_tag password_resets_path, :method => :post do
+  .field
+    = label_tag :email
+    = text_field_tag :email, params[:email]
+  .actions= submit_tag "Reset Password"
