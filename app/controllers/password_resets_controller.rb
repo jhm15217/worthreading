@@ -2,6 +2,7 @@ class PasswordResetsController < ApplicationController
   def new
   end
 
+  # Password reset email is sent
   def create
     user =  User.find_by_email(params[:email])
     if user && user.confirmed

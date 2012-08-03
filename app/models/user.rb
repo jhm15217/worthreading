@@ -2,18 +2,18 @@
 #
 # Table name: users
 #
-#  id                  :integer         not null, primary key
-#  name                :string(255)
-#  email               :string(255)
-#  created_at          :datetime        not null
-#  updated_at          :datetime        not null
-#  password_digest     :string(255)
-#  remember_token      :string(255)
-#  admin               :boolean         default(FALSE)
-#  likes               :integer
-#  confirmed           :boolean         default(FALSE)
-#  confirmation_token  :string(255)
-#  password_reset_sent :datetime
+#  id                     :integer         not null, primary key
+#  name                   :string(255)
+#  email                  :string(255)
+#  created_at             :datetime        not null
+#  updated_at             :datetime        not null
+#  password_digest        :string(255)
+#  remember_token         :string(255)
+#  admin                  :boolean         default(FALSE)
+#  likes                  :integer
+#  confirmed              :boolean         default(FALSE)
+#  confirmation_token     :string(255)
+#  password_reset_sent_at :datetime
 #
 
 class User < ActiveRecord::Base
@@ -78,6 +78,8 @@ class User < ActiveRecord::Base
 
   # The confirmation token used to confirm emails when creating a user is also
   # used to send and confirm the password reset link
+  # The time the email is sent is recorded to help establish a 1 hour expiration rule
+  # on the email
   def send_password_reset
     generate_confirmation_token
     password_reset_sent_at = Time.now
