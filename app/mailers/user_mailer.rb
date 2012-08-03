@@ -59,13 +59,31 @@ class UserMailer < ActionMailer::Base
     mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}")
   end
 
-  def send_error(error, user, email)
+  def error_email(error, user, email)
     @sender = user
     @error = error
     @email = email
     @signin_url = signin_url(protocol: PROTOCOL, host: Rails.env.production? ? PROD_URL : DEV_URL)
 
     mail(to: @sender.email, subject: "Error: #@error")
+  end
+
+  def password_reset(user)
+    @user = user
+
+    @url =  reset_password_url(host: if Rails.env.production?
+                                      PROD_URL
+                                    else
+                                      DEV_URL
+                                    end,
+                               id: user.id, 
+                               confirmation_token: user.confirmation_token,
+                               protocol: if Rails.env.production?
+                                           'https'
+                                         else
+                                           'http'
+                                         end)
+    mail(to: user.email, subject: "Request for Password Reset")
   end
 
 # NOTE Unimplemented for now but possible use in the future

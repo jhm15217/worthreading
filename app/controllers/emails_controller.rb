@@ -43,7 +43,7 @@ class EmailsController < ApplicationController
       render text: "Email Received" if @email.save
       if @user.subscribers.empty?
         error = "There are no subscribers on your list. Please add subscribers to your list"
-        UserMailer.send_error(error, @user, @email).deliver
+        UserMailer.error_email(error, @user, @email).deliver
 
         #UserMailer.delay.send_error(error, @user, @email)
       else

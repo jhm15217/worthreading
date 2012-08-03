@@ -57,8 +57,6 @@ describe UserMailer do
   end
 
   describe "Alerting user of a change in the wr_log" do
-
-
     context "when a User finds an email worth reading" do 
       before { wr_log.action = "worth reading" }
       it "should indicate an email was worth reading" do
@@ -93,14 +91,24 @@ describe UserMailer do
   describe "when alerting a user of an error" do
     let(:error) { "There is an error" }
     it "should render the error email without erorr" do
-      lambda { UserMailer.send_error(error, user, email) }.should_not raise_error
+      lambda { UserMailer.error_email(error, user, email) }.should_not raise_error
     end
 
     it "should deliver successfully" do
-      lambda { UserMailer.send_error(error, user, email).deliver }.should_not raise_error
+      lambda { UserMailer.error_email(error, user, email).deliver }.should_not raise_error
     end
   end
 
+
+  describe "when sending a user a password reset email" do
+    it "should render the error email without erorr" do
+      lambda { UserMailer.password_reset(user) }.should_not raise_error
+    end
+
+    it "should deliver successfully" do
+      lambda { UserMailer.password_reset(user).deliver }.should_not raise_error
+    end
+  end
   # Parsing implementation tests 
   #  describe "Parsed email" do 
   #    it "should render the first part of the message email successfully" do 
