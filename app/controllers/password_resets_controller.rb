@@ -24,7 +24,7 @@ class PasswordResetsController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.password_reset_sent_at < 1.hour.ago
-      redirect_to signin_path, flash: { notice: "Your password reset has expired" }
+      redirect_to signin_path, flash: { notice: "Your password reset has already expired" }
 
     # The following password_reset_sent_at: 2.hours.ago will cause link to expire after use
     elsif @user.update_attributes(params[:user])
