@@ -125,7 +125,6 @@ describe WrLogsController do
 
       it "should send an email alerting Sender that the receiver opened their email" do
         wr_log.reload
-        puts wr_log.action
         expect { get :msg_opened, { id: wr_log.id, token_identifier: wr_log.token_identifier } }.
           to change(ActionMailer::Base.deliveries, :size).by(1)
           # to change(Delayed::Job, :count).by(1)

@@ -1,5 +1,6 @@
 WorthReading::Application.routes.draw do
 
+
   resources :users do
     resources :emails, only: [:index, :show, :destroy]
     resources :relationships, only: [:create, :destroy, :index]
@@ -9,9 +10,10 @@ WorthReading::Application.routes.draw do
   end
 
   resources :emails, only: [:index, :show, :create, :destroy] 
-
   resources :sessions, only: [:new, :create, :destroy]
   resources :relationships, only: [:create, :destroy, :index]
+  resources :password_resets, only: [:new, :create, :update]
+
   resources :wr_logs do
     member do
       get :msg_opened
@@ -36,6 +38,9 @@ WorthReading::Application.routes.draw do
   match 'users/:id/confirm/:confirmation_token', 
     to: 'users#confirm_email', 
     as: :confirm_email
+  match 'users/:id/reset_password/:confirmation_token',
+    to: 'password_resets#edit', 
+    as: :reset_password
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
