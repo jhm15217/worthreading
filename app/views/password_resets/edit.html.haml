@@ -1,14 +1,22 @@
-= form_for @user, :url => password_reset_path(params[:id]) do |f|
-  - if @user.errors.any?
-    .error_messages
-      %h2 Form is invalid
-      %ul
-        - for message in @user.errors.full_messages
-          %li= message
-  .field
-    = f.label :password
-    = f.password_field :password
-  .field
-    = f.label :password_confirmation
-    = f.password_field :password_confirmation
-  .actions= f.submit "Update Password"
+.row
+  .span4.offset3
+    %br/
+    %h2 Reset password
+    %br/
+
+.row
+  .span6.offset3
+    = form_for @user, :url => password_reset_path(params[:id]) do |f|
+      - if @user.errors.any?
+        .error_messages
+          %h2 Form is invalid
+          %ul
+            - for message in @user.errors.full_messages
+              %li= message
+      .field
+        = f.label :password
+        = f.password_field :password
+      .field
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation
+      .actions= f.submit "Update Password"

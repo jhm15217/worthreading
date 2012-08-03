@@ -9,8 +9,8 @@ class PasswordResetsController < ApplicationController
       redirect_to signin_path, 
         flash: { notice: "Email sent with password reset instructions." }
     else
-      flash.now { error: "Sorry, that email is not registered" }
-      render new
+      flash.now[:error] = "Sorry, that email is not registered"
+      render 'new'
     end
   end
 
@@ -22,7 +22,7 @@ class PasswordResetsController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if @user.password_reset_sent < 1.hour.ago
+    if @user.password_reset_sent_at < 1.hour.ago
       redirect_to signin_path, flash: { notice: "Your password reset has expired" }
     elsif @user.update_attributes(params[:user])
       redirect_to signin_path, flash: { success: "Your password has been reset" }
