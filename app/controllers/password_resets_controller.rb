@@ -27,7 +27,7 @@ class PasswordResetsController < ApplicationController
       redirect_to signin_path, flash: { notice: "Your password reset has expired" }
 
     # The following password_reset_sent_at: 2.hours.ago will cause link to expire after use
-    elsif @user.update_attributes(params[:user], password_reset_sent_at: 2.hours.ago)
+    elsif @user.update_attributes(params[:user], user: { password_reset_sent_at: 2.hours.ago })
       redirect_to signin_path, flash: { success: "Your password has been reset" }
     else
       render :edit
