@@ -1,5 +1,6 @@
 WorthReading::Application.routes.draw do
 
+
   resources :users do
     resources :emails, only: [:index, :show, :destroy]
     resources :relationships, only: [:create, :destroy, :index]
@@ -9,9 +10,10 @@ WorthReading::Application.routes.draw do
   end
 
   resources :emails, only: [:index, :show, :create, :destroy] 
-
   resources :sessions, only: [:new, :create, :destroy]
   resources :relationships, only: [:create, :destroy, :index]
+  resources :password_resets
+
   resources :wr_logs do
     member do
       get :msg_opened
