@@ -22,9 +22,17 @@ class WrLog < ActiveRecord::Base
   belongs_to :user
 
   before_save :create_token_identifier
-
+  
   private
   def create_token_identifier
     self.token_identifier = SecureRandom.urlsafe_base64
   end
+  
+  # Validataions
+  validates :sender_id, presence: true
+  validates :email_id, presence:   true
+  validates :receiver_id, presence:   true
+  validates :email_id, presence:   true
+  
+  
 end

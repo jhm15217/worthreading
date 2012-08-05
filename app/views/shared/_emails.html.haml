@@ -1,14 +1,21 @@
-
+%h3 Emails
+%br
 - if !@emails.empty?
   %br/
   %table.table.table-condensed
     %tr
+      %th When
       %th Subject
-      %th
-      %th
+      %th Sent
+      %th Opened
+      %th Liked
     - @emails.each do |email|
       %tr
+        %td= email.created_at.to_formatted_s(:short)
         %td= email.subject
+        %td= WrLog.where("email_id = #{email.id}").count
+        %td= WrLog.where("opened and email_id = #{email.id}").count
+        %td= WrLog.where("worth_reading and email_id = #{email.id}").count
         %td= link_to 'Show', user_email_path(@user, email)
 - else
   No emails yet. Send an email.

@@ -10,7 +10,7 @@ end
 
 def make_users
   puts "Creating Admin User..."
-  admin = User.create!(name:     "Example User",
+  admin = User.create!(name:     "Administrator",
                        email:    "admin@email.com",
                        password: "foobar",
                        password_confirmation: "foobar")
@@ -46,15 +46,27 @@ def make_emails
   users = User.all
 
   users[0..25].each do |user|
-    rand(15..40).times.each do |n|
-      recipient = users[rand(5..30)]
-      email = user.emails.create(to: recipient.email, 
+    subscribers = user.subscribers
+    (0..rand(0..50)).to_a.each do |n|
+      email = user.emails.create!(to: "subscribed@worth-reading.org",
                          from: user.email, 
-                         subject: "HelloWorld #{n}",
+                         subject: "Message  #{n}",
                          body: Faker::Lorem.paragraph)
-      wr_log = email.wr_logs.create(action:"email", sender_id: user.id,
-                      receiver_id:recipient.id, email_part: 0, responded: false)
-    end
+      subscribers[0..rand(1..subscribers.count)].each do |recipient|  # How many subscribers today?
+        wr_log = email.wr_logs.create(email_id: email.id, sender_id: user.id, receiver_id:recipient.id)
+        wr_log.emailed = DateTime.now + rand(0..3.0)
+        if rand(0..1.0) > 0.60 # Did he open it?
+          wr_log.opened = wr_log.emailed + rand(0..3.0*60*60*24)
+        end
+        if (rand(0..1.0) > 0.80)  # Did he like it ?
+          if wr_log.opened  # Did he enable graphics?
+           wr_log.worth_reading = wr_log.opened + rand(0..5.0)
+         else
+           wr_log.worth_reading = wr_log.emailed + rand(0..3.0*60*60*24)
+         end         
+        end
+        wr_log.save        
+      end
+    end 
   end
-
 end
