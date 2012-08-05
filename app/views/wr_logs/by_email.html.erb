@@ -8,22 +8,21 @@
     <th>Sender</th>
     <th>Subject</th>
     <th>Receivers</th>
-    <th>Ave Minutes to Open</th>
-    <th>Ave Minutes to Click</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>opened</th>
+    <th>liked</th>
   </tr>
 
 
-<% WrLog.select('email_id, created_at, sender_id, count(receiver_id) as receiver_count').group('email_id').each do |line| %>
+<% WrLog.select('email_id, sender_id, count(receiver_id) as receiver_count,
+                  count(opened) as opened_count, count(worth_reading) as liked_count').group('email_id')
+                  .order("liked_count").reverse_order.each do |line| %>
   <tr>
-    <td><%= line.created_at %></td>
+    <td><%= Email.find(line.email_id).created_at %></td>
     <td><%= User.find(line.sender_id).name %></td>
     <td><%= Email.find(line.email_id).subject %></td>
     <td><%= line.receiver_count %></td>
-    <td></td>
-    <td></td>
+    <td><%= line.opened_count %></td>
+    <td><%= line.liked_count %></td>
   </tr>
 <% end %>
 </table>

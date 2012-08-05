@@ -1,25 +1,26 @@
-<h1>Emails by Receive</h1>
+<h1>Emails by Receiver</h1>
 
 <%= link_to 'Events', "wr_logs" %>
 
 <table cellpadding="5">
   <tr>
     <th>Receiver</th>
-    <th>Emails</th>
-    <th>Ave Minutes to Open</th>
-    <th>Ave Minutes to Click</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Message Count</th>
+    <th>% opened</th>
+    <th>% liked</th>
   </tr>
 
 
-<% WrLog.select('receiver_id, count(email_id) as email_count').group('receiver_id').each do |line| %>
+<% WrLog.select('receiver_id, count(receiver_id) as receiver_count,
+                 count(opened) as opened_count, count(worth_reading) as
+                 worth_reading_count' ).group('receiver_id')
+                 .order('1.0*worth_reading_count/receiver_count').reverse_order
+                 .each do |line| %>
   <tr>
     <td><%= User.find(line.receiver_id).name %></td>
-    <td><%= line.email_count %></td>
-    <td></td>
-    <td></td>
+   <td><%= line.receiver_count %></td>
+   <td><%= (line.opened_count*100.0/line.receiver_count).round %></td>
+    <td><%= (line.worth_reading_count*100.0/line.receiver_count).round %></td>
   </tr>
 <% end %>
 </table>

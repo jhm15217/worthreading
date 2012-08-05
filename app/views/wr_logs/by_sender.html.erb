@@ -5,20 +5,25 @@
 <table cellpadding="5">
   <tr>
     <th>Sender</th>
-    <th>Emails</th>
-    <th>Ave Minutes to Open</th>
-    <th>Ave Minutes to Click</th>
+    <th>Message Count</th>
+    <th>% opened</th>
+    <th>% liked</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
 
 
-<% WrLog.select('sender_id, count(email_id) as email_count').group('sender_id').each do |line| %>
+<% WrLog.select('sender_id, count(sender_id) as sender_count,
+                 count(opened) as opened_count, count(worth_reading) as
+                 worth_reading_count' ).group('sender_id')
+                 .order('1.0*worth_reading_count/sender_count').reverse_order
+                 .each do |line| %>
   <tr>
     <td><%= User.find(line.sender_id).name %></td>
-    <td><%= line.email_count %></td>
-    <td></td>
+   <td><%= line.sender_count %></td>
+   <td><%= (line.opened_count*100.0/line.sender_count).round %></td>
+    <td><%= (line.worth_reading_count*100.0/line.sender_count).round %></td>
     <td></td>
   </tr>
 <% end %>
