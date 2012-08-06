@@ -1,8 +1,11 @@
 - provide(:title, @user.name)
 .row
-  %h1= @user.name
+  %br/
   %br/
 
 .row
-  %aside.span5.offset3
+  %aside.span2.offset1
+    %h3= @user.name
+    = gravatar_for @user
+  %aside.span5
     = render 'shared/emails'
