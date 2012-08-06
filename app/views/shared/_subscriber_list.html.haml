@@ -12,15 +12,21 @@
   %table.table.table-condensed
     %tr
       %th Name
+      %th Email 
       %th Sent
       %th Opened
       %th Liked
     - @user.subscribers.each do |subscriber|
       %tr
         %td= subscriber.name 
+        %td= subscriber.email
         %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count
         %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened").count
         %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading").count
-        %td= link_to 'Delete'  #
+        - if @user == current_user
+          %td= link_to 'Delete', 
+            relationship_path(@user.relationships.find_by_subscriber_id(subscriber.id)),
+            method: :delete
+            
 - else
   Add a subscriber
