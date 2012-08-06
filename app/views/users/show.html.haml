@@ -1,15 +1,8 @@
 - provide(:title, @user.name)
 .row
-  %section
-    %b
-      Likes:
-    = @user.likes
-  %aside.span5
-    %br/
-    %br/
+  %h1= @user.name
+  %br/
+
+.row
+  %aside.span5.offset3
     = render 'shared/emails'
-  .span5
-    %br/
-    %br/
-    - if current_user?(@user)
-      = render 'shared/subscriber_list'
