@@ -48,6 +48,7 @@ def make_emails
   users[0..25].each do |user|
     subscribers = user.subscribers
     (0..rand(0..50)).to_a.each do |n|
+      puts "Creating Email #{n} for #{user.name}"
       email = user.emails.create!(to: "subscribed@worth-reading.org",
                                   from: user.email, 
                                   subject: "Message  #{n}",
