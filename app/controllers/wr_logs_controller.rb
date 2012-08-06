@@ -114,16 +114,16 @@ class WrLogsController < ApplicationController
 
   #GET /by_email
   def by_email
-    redirect_to(root_path) unless signed_in? 
+    redirect_to(root_path) unless signed_in? && current_user.admin?
   end
 
   #GET /by_sender
   def by_sender
-    redirect_to(root_path) unless signed_in? 
+    redirect_to(root_path) unless signed_in? && current_user.admin?
   end
 
   #GET /by_receiver
   def by_receiver
-    redirect_to(root_path) unless signed_in?
+    redirect_to(root_path) unless signed_in? && current_user.admin? 
   end
 end
