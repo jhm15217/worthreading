@@ -1,18 +1,13 @@
 - if signed_in?
   - provide(:title, @user.name)
-  - provide(:@subscribers, @user.subscribers)
     .row
-    %section
-      %b
-      Likes:
-      = @user.likes
-    %aside.span5
-      %br/
-      = render 'shared/emails'
-    .span5
-      %br/
-      - if current_user?(@user)
-      = render 'shared/subscriber_list'
+      %aside.span5
+        %br/
+        = render 'shared/emails'
+      %aside.span5
+        %br/
+        - if current_user?(@user)
+        = render 'shared/subscriber_list'
 - else
   .row
     .span8

@@ -21,7 +21,7 @@ class RelationshipsController < ApplicationController
     end
     
     respond_to do |format|
-      format.html { redirect_to current_user }
+      format.html { redirect_to root_path }
       format.js
     end
   end
@@ -30,7 +30,7 @@ class RelationshipsController < ApplicationController
     @user = Relationship.find(params[:id]).subscriber
     current_user.rem_subscriber!(@user)
     respond_to do |format|
-      format.html { redirect_to current_user }
+      format.html { redirect_to root_path }
       format.js
     end
   end

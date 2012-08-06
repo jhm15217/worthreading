@@ -5,7 +5,7 @@
   <div class="span6 offset3">
 	    <%= form_for(@user) do |f| %>
 	      <%= render 'fields', object: f.object, f:f %>
-	      <p><%= f.submit "Save the changes", class: "btn btn-large btn-primary" %></p>
+	      <p><%= f.submit "Save the changes", class: "btn btn-primary" %></p>
 	    <% end %>
 
     <%= gravatar_for @user %>
