@@ -1,0 +1,22 @@
+.row
+  %h1 Emails sent to #{@receiver.email}
+  %br/
+
+.row
+  %table.table.table-condensed
+    %tr
+      %th Subject
+      %th Sent
+      %th Opened
+      %th Liked
+      %th See Email
+    - @wr_logs.each do |log|
+      %tr
+        %td= log.email.subject
+        %td= log.emailed.to_formatted_s(:db) 
+        %td= log.opened ? log.opened.to_formatted_s(:db) : "Undetermined"
+        %td= log.worth_reading ? log.worth_reading.to_formatted_s(:db) : "No response"
+        %td= link_to 'Show', user_email_path(@user, log.email)
+
+.row
+  = will_paginate @wr_logs

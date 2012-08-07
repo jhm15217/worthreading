@@ -19,7 +19,7 @@
     - @user.subscribers.each do |subscriber|
       %tr
         %td= subscriber.name 
-        %td= subscriber.email
+        %td= link_to subscriber.email, emails_sent_to_subscriber_path(id: @user.id, receiver_id: subscriber.id )
         %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count
         %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened").count
         %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading").count
