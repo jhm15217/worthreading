@@ -1,5 +1,6 @@
 class EmailsController < ApplicationController
   before_filter :signed_in_user, except: [:create]
+  before_filter :correct_user, only: [:emails_sent_to_subscriber]
 
   # This is used to disable Rails request forger protection for this controller
   # since we are receiving post data from mailgun
@@ -65,5 +66,21 @@ class EmailsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to emails_url }
     end
+  end
+
+  # Brings up a page of the emails sent to a particular subscriber by a sender
+  # GET 
+  def emails_sent_to_subscriber
+    @receiver = User.find(params[:receiver_id])
+    @wr_logs =  WrLog.where("sender_id = ? and receiver_id = ?", @user, @receiver).
+      order("created_at DESC").
+      paginate( page: params[:page], per_page: 15)
+  end
+
+  private
+
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless current_user?(@user)
   end
 end
