@@ -74,7 +74,14 @@ class EmailsController < ApplicationController
     @receiver = User.find(params[:receiver_id])
     @wr_logs =  WrLog.where("sender_id = ? and receiver_id = ?", @user, @receiver).
       order("created_at DESC").
-      paginate( page: params[:page], per_page: 15)
+      paginate(page: params[:page])
+  end
+
+  # Brings up a page of the recipients of a particular email
+  # GET
+  def recipient_list
+    @email = Email.find(params[:id])
+    @wr_logs = @email.wr_logs.paginate(page: params[:page])
   end
 
   private

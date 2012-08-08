@@ -14,7 +14,7 @@
       %tr
         %td= email.created_at.to_formatted_s(:short)
         %td= email.subject
-        %td= WrLog.where("email_id = #{email.id}").count
+        %td= link_to WrLog.where("email_id = #{email.id}").count, recipient_list_email_path(email.id)
         %td= WrLog.where("opened IS NOT NULL and email_id = #{email.id}").count
         %td= WrLog.where("worth_reading IS NOT NULL and email_id = #{email.id}").count
         %td= link_to 'Show', user_email_path(@user, email)
