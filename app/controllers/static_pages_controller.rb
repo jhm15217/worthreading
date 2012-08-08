@@ -2,9 +2,17 @@ class StaticPagesController < ApplicationController
   def home
     if signed_in? 
       @user = current_user 
-      two_weeks_ago = Time.now.weeks_ago(2)
-      @emails = @user.emails.where("created_at >= ?", two_weeks_ago )
+      @emails = @user.emails
       @email_count = @user.emails.count
+      @subscribers = @user.subscribers
+      @subscriber_list = @subscribers.map do |subscriber|
+        {name: subscriber.name,
+          email: subscriber.email,
+          id: subscriber.id,
+          sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,
+        opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened").count,
+        liked: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading").count } 
+      end.sort_by {|h| -h[:liked] }
     end
     @users = User.all order: 'likes DESC'
   end

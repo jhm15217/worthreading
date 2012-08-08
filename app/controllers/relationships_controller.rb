@@ -7,21 +7,6 @@ class RelationshipsController < ApplicationController
     @subscribers = current_user.subscribers
   end
 
-  def email_address_list(email_addresses)
-    x = email_addresses.split(/,\s*/).map{|x| email_address_parts(x) }
-    x.select {|x| x}
-  end
-
-  def email_address_parts(email_address)
-    if parts = (email_address.match('"([^"]*)"<(.*)>') or email_address.match('([-a-z0-9.]*)<(.*)>'))
-      name = parts.captures[0]
-      email_address = parts.captures[1]
-    else
-      name = ""
-    end
-    { name: name, email: email_address }
-  end
-  
   # Adds subscribers
   # Creates a user if user doesn't exist
   def create
@@ -62,4 +47,20 @@ class RelationshipsController < ApplicationController
     end
   end
 
+  private
+
+  def email_address_list(email_addresses)
+    x = email_addresses.split(/,\s*/).map{|x| email_address_parts(x) }
+    x.select {|x| x}
+  end
+
+  def email_address_parts(email_address)
+    if parts = (email_address.match('"([^"]*)"<(.*)>') or email_address.match('([-a-z0-9.]*)<(.*)>'))
+      name = parts.captures[0]
+      email_address = parts.captures[1]
+    else
+      name = ""
+    end
+    { name: name, email: email_address }
+  end
 end

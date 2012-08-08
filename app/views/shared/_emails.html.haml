@@ -9,6 +9,7 @@
       %th Sent
       %th Opened
       %th Liked
+      %th Show
     - @emails.each do |email|
       %tr
         %td= email.created_at.to_formatted_s(:short)
@@ -17,4 +18,3 @@
         %td= WrLog.where("opened and email_id = #{email.id}").count
         %td= WrLog.where("worth_reading and email_id = #{email.id}").count
         %td= link_to 'Show', user_email_path(@user, email)
-
