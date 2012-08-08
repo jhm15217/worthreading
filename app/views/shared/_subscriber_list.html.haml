@@ -1,13 +1,15 @@
 %h3 Subscribers
 %br/
 %p
-  = form_tag('/relationships', class: 'form-horizontal') do 
-    .input-append
-      %textarea.span4{ :name => "email_addresses",
-                                        :size => "18", 
-                                        :type => "text", 
-                                        :placeholder => "Enter email addresses"}
-      %button.btn.btn-large{type: "submit"} Add 
+  %small Separate email addresses by ", " (a comma and a space).
+= form_tag('/relationships', class: 'form-horizontal') do 
+  .input-append
+    %textarea.span4{ :name => "email_addresses",
+                                      :size => "18", 
+                                      :type => "text", 
+                                      :placeholder => "Enter email addresses." }
+    %button.btn.btn-large{type: "submit"} Add 
+
 - if !@user.subscribers.empty?
   %table.table.table-condensed
     %tr
