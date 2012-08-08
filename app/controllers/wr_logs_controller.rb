@@ -1,4 +1,6 @@
 class WrLogsController < ApplicationController
+  before_filter :admin_user, only: [:by_email, :by_sender, :by_receiver ]
+
   # GET /wr_logs
   # GET /wr_logs.json
   def index
@@ -114,16 +116,19 @@ class WrLogsController < ApplicationController
 
   #GET /by_email
   def by_email
-    redirect_to(root_path) unless signed_in? && current_user.admin?
   end
 
   #GET /by_sender
   def by_sender
-    redirect_to(root_path) unless signed_in? && current_user.admin?
   end
 
   #GET /by_receiver
   def by_receiver
+  end
+
+  private
+
+  def admin_user
     redirect_to(root_path) unless signed_in? && current_user.admin? 
   end
 end

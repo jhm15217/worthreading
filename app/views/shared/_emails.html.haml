@@ -18,3 +18,5 @@
         %td= WrLog.where("opened IS NOT NULL and email_id = #{email.id}").count
         %td= WrLog.where("worth_reading IS NOT NULL and email_id = #{email.id}").count
         %td= link_to 'Show', user_email_path(@user, email)
+- else
+  No emails sent.
