@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'users_helper'
 
 # Specs in this file have access to a helper object that includes
 # the EmailsHelper. For example:

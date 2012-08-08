@@ -17,5 +17,4 @@
         %td= WrLog.where("opened and email_id = #{email.id}").count
         %td= WrLog.where("worth_reading and email_id = #{email.id}").count
         %td= link_to 'Show', user_email_path(@user, email)
-- else
-  No emails yet. Send an email.
+

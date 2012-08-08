@@ -3,10 +3,10 @@
 %p
   = form_tag('/relationships', class: 'form-horizontal') do |f|
     .input-append
-      %input#appendedInputButton.span2{ :name => "email",
+      %input#appendedInputButton.span2{ :name => "email_addresses",
                                         :size => "18", 
                                         :type => "text", 
-                                        :placeholder => "Enter email"}
+                                        :placeholder => "Enter email addresses"}
       %button.btn{type: "submit"} Add 
 - if !@user.subscribers.empty?
   %table.table.table-condensed
@@ -15,12 +15,10 @@
       %th Sent
       %th Opened
       %th Liked
-    - @user.subscribers.each do |subscriber|
+    - @subscriber_list.each do |item|
       %tr
-        %td= subscriber.name 
-        %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count
-        %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened").count
-        %td= WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading").count
-        %td= link_to 'Delete'  #
-- else
-  Add a subscriber
+        %td= item[:name]
+        %td= item[:sent]
+        %td= item[:opened]
+        %td= item[:liked]
+        %td= link_to 'Delete' #

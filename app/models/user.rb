@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   # Subscriber Methods
-  def add_subscriber!(subscriber) 
+  def add_subscriber!(subscriber)
     self.relationships.create!(subscriber_id: subscriber.id)
   end
 

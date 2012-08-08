@@ -1,3 +1,5 @@
+require "emails_helper.rb"
+
 class RelationshipsController < ApplicationController
   before_filter :signed_in_user
 
@@ -5,19 +7,44 @@ class RelationshipsController < ApplicationController
     @subscribers = current_user.subscribers
   end
 
+  def email_address_list(email_addresses)
+    x = email_addresses.split(/,\s*/).map{|x| email_address_parts(x) }
+    x.select {|x| x}
+  end
+
+  def email_address_parts(email_address)
+    if parts = (email_address.match('"([^"]*)"<(.*)>') or email_address.match('([-a-z0-9.]*)<(.*)>'))
+      name = parts.captures[0]
+      email_address = parts.captures[1]
+    else
+      name = ""
+    end
+    { name: name, email: email_address }
+  end
+  
   # Adds subscribers
   # Creates a user if user doesn't exist
   def create
-    @user = find_or_register(params[:email]) 
-
-    # Checks if user saved and if it didn't, email was most likely invalid
-    redirect_to(current_user, 
-                flash: { error: "Invalid email address"}) and return if !@user
-
-    if @user && current_user.subscribed_by?(@user) 
-      flash[:error] = "That email address is already on your list."
-    elsif !params[:email].blank?
-      current_user.add_subscriber!(@user)
+    email_address_list(params[:email_addresses]).each do |user_parts|
+      puts user_parts
+      @user = find_or_register(user_parts[:email])
+      if !@user
+        puts "malformed"
+        flash[:error] = "Malformed email address: #{user_parts[:email]}"
+      else
+        if current_user.subscribed_by?(@user)
+          puts "already"
+          flash[:error] = "#{user_parts[:email]} was already on your list."
+        else
+          puts "new"
+          if @user.name = "Unknown" and user_parts[:name] != ""
+            puts "new name"
+            @user.name = user_parts[:name]
+            @user.save
+          end
+          current_user.add_subscriber!(@user)
+        end
+      end
     end
     
     respond_to do |format|
