@@ -1,5 +1,3 @@
-require "emails_helper.rb"
-
 class RelationshipsController < ApplicationController
   before_filter :signed_in_user
 
