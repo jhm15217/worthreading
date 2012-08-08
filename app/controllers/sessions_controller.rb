@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     user = User.find_by_email(params[:session][:email])
      if user && user.authenticate(params[:session][:password]) && user.confirmed
        sign_in user
-       redirect_back_or user
+       redirect_back_or root_path 
      elsif user && !user.confirmed
        flash.now[:error] = "You haven't confirmed your email yet." 
        render 'new'

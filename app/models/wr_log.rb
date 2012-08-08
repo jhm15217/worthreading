@@ -32,5 +32,4 @@ class WrLog < ActiveRecord::Base
   validates :sender_id, presence: true
   validates :email_id, presence:   true
   validates :receiver_id, presence:   true  
-  
 end

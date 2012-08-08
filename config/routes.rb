@@ -41,6 +41,9 @@ WorthReading::Application.routes.draw do
   match 'users/:id/reset_password/:confirmation_token',
     to: 'password_resets#edit', 
     as: :reset_password
+  match 'emails/:id/sent_to_subscriber/:receiver_id',
+    to: 'emails#emails_sent_to_subscriber',
+    as: 'emails_sent_to_subscriber'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
