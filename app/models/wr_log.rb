@@ -19,10 +19,11 @@
 class WrLog < ActiveRecord::Base
   attr_accessible :action, :email_id, :email_part, :receiver_id, :responded, :sender_id
   belongs_to :email
-  belongs_to :user
+  belongs_to :sender, class_name: "User"
+  belongs_to :receiver, class_name: "User"
 
   before_save :create_token_identifier
-  
+
   private
   def create_token_identifier
     self.token_identifier = SecureRandom.urlsafe_base64
