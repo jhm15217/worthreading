@@ -1,0 +1,20 @@
+.row
+  %h1 Recipients of Email
+  %br/
+
+.row
+  %table.table.table-condensed
+    %tr
+      %th Recipient
+      %th Email
+      %th Opened
+      %th Liked
+    - @wr_logs.each do |log|
+      %tr
+        %td= log.receiver.name
+        %td= log.receiver.email
+        %td= log.opened ? log.opened.to_formatted_s(:db) : "Undetermined"
+        %td= log.worth_reading ? log.worth_reading.to_formatted_s(:db) : "No response"
+
+.row
+  = will_paginate @wr_logs
