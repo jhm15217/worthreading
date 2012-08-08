@@ -1,13 +1,15 @@
 %h3 Subscribers
 %br/
 %p
-  = form_tag('/relationships', class: 'form-horizontal') do |f|
-    .input-append
-      %input#appendedInputButton.span2{ :name => "email_addresses",
-                                        :size => "18", 
-                                        :type => "text", 
-                                        :placeholder => "Enter email addresses"}
-      %button.btn{type: "submit"} Add 
+  %small Separate email addresses by ", " (a comma and a space).
+= form_tag('/relationships', class: 'form-horizontal') do 
+  .input-append
+    %textarea.span4{ :name => "email_addresses",
+                                      :size => "18", 
+                                      :type => "text", 
+                                      :placeholder => "Enter email addresses." }
+    %button.btn.btn-large{type: "submit"} Add 
+
 - if !@user.subscribers.empty?
   %table.table.table-condensed
     %tr
@@ -16,10 +18,15 @@
       %th Sent
       %th Opened
       %th Liked
+      %th Delete
     - @subscriber_list.each do |item|
       %tr
         %td= item[:name]
+        %td= link_to item[:email], emails_sent_to_subscriber_path(id: @user.id, receiver_id: item[:id] ) 
         %td= item[:sent]
         %td= item[:opened]
         %td= item[:liked]
-        %td= link_to 'Delete' #
+        %td= link_to 'Delete', 
+          relationship_path(@user.relationships.find_by_subscriber_id(item[:id])),
+          method: :delete,
+          confirm: "Are you sure you want to delete #{item[:email]}?"

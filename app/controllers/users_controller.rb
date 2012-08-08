@@ -8,13 +8,7 @@ class UsersController < ApplicationController
     @emails = @user.emails
     @subscribers = @user.subscribers
     @email_count = @user.emails.count
-    @subscriber_list = @subscribers.map do |subscriber|
-              {name: subscriber.name,
-               sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,
-               opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened").count,
-               liked: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading").count } 
-        end.sort_by {|h| -h[:liked] }
-    end
+  end
 
   def new
     if signed_in?
