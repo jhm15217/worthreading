@@ -79,7 +79,7 @@ class EmailsController < ApplicationController
 
   # Brings up a page of the recipients of a particular email
   # GET
-  def recipients_of_email
+  def recipient_list
     @email = Email.find(params[:id])
     @wr_logs = @email.wr_logs.paginate(page: params[:page])
   end

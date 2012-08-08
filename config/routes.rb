@@ -11,7 +11,7 @@ WorthReading::Application.routes.draw do
 
   resources :emails, only: [:index, :show, :create, :destroy] do
     member do
-      get :recipients_of_email
+      get :recipient_list
     end
   end
   resources :sessions, only: [:new, :create, :destroy]
