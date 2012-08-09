@@ -1,4 +1,4 @@
-%h3 Subscribers
+%h1 Subscribers
 %br/
 %p
   %small Separate email addresses by ", " (a comma and a space).
@@ -30,3 +30,4 @@
           relationship_path(@user.relationships.find_by_subscriber_id(item[:id])),
           method: :delete,
           confirm: "Are you sure you want to delete #{item[:email]}?"
+  = will_paginate @subscribers

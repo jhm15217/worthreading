@@ -1,0 +1,23 @@
+.row
+  = render 'shared/tab_navigator'
+
+.row
+  %h1 Who I'm Subscribed To
+  %br/
+.row
+  %table.table.table-condensed
+    %tr
+      %th Name
+      %th Email 
+      %th Sent
+      %th Opened
+      %th Liked
+    - @subscribed_list.each do |item|
+      %tr
+        %td= item[:name]
+        %td= item[:email]
+        %td= item[:sent]
+        %td= item[:opened]
+        %td= item[:liked]
+
+  = will_paginate @subscribed_to

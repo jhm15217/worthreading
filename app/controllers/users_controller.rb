@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:index, :edit, :update, :destroy, :following, :followers]
-  before_filter :correct_user,   only: [:edit, :update]
+  before_filter :correct_user,   only: [:edit, :update, :subscribed_to_list]
   before_filter :admin_user,     only: :destroy
     
   def show
@@ -101,6 +101,19 @@ class UsersController < ApplicationController
     else
       flash[:error] = "Access denied"
     end
+  end
+
+  # GET
+  def subscribed_to_list
+    @user = User.find(params[:id])
+    @subscribed_to = @user.subscribed_users.paginate(page: params[:page])
+    @subscribed_list = @subscribed_to.map do |subscribed|
+      {name: subscribed.name,
+        email: subscribed.email,
+        sent: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id}").count,
+      opened: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and opened IS NOT NULL").count,
+      liked: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and worth_reading IS NOT NULL").count } 
+    end.sort_by {|h| -h[:liked] }
   end
 
   private

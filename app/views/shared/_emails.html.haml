@@ -1,5 +1,4 @@
-%h3 Emails
-%br/
+%h1 Emails
 - if !@emails.empty?
   %br/
   %table.table.table-condensed
@@ -18,5 +17,6 @@
         %td= WrLog.where("opened IS NOT NULL and email_id = #{email.id}").count
         %td= WrLog.where("worth_reading IS NOT NULL and email_id = #{email.id}").count
         %td= link_to 'Show', user_email_path(@user, email)
+  = will_paginate(@emails)
 - else
   No emails sent.
