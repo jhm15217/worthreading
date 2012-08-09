@@ -2,7 +2,16 @@ class RelationshipsController < ApplicationController
   before_filter :signed_in_user
 
   def index
-    @subscribers = current_user.subscribers
+    @user = current_user
+    @subscribers = @user.subscribers.paginate(page: params[:page])
+    @subscriber_list = @subscribers.map do |subscriber|
+      {name: subscriber.name,
+        email: subscriber.email,
+        id: subscriber.id,
+        sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,
+      opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened IS NOT NULL").count,
+      liked: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading IS NOT NULL").count } 
+    end.sort_by {|h| -h[:liked] }
   end
 
   # Adds subscribers
@@ -29,7 +38,7 @@ class RelationshipsController < ApplicationController
         end
       end
     end
-    
+
     respond_to do |format|
       format.html { redirect_to root_path }
       format.js
