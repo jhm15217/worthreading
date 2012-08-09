@@ -3,9 +3,8 @@ class StaticPagesController < ApplicationController
     if signed_in? 
       @user = current_user 
       @emails = @user.emails.paginate(page: params[:page])
-      @users = User.all order: 'likes DESC'
     else
-      @users = User.all
+      @users = User.all order: 'likes DESC'
     end
   end
 
