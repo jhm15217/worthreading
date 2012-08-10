@@ -29,8 +29,8 @@ def make_users
                        password_confirmation: "foobar")
   admin.toggle!(:confirmed)
   admin.toggle!(:admin)
-  puts "Creating 99 other users..."
-  99.times do |n|
+  puts "Creating 19 other users..."
+  19.times do |n|
     name  = Faker::Name.name
     email = "example#{n+1}@worth-reading.org"
     password  = "password"
@@ -47,8 +47,8 @@ def make_relationships
   puts "Creating subscribers... " 
   users = User.all
 
-  users[0..25].each do |user|
-    n_subscribers = rand(5..75)
+  users.each do |user|
+    n_subscribers = rand(1..10)
     subscribers = users[0..n_subscribers]
     subscribers.each { |subscriber| user.add_subscriber!(subscriber) unless subscriber.id == user.id }
   end
@@ -58,9 +58,9 @@ def make_emails
   puts "Creating Emails with WRLog entries..." 
   users = User.all
 
-  users[0..25].each do |user|
+  users.each do |user|
     subscribers = user.subscribers
-    (0..rand(0..50)).to_a.each do |n|
+    rand(0..15).times do |n|
       puts "Creating Email #{n} for #{user.name}"
       email = user.emails.create!(to: "subscribed@worth-reading.org",
                                   from: user.email, 
