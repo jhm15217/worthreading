@@ -28,7 +28,7 @@ describe EmailsController do
 
   describe "receiving an email from via a POST request from Mailgun" do
     it "should render a text 'Email Received' after a successful save" do
-      post :create, {'sender' => user.email,
+      post :create, {'from' => user.email,
         'recipient' => "subscribers@worth-reading.org", 
         'subject' => "Nothing", 
         'body-plain' => "Lorem Ipsum" }
@@ -37,7 +37,7 @@ describe EmailsController do
 
 #    it "should add an entry to WrLog" do
 #      expect do
-#        post :create, {'sender' => user.email, 
+#        post :create, {'from' => user.email, 
 #          'recipient' => "subscribers@worth-reading.org", 
 #          'subject' => "Nothing", 
 #          'body-plain' => "Lorem Ipsum" }
@@ -45,7 +45,7 @@ describe EmailsController do
 #    end
 
     it "should redirect if Email could not be saved" do
-      post :create, {'sender' => " ", 
+      post :create, {'from' => " ", 
         'recipient' => "janmail.com", 
         'subject' => "Nothing"}
       response.should be_redirect
@@ -58,7 +58,7 @@ describe EmailsController do
       end
 
       it "should send out email to all subscribers" do
-        expect { post :create, {'sender' => user.email, 
+        expect { post :create, {'from' => user.email, 
           'recipient' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
@@ -72,7 +72,7 @@ describe EmailsController do
       let(:error) { "Error occured" }
 
       it "should send out an error" do 
-        expect { post :create, {'sender' => user4.email, 
+        expect { post :create, {'from' => user4.email, 
           'recipient' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
