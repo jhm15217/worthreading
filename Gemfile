@@ -15,6 +15,7 @@ gem 'haml-rails'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'delayed_job_active_record'
 gem 'thin' 
+gem 'rest-client'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
