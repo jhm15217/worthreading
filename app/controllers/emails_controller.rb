@@ -34,9 +34,10 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    if @user = find_or_register(params['sender'])  
+    from = email_address_parts(params['from'])[:email]
+    if @user = find_or_register(from)  
       @email = @user.emails.new(
-        from: params['sender'], 
+        from: from,
         to: params['recipient'], 
         subject: params['subject'],
         body: params['body-plain']
