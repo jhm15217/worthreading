@@ -8,12 +8,3 @@
         %span.badge.badge-important#subscription_badge 1
   %li{ class: ("active" if params[:action] == "subscribed_to_list") } 
     = link_to "Subscribed To List", subscribed_to_list_user_path(@user.id)
-
-:javascript
-  badge_options = {
-    animation: true,
-    placement: 'bottom',
-    trigger: 'hover',
-    content: 'No subscribers. Add subscribers.'
-  }
-  $('#subscription_badge').popover(badge_options)
