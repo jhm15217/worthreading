@@ -2,7 +2,6 @@ WorthReading::Application.routes.draw do
 
   resources :users do
     resources :emails, only: [:index, :show, :destroy]
-    resources :relationships, only: [:create, :destroy, :index]
     member do
       put :likes
       get :subscribed_to_list
