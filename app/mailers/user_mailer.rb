@@ -2,10 +2,10 @@ class UserMailer < ActionMailer::Base
   default from: "notifications@worth-reading.org"
 
   # Constants
-#  MORE_INDICATOR = "<more>"
-  PROD_URL = "evening-fog-9503.herokuapp.com"
+  PROD_URL = "worth-reading.org"
   DEV_URL = "localhost:3000"
   PROTOCOL = Rails.env.production? ? 'https' : 'http'
+#  MORE_INDICATOR = "<more>"
  
   def welcome_email(user)
     @user = user
