@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
   # Constants
   PROD_URL = "worth-reading.org"
   DEV_URL = "localhost:3000"
-  PROTOCOL = Rails.env.production? ? 'https' : 'http'
+  PROTOCOL = 'https' : 'http'
 #  MORE_INDICATOR = "<more>"
  
   def welcome_email(user)
