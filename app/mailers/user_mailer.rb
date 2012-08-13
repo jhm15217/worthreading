@@ -17,11 +17,7 @@ class UserMailer < ActionMailer::Base
                                     end,
                                id: user.id, 
                                confirmation_token: user.confirmation_token,
-                               protocol: if Rails.env.production?
-                                           'https'
-                                         else
-                                           'http'
-                                         end)
+                               protocol: PROTOCOL )
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
