@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   default from: "notifications@worth-reading.org"
 
   # Constants
-  PROD_URL = "worth-reading.org"
+  PROD_URL = "www.worth-reading.org"
   DEV_URL = "localhost:3000"
   PROTOCOL = 'http'
 #  MORE_INDICATOR = "<more>"
