@@ -4,7 +4,7 @@
       = link_to "WorthReading", root_path, id: "logo"
       %nav
         %ul.nav.pull-left
-          - if !signed_in? && !current_page?(signin_path)
+          - if !signed_in? && params[:controller] != ("sessions")
             = form_for(:session, url: sessions_path, html: { class: "navbar-form pull-right" }) do |f|
               = f.text_field :email, placeholder: 'Email', 
                   class: "input-medium sign-in"
