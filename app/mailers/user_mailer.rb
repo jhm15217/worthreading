@@ -68,6 +68,7 @@ class UserMailer < ActionMailer::Base
     @sender = user
     @error = error
     @email = email
+    @autogen_msg = AUTOGEN_MSG
     @signin_url = signin_url(protocol: PROTOCOL, host: Rails.env.production? ? PROD_URL : DEV_URL)
 
     mail(to: @sender.email, subject: "Error: #@error")
