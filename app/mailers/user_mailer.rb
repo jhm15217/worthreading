@@ -75,6 +75,7 @@ class UserMailer < ActionMailer::Base
 
   def password_reset(user)
     @user = user
+    @autogen_msg = AUTOGEN_MSG
 
     @url =  reset_password_url(host: if Rails.env.production?
                                       PROD_URL
