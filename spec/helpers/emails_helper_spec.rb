@@ -20,14 +20,11 @@ describe EmailsHelper do
   end
 
   describe "email_address_list" do
-    it "handles singleton" do
-      email_address_list("Jim<jim@email.com>") == []
-    end
-    it "handles two names" do
-      email_address_list('"Jim Jones"<jim@email.com>,Jim<jim@email.com>') == [{ name: "Jim Jones", email: "jim@email.com" },{ name: "Jim", email: "jim@email.com" }]
-    end
-    it "handles error" do
-      email_address_list("Jim<jimemail.com>") == []
-    end
+    specify { email_address_list("Jim<jim@email.com>").should  == [{ name: "Jim", email: "jim@email.com" }] }
+    specify { email_address_list('"Jones, Jim"<jim@email.com>').should  == [{ name: "Jones, Jim", email: "jim@email.com" }] }
+    specify { email_address_list('"Jim Jones"<jim@email.com>,Jim<jim@email.com>').should == [{ name: "Jim Jones", email: "jim@email.com" },{ name: "Jim", email: "jim@email.com" }] }
+    specify { email_address_list('"Jim Jones"<jim@email.com>, Jim Smith <jim@email.com>').should == [{ name: "Jim Jones", email: "jim@email.com" },{ name: "Jim Smith", email: "jim@email.com" }] }
+    specify { email_address_list("Jim<jimemail.com>").should == [] }
+    specify { email_address_list("").should == [] }
   end
 end

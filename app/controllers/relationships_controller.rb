@@ -17,25 +17,27 @@ class RelationshipsController < ApplicationController
   # Adds subscribers
   # Creates a user if user doesn't exist
   def create
+    failed_addresses = ""
     email_address_list(params[:email_addresses]).each do |user_parts|
-      puts user_parts
       @user = find_or_register(user_parts[:email])
       if !@user
-        puts "malformed"
-        flash[:error] = "Malformed email address: #{user_parts[:email]}"
+        failed_addresses = failed_addresses + '"' + user_parts[:name] + '"<' + user_parts[:email] + '>, '
       else
         if current_user.subscribed_by?(@user)
-          puts "already"
           flash[:error] = "#{user_parts[:email]} was already on your list."
         else
-          puts "new"
-          if @user.name = "Unknown" and user_parts[:name] != ""
-            puts "new name"
+          puts "new subscriber"
+          if @user.name == "Unknown" and user_parts[:name] != ""
             @user.name = user_parts[:name]
             @user.save
           end
           current_user.add_subscriber!(@user)
         end
+      end
+      if !failed_addresses.blank?
+        flash.now[:error] = "Malformed email address(es)"
+        params[:email_addresses] = failed_addresses
+        render
       end
     end
 
@@ -49,7 +51,7 @@ class RelationshipsController < ApplicationController
     @user = Relationship.find(params[:id]).subscriber
     current_user.rem_subscriber!(@user)
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html { redirect_to relationships_path }
       format.js
     end
   end
