@@ -56,7 +56,6 @@ describe UserMailer do
       it "should parse out a signature correctly and insert worth reading link in appropriate place" do
         UserMailer.send_message(email, wr_log, other_user).body.encoded.
           should include("<div class='signature'>")
-        puts UserMailer.send_message(email, wr_log, other_user).body.encoded
       end
     end
 

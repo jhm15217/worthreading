@@ -6,6 +6,4 @@ class ApplicationController < ActionController::Base
 
   # default_settings for WillPaginate
   WillPaginate.per_page = 15
-
-
 end
