@@ -51,6 +51,15 @@ describe UserMailer do
         should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
     end
 
+    context "when there is a signature" do
+      before { email.body = email.body + "\n -- \n John Doe" and email.save }
+      it "should parse out a signature correctly and insert worth reading link in appropriate place" do
+        UserMailer.send_message(email, wr_log, other_user).body.encoded.
+          should include("<div class='signature'>")
+        puts UserMailer.send_message(email, wr_log, other_user).body.encoded
+      end
+    end
+
     it "should deliver successfully" do
       lambda { UserMailer.send_message(email, wr_log, other_user).deliver }.should_not raise_error
     end

@@ -12,6 +12,10 @@
       %p
         = link_to image_tag(@worth_img_url, alt: "Worth Reading"), @worth_reading_url
 
+    - if @signature
+      .signature
+        %p= simple_format @signature
+
     .web-beacon
       %p{ style: "visibility: hidden;", id: "web-beacon" }
         = image_tag(@beacon_url, alt: "")
