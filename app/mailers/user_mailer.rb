@@ -2,10 +2,10 @@ class UserMailer < ActionMailer::Base
   default from: "notifications@worth-reading.org"
 
   # Constants
-#  MORE_INDICATOR = "<more>"
-  PROD_URL = "evening-fog-9503.herokuapp.com"
+  PROD_URL = "www.worth-reading.org"
   DEV_URL = "localhost:3000"
-  PROTOCOL = Rails.env.production? ? 'https' : 'http'
+  PROTOCOL = 'http'
+#  MORE_INDICATOR = "<more>"
  
   def welcome_email(user)
     @user = user
@@ -17,11 +17,7 @@ class UserMailer < ActionMailer::Base
                                     end,
                                id: user.id, 
                                confirmation_token: user.confirmation_token,
-                               protocol: if Rails.env.production?
-                                           'https'
-                                         else
-                                           'http'
-                                         end)
+                               protocol: PROTOCOL )
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 

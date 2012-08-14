@@ -1,7 +1,10 @@
 %ul.nav.nav-tabs
   %li{ class: ("active" if params[:action] == "home") }
     = link_to "Email List", root_path
-  %li{class: ("active" if params[:action] == "index" && params[:controller] == "relationships") }
-    = link_to "Subscriber List", relationships_path
-  %li{class: ("active" if params[:action] == "subscribed_to_list") } 
+  %li{ class: ("active" if params[:action] == "index" && params[:controller] == "relationships") }
+    = link_to relationships_path do
+      Subscribers List
+      -if current_user.subscribers.empty?
+        %span.badge.badge-important#subscription_badge 1
+  %li{ class: ("active" if params[:action] == "subscribed_to_list") } 
     = link_to "Subscribed To List", subscribed_to_list_user_path(@user.id)
