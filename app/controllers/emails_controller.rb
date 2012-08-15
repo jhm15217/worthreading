@@ -34,11 +34,11 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    puts params['message-headers']
+    puts "JHM" + params["Delivered_To"]
     if (from = email_address_parts(params['from'])) and (@user = find_or_register(from[:email]))  
       @email = @user.emails.new(
         from: from[:email],
-        to: params['recipient'], 
+        to: params['Delivered_To'], 
         subject: params['subject'],
         body: params['body-plain']
       )
@@ -52,7 +52,7 @@ class EmailsController < ApplicationController
           UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
            @user, @email).deliver
         end
-      elsif @email.to == "subscribers@worth-reading.org.mailgun.org"
+      elsif @email.to == "subscribers@worth-reading.org"
         if @user.subscribers.empty?
           error = "There are no subscribers on your list. Please add subscribers to your list"
           UserMailer.error_email(error, @user, @email).deliver
