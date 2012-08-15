@@ -41,9 +41,9 @@ describe UserMailer do
 
     it "should have the correct link for the Worth Reading link" do
       UserMailer.send_message(email, wr_log, other_user).body.
-        encoded.should include(wr_log_url(action: "worth reading", 
-                                          id: wr_log.id,
-                                          host: "localhost:3000" ))
+        encoded.should include(
+          "http://localhost:3000/wr_logs/#{wr_log.id}?"\
+          "token_identifier=#{wr_log.token_identifier}&amp;worth_reading=1")
     end
 
     it "should have a web beacon" do

@@ -19,19 +19,28 @@ class WrLogsController < ApplicationController
     @email = Email.find(@wr_log.email_id)
     @receiver = User.find_by_id(@wr_log.receiver_id) 
     @sender = User.find_by_id(@wr_log.sender_id)
+    
+    worth_reading_criteria = params[:worth_reading] == "1" && 
+      params[:token_identifier] == @wr_log.token_identifier && !@wr_log.worth_reading 
 
-    if params[:action] && @wr_log.action != "worth reading" 
+    if params[:token_identifier] != @wr_log.token_identifier
+      redirect_to root_path, 
+        flash: { error: "I'm sorry you are not allowed to access that page"}
+    elsif @wr_log.worth_reading
+      redirect_to root_path, flash: { notice: "You already liked the message" }
+    elsif worth_reading_criteria 
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save
       UserMailer.alert_change_in_wr_log(@wr_log).deliver
 
       # UserMailer.delay.alert_change_in_wr_log(@wr_log)
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @wr_log }
+      respond_to do |format|
+        format.html # show.html.erb
+        format.json { render json: @wr_log }
+      end
+    else
+      redirect_to root_path, flash: { error: "Unknown request" }
     end
   end
 
@@ -110,7 +119,7 @@ class WrLogsController < ApplicationController
 
     send_file Rails.root.join("public", "images", "beacon.gif"), type: "image/gif", disposition: "inline"
   end
-  
+
 
   #GET /by_email
   def by_email
