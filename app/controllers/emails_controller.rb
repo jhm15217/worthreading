@@ -34,11 +34,11 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    puts "JHM" + params["Delivered_To"]
+    puts "JHM" + params['Delivered-To']
     if (from = email_address_parts(params['from'])) and (@user = find_or_register(from[:email]))  
       @email = @user.emails.new(
         from: from[:email],
-        to: params['Delivered_To'], 
+        to: params['Delivered-To'], 
         subject: params['subject'],
         body: params['body-plain']
       )

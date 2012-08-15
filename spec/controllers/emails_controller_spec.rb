@@ -29,7 +29,7 @@ describe EmailsController do
   describe "receiving an email to individual from via a POST request from Mailgun" do
     it "should render a text 'Email Received' after a successful save" do
       post :create, {'from' => user.email,
-        'Delivered_To' => "joe+email.com@worth-reading.org", 
+        'Delivered-To' => "joe+email.com@worth-reading.org", 
         'subject' => "Nothing", 
         'body-plain' => "Lorem Ipsum" }
       response.should be_successful 
@@ -38,7 +38,7 @@ describe EmailsController do
 #    it "should add an entry to WrLog" do
 #      expect do
 #        post :create, {'from' => user.email, 
-#          'Delivered_To' => "subscribers@worth-reading.org.mailgun.ort", 
+#          'Delivered-To' => "subscribers@worth-reading.org.mailgun.ort", 
 #          'subject' => "Nothing", 
 #          'body-plain' => "Lorem Ipsum" }
 #      end.to change(WrLog, :count).by(1)
@@ -46,7 +46,7 @@ describe EmailsController do
 
       it "should send an email to the individual" do
         expect { post :create, {'from' => user.email, 
-          'Delivered_To' => "joe+email.com@worth-reading.org", 
+          'Delivered-To' => "joe+email.com@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(1)
@@ -57,7 +57,7 @@ describe EmailsController do
   describe "receiving an email from via a POST request from Mailgun" do
     it "should render a text 'Email Received' after a successful save" do
       post :create, {'from' => user.email,
-        'Delivered_To' => "subscribers@worth-reading.org", 
+        'Delivered-To' => "subscribers@worth-reading.org", 
         'subject' => "Nothing", 
         'body-plain' => "Lorem Ipsum" }
       response.should be_successful 
@@ -66,7 +66,7 @@ describe EmailsController do
 #    it "should add an entry to WrLog" do
 #      expect do
 #        post :create, {'from' => user.email, 
-#          'Delivered_To' => "subscribers@worth-reading.org.mailgun.ort", 
+#          'Delivered-To' => "subscribers@worth-reading.org.mailgun.ort", 
 #          'subject' => "Nothing", 
 #          'body-plain' => "Lorem Ipsum" }
 #      end.to change(WrLog, :count).by(1)
@@ -74,14 +74,14 @@ describe EmailsController do
 
     it "should redirect if Email could has bad sender" do
       post :create, {'from' => " ", 
-        'Delivered_To' => "jan@mail.com", 
+        'Delivered-To' => "jan@mail.com", 
         'subject' => "Nothing"}
       response.should be_redirect
     end
 
 #    it "should report error if Email could has bad receiver" do
 #      post :create, {'from' => user.email, 
-#        'Delivered_To' => "jan+mail@worth-reading.org", 
+#        'Delivered-To' => "jan+mail@worth-reading.org", 
 #        'subject' => "Nothing"}
 #      response.should be_error
 #    end
@@ -94,7 +94,7 @@ describe EmailsController do
 
       it "should send out email to all subscribers" do
         expect { post :create, {'from' => user.email, 
-          'Delivered_To' => "subscribers@worth-reading.org", 
+          'Delivered-To' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
@@ -108,7 +108,7 @@ describe EmailsController do
 
       it "should send out an error" do 
         expect { post :create, {'from' => user4.email, 
-          'Delivered_To' => "subscribers@worth-reading.org", 
+          'Delivered-To' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
           'body-plain' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(1)
