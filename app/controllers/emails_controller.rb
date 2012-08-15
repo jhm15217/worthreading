@@ -49,7 +49,8 @@ class EmailsController < ApplicationController
         if receiver
           @user.send_msg_to_individual(@email, receiver)
         else
-          UserMailer.error_email("Bad email recipient", @user, @email).deliver
+          UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
+           @user, @email).deliver
         end
       elsif @email.to == "subscribers@worth-reading.org"
         if @user.subscribers.empty?
