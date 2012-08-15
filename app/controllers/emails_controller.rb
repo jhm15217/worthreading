@@ -45,7 +45,7 @@ class EmailsController < ApplicationController
       if @email.save
         render text: "Email Received" 
       end
-      if receiver = @email.to.match(/(.*) \+ (.*)@/) #It's an individual email address
+      if receiver = @email.to.match(/(.*)\+(.*)@/) #It's an individual email address
         if receiver = find_or_register(receiver.captures[0] + '@' + receiver.captures[1])
           @user.send_msg_to_individual(@email, receiver)
         else
