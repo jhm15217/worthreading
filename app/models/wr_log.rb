@@ -22,7 +22,7 @@ class WrLog < ActiveRecord::Base
   belongs_to :sender, class_name: "User"
   belongs_to :receiver, class_name: "User"
 
-  before_save :create_token_identifier
+  before_create :create_token_identifier
 
   private
   def create_token_identifier

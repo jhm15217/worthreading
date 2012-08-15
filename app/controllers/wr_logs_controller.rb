@@ -20,7 +20,6 @@ class WrLogsController < ApplicationController
     @receiver = User.find_by_id(@wr_log.receiver_id) 
     @sender = User.find_by_id(@wr_log.sender_id)
     
-
     worth_reading_criteria = params[:worth_reading] == "1" && 
       params[:token_identifier] == @wr_log.token_identifier && !@wr_log.worth_reading 
 
