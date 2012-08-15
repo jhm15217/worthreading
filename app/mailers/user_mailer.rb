@@ -36,9 +36,10 @@ class UserMailer < ActionMailer::Base
 
     @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
     @worth_reading_url = wr_log_url(worth_reading: "1",
-                                  id: WrLog.find_by_sender_id(@sender.id),
-                                  host: Rails.env.production? ? PROD_URL : DEV_URL,
-                                  protocol: PROTOCOL )
+                                    id: WrLog.find_by_sender_id(@sender.id),
+                                    token_identifier: @wr_log.token_identifier, 
+                                    host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                    protocol: PROTOCOL)
     @beacon_url = msg_opened_url(id: @wr_log.id, 
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
@@ -79,49 +80,49 @@ class UserMailer < ActionMailer::Base
     @autogen_msg = AUTOGEN_MSG
 
     @url =  reset_password_url(host: if Rails.env.production?
-                                      PROD_URL
-                                    else
-                                      DEV_URL
-                                    end,
-                               id: user.id, 
-                               confirmation_token: user.confirmation_token,
-                               protocol: if Rails.env.production?
-                                           'https'
-                                         else
-                                           'http'
-                                         end)
-    mail(to: user.email, subject: "Request for Password Reset")
+                               PROD_URL
+    else
+      DEV_URL
+    end,
+      id: user.id, 
+      confirmation_token: user.confirmation_token,
+      protocol: if Rails.env.production?
+                  'https'
+      else
+        'http'
+      end)
+      mail(to: user.email, subject: "Request for Password Reset")
   end
 
-# NOTE Unimplemented for now but possible use in the future
-# Implementationg for parsing out an email with more than one more button
-# Utilizes regex to capture everything before the first more button and sends 
-# out that first part in an email
-#  def first_pt_msg(email)
-#    @email = email
-#
-#    @body = get_first_part(@email)  
-#
-#    @sender = User.find_by_email(@email.from)
-#
-#    @see_more_url = user_email_url(user_id: @sender.id,
-#                                  id: email.id,
-#                                  host: (Rails.env.production? ? PROD_URL : DEV_URL),
-#                                  protocol: Rails.env.production? ? 'https' : 'http')
-#    mail(from: email.from, 
-#         to: email.to, 
-#         subject: email.subject)
-#  end
+  # NOTE Unimplemented for now but possible use in the future
+  # Implementationg for parsing out an email with more than one more button
+  # Utilizes regex to capture everything before the first more button and sends 
+  # out that first part in an email
+  #  def first_pt_msg(email)
+  #    @email = email
+  #
+  #    @body = get_first_part(@email)  
+  #
+  #    @sender = User.find_by_email(@email.from)
+  #
+  #    @see_more_url = user_email_url(user_id: @sender.id,
+  #                                  id: email.id,
+  #                                  host: (Rails.env.production? ? PROD_URL : DEV_URL),
+  #                                  protocol: Rails.env.production? ? 'https' : 'http')
+  #    mail(from: email.from, 
+  #         to: email.to, 
+  #         subject: email.subject)
+  #  end
 
   private 
 
-#  Method for parsing out a more button 
-#  def get_first_part(email)
-#    first_pt_regex = /(^.*)#{MORE_INDICATOR}/m
-#    if match = first_pt_regex.match(email.body)
-#      $1
-#    else
-#      email.body
-#    end
-#  end
+  #  Method for parsing out a more button 
+  #  def get_first_part(email)
+  #    first_pt_regex = /(^.*)#{MORE_INDICATOR}/m
+  #    if match = first_pt_regex.match(email.body)
+  #      $1
+  #    else
+  #      email.body
+  #    end
+  #  end
 end
