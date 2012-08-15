@@ -35,7 +35,7 @@ class UserMailer < ActionMailer::Base
     end
 
     @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
-    @worth_reading_url = wr_log_url(action: "worth reading",
+    @worth_reading_url = wr_log_url(worth_reading: "1",
                                   id: WrLog.find_by_sender_id(@sender.id),
                                   host: Rails.env.production? ? PROD_URL : DEV_URL,
                                   protocol: PROTOCOL )

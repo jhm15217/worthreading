@@ -20,7 +20,9 @@ class WrLogsController < ApplicationController
     @receiver = User.find_by_id(@wr_log.receiver_id) 
     @sender = User.find_by_id(@wr_log.sender_id)
 
-    if params[:action] && @wr_log.action != "worth reading" 
+    worth_reading_criteria = params[:worth_reading] == "1" && 
+      params[:token_identifier] == @wr_log.token_identifier && !@wr_log.worth_reading 
+    if worth_reading_criteria 
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save
