@@ -21,7 +21,6 @@ class WrLog < ActiveRecord::Base
   belongs_to :email
   belongs_to :sender, class_name: "User"
   belongs_to :receiver, class_name: "User"
-
   before_create :create_token_identifier
 
   private
