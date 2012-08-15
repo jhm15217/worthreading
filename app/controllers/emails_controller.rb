@@ -51,7 +51,7 @@ class EmailsController < ApplicationController
           UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
            @user, @email).deliver
         end
-      elsif @email.to == "subscribers@worth-reading.org"
+      elsif @email.to == "subscribers@worth-reading.org.mailgun.org"
         if @user.subscribers.empty?
           error = "There are no subscribers on your list. Please add subscribers to your list"
           UserMailer.error_email(error, @user, @email).deliver
