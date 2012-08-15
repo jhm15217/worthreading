@@ -246,4 +246,25 @@ describe User do
       email.wr_logs.first.emailed.should_not be_nil
     end
   end
+
+  describe "sending a message to one person" do
+    let(:user1) { FactoryGirl.create(:user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let(:email) { FactoryGirl.create(:email) }
+
+    before do
+      email.from = user1.email
+      email.save
+    end
+
+    it "should send a message to the peson" do
+      expect { user1.send_msg_to_individual(email, user2) }.
+        to change(ActionMailer::Base.deliveries, :size).by(1)
+    end
+
+    it "should create a wr_log for the message" do
+      user1.send_msg_to_individual(email, user2)
+      email.wr_logs.first.emailed.should_not be_nil
+    end
+  end
 end

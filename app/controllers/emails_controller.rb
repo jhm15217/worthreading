@@ -41,17 +41,30 @@ class EmailsController < ApplicationController
         subject: params['subject'],
         body: params['body-plain']
       )
-      render text: "Email Received" if @email.save
-      if @user.subscribers.empty?
-        error = "There are no subscribers on your list. Please add subscribers to your list"
-        UserMailer.error_email(error, @user, @email).deliver
+      if @email.save
+        render text: "Email Received" 
+      end
+      if @email.to.include?('+') #It's an individual email address
+        receiver = find_or_register(@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@"))
+        if receiver
+          @user.send_msg_to_individual(@email, receiver)
+        else
+          UserMailer.error_email("Bad email recipient", @user, @email).deliver
+        end
+      elsif @email.to == "subscribers@worth-reading.org"
+        if @user.subscribers.empty?
+          error = "There are no subscribers on your list. Please add subscribers to your list"
+          UserMailer.error_email(error, @user, @email).deliver
 
-        #UserMailer.delay.send_error(error, @user, @email)
+          #UserMailer.delay.send_error(error, @user, @email)
+        else
+          @user.send_msg_to_subscribers(@email)
+
+          # @user.delay.send_msg_to_subscribers(@email)
+
+        end
       else
-        @user.send_msg_to_subscribers(@email)
-
-        # @user.delay.send_msg_to_subscribers(@email)
-
+        UserMailer.error_email("Bad email recipient", @user, @email).deliver
       end
     else
       redirect_to root_path  ## params['sender'] is bad 

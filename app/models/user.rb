@@ -66,6 +66,16 @@ class User < ActiveRecord::Base
     end
   end
 
+  def send_msg_to_individual(email, receiver)
+    wr_log = email.wr_logs.create do |log|
+      log.action = "email"
+      log.sender_id = self.id
+      log.receiver_id = receiver.id 
+      log.emailed = Time.now
+    end
+    UserMailer.send_message(email, wr_log, receiver).deliver
+  end
+
   # Active Record Callbacks
   before_save { |user| 
     user.email = email.downcase

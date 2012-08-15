@@ -26,6 +26,34 @@ describe EmailsController do
   let(:user2) { FactoryGirl.create(:user)}
   let(:user3) { FactoryGirl.create(:user)}
 
+  describe "receiving an email to individual from via a POST request from Mailgun" do
+    it "should render a text 'Email Received' after a successful save" do
+      post :create, {'from' => user.email,
+        'recipient' => "joe+email.com@worth-reading.org", 
+        'subject' => "Nothing", 
+        'body-plain' => "Lorem Ipsum" }
+      response.should be_successful 
+    end
+
+#    it "should add an entry to WrLog" do
+#      expect do
+#        post :create, {'from' => user.email, 
+#          'recipient' => "subscribers@worth-reading.org", 
+#          'subject' => "Nothing", 
+#          'body-plain' => "Lorem Ipsum" }
+#      end.to change(WrLog, :count).by(1)
+#    end
+
+      it "should send an email to the individual" do
+        expect { post :create, {'from' => user.email, 
+          'recipient' => "joe+email.com@worth-reading.org", 
+          'subject' => "Nothing", 
+          'body-plain' => "Lorem Ipsum" } }.
+          to change(ActionMailer::Base.deliveries, :size).by(1)
+          # to change(Delayed::Job, :count).by(1)
+      end
+    end
+
   describe "receiving an email from via a POST request from Mailgun" do
     it "should render a text 'Email Received' after a successful save" do
       post :create, {'from' => user.email,
@@ -44,12 +72,19 @@ describe EmailsController do
 #      end.to change(WrLog, :count).by(1)
 #    end
 
-    it "should redirect if Email could not be saved" do
+    it "should redirect if Email could has bad sender" do
       post :create, {'from' => " ", 
-        'recipient' => "janmail.com", 
+        'recipient' => "jan@mail.com", 
         'subject' => "Nothing"}
       response.should be_redirect
     end
+
+#    it "should report error if Email could has bad receiver" do
+#      post :create, {'from' => user.email, 
+#        'recipient' => "jan+mail@worth-reading.org", 
+#        'subject' => "Nothing"}
+#      response.should be_error
+#    end
 
     context "with subscribers on his/her list" do
       before do
