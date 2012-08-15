@@ -26,10 +26,11 @@ class RelationshipsController < ApplicationController
         if current_user.subscribed_by?(@user)
           flash[:error] = "#{user_parts[:email]} was already on your list."
         else
-          puts "new subscriber"
+          puts "new subscriber:" + @user.name + ':' + user_parts[:name]
           if @user.name == "Unknown" and user_parts[:name] != ""
             @user.name = user_parts[:name]
-            @user.save
+            @user.password = @user.password_confirmation = "Unknown"
+            @user.save!
           end
           current_user.add_subscriber!(@user)
         end
