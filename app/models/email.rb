@@ -15,7 +15,7 @@
 class Email < ActiveRecord::Base
   attr_accessible :body, :from, :to, :subject
   belongs_to :user
-  has_many :wr_logs
+  has_many :wr_logs, dependent: :destroy
   
   before_save { |email| 
     email.from = from.downcase

@@ -9,4 +9,6 @@
     %h4
       =if current_user.admin?
         =@user.email
+        =if !@user.confirmed?
+          "Not confirmed"
     = gravatar_for @user

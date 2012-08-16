@@ -61,7 +61,6 @@ def make_emails
   users.each do |user|
     subscribers = user.subscribers
     rand(2..20).times do |n|
-      puts "Creating Email #{n} for #{user.name}"
       email = user.emails.create!(to: "subscribed@worth-reading.org",
                                   from: user.email, 
                                   subject: "Message  #{n}",
@@ -70,12 +69,10 @@ def make_emails
       subscribers[0..rand(1..subscribers.count)].each do |recipient|  # How many subscribers today?
         wr_log = email.wr_logs.create(email_id: email.id, sender_id: user.id, receiver_id:recipient.id)
         wr_log.emailed = DateTime.now + rand(0..3)
-        puts "Emailed:#{wr_log.emailed}"
 
         if rand(0..1.0) > 0.40 # Did he open it?
           wr_log.opened = wr_log.emailed + rand(0..3)
         end
-        puts "Opened: #{wr_log.opened}"
 
         if (rand(0..1.0) > 0.60)  # Did he like it ?
           if wr_log.opened  # Did he enable graphics?
@@ -84,8 +81,6 @@ def make_emails
             wr_log.worth_reading = wr_log.emailed + rand(0..3)
           end         
         end
-        puts "WorthReading: #{wr_log.worth_reading}"
-        puts ""
         wr_log.save        
       end
     end 
