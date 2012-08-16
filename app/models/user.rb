@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :reverse_relationships, foreign_key: "subscriber_id", 
     class_name: "Relationship", dependent: :destroy
   has_many :subscribed_users, through: :reverse_relationships, source: :subscribed
+  has_many :receiver_wr_logs, foreign_key: "receiver_id", class_name: "WrLog", dependent: :destroy
 
   # WrLog Associations
   # TODO Association might now work as needed; needs work
