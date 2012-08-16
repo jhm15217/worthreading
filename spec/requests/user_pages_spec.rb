@@ -50,8 +50,6 @@ describe "User pages" do
     end
   end
 
-
-
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
     before do  
