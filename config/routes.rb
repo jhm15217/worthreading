@@ -3,6 +3,7 @@ WorthReading::Application.routes.draw do
   resources :users do
     resources :emails, only: [:index, :show, :destroy]
     member do
+      post :resend_confirm_email
       put :likes
       get :subscribed_to_list
     end

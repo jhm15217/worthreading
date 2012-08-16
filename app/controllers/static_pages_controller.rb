@@ -18,5 +18,6 @@ class StaticPagesController < ApplicationController
   end
 
   def email_confirmation_sent
+    @user = User.find(params[:id])
   end
 end
