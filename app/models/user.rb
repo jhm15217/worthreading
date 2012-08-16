@@ -43,6 +43,10 @@ class User < ActiveRecord::Base
   end
 
   # Subscriber Methods
+  def add_subscriber(subscriber)
+    self.relationships.create(subscriber_id: subscriber.id)
+  end
+
   def add_subscriber!(subscriber)
     self.relationships.create!(subscriber_id: subscriber.id)
   end
@@ -75,6 +79,7 @@ class User < ActiveRecord::Base
       log.emailed = Time.now
     end
     UserMailer.send_message(email, wr_log, receiver).deliver
+    self.add_subscriber(receiver)  #May already be subscribed
   end
 
   # Active Record Callbacks

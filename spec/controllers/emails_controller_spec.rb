@@ -26,7 +26,7 @@ describe EmailsController do
   let(:user2) { FactoryGirl.create(:user)}
   let(:user3) { FactoryGirl.create(:user)}
 
-  describe "receiving an email to individual from via a POST request from Mailgun" do
+  describe "receiving an email to individual via a POST request from Mailgun" do
     it "should render a text 'Email Received' after a successful save" do
       post :create, {'from' => user.email,
         'Delivered-To' => "joe+email.com@worth-reading.org", 
@@ -44,6 +44,14 @@ describe EmailsController do
 #      end.to change(WrLog, :count).by(1)
 #    end
 
+      it "should create the individual" do
+        post :create, {'from' => user.email, 
+          'Delivered-To' => "joe+email.com@worth-reading.org", 
+          'subject' => "Nothing", 
+          'body-plain' => "Lorem Ipsum" }
+        User.find_by_email("joe@email.com").should_not be nil
+      end
+
       it "should send an email to the individual" do
         expect { post :create, {'from' => user.email, 
           'Delivered-To' => "joe+email.com@worth-reading.org", 
@@ -51,6 +59,14 @@ describe EmailsController do
           'body-plain' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(1)
           # to change(Delayed::Job, :count).by(1)
+      end
+
+      it "should make an individual a suscriber" do
+        post :create, {'from' => user.email, 
+          'Delivered-To' => "joe+email.com@worth-reading.org", 
+          'subject' => "Nothing", 
+          'body-plain' => "Lorem Ipsum" }
+        user.subscribed_by?(User.find_by_email("joe@email.com")).should_not be nil
       end
     end
 
