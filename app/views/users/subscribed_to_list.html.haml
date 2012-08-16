@@ -1,7 +1,7 @@
-.row
-  = render 'shared/tab_navigator'
+= render 'shared/tab_navigator'
 
 .row
+  .span12
   %h1 Who I'm Subscribed To
   %br/
 .row
@@ -25,4 +25,4 @@
           method: :delete,
           confirm: "Are you sure you want to delete #{item[:email]}?"
 
-  = will_paginate @subscribed_to
+    = will_paginate @subscribed_to

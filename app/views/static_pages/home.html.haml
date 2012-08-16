@@ -1,11 +1,13 @@
 - if signed_in?
   - provide(:title, @user.name)
   .row
-    = render 'shared/tab_navigator'
-
+    %a{class: "btn", "data-toggle" => "modal", href: "#first_tutorial"}Launch Modal
   .row
-    %aside
-      = render 'shared/emails'
+    = render 'shared/first_time_tutorial'
+
+  = render 'shared/tab_navigator'
+
+  = render 'shared/emails'
 - else
   .row
     .span8

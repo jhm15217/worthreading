@@ -1,0 +1,21 @@
+#first_tutorial.modal.hide
+  .modal-header
+    %button.close{"data-dismiss" => "modal", :type => "button"} ×
+    %h3 Welcome to Worth Reading
+  .modal-body
+    %p 
+      To get started, start by adding some subscribers to your email list.
+      = form_tag('/relationships', class: 'form-horizontal') do 
+        %textarea.span4{ :name => "email_addresses",
+                                          :size => "18", 
+                                          :type => "text", 
+                                          :placeholder => "Enter email addresses." }
+        %button.btn.btn-primary{type: "submit"} Add Subscribers
+      Afterwards, you can send a message to all of them by sending an email to
+      subscribers@worth-reading.org.
+
+    %p 
+      Or you can just start by sending an email intended for johndoe@email.com to
+      johndoe+email.com@worthreading.org.
+  .modal-footer
+    %a.btn{"data-dismiss" => "modal", :href => "#"} Close
