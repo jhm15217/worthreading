@@ -14,7 +14,7 @@
 
 
 <% WrLog.select('email_id, sender_id, count(receiver_id) as receiver_count,
-                  count(opened) as opened_count, count(worth_reading) as liked_count').group('email_id')
+                  count(opened) as opened_count, count(worth_reading) as liked_count').group('email_id', 'sender_id')
                   .order("liked_count").reverse_order.each do |line| %>
   <tr>
     <td><%= Email.find(line.email_id).created_at %></td>

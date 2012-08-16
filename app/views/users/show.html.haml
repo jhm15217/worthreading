@@ -4,6 +4,9 @@
   %br/
 
 .row
-  %aside.span2.offset1
+  %aside.span5.offset1
     %h3= @user.name
+    %h4
+      =if current_user.admin?
+        =@user.email
     = gravatar_for @user
