@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
           # UserMailer.delay.welcome_email(@user)
           # User needs to confirm email first before being able to sign in
-          format.html { redirect_to(email_confirmation_path) }
+          format.html { redirect_to(email_confirmation_path(id: @user.id)) }
         else
           format.html { render action: "new" }
         end
@@ -89,6 +89,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def resend_confirm_email
+    @user = User.find(params[:id])
+    UserMailer.welcome_email(@user).deliver
+    redirect_to email_confirmation_path(id: @user.id)
+  end
+
   # Confirms the email address of a user by matching confirmation token 
   def confirm_email
     confirmation_token = params[:confirmation_token]
@@ -97,7 +103,7 @@ class UsersController < ApplicationController
       @user.confirmed = true 
       @user.save(validate: false)
     elsif @user.confirmed 
-      redirect_to @user, flash: { notice: "You already validated your email"}
+      redirect_to root_path, flash: { notice: "You already validated your email"}
     else
       flash[:error] = "Access denied"
     end

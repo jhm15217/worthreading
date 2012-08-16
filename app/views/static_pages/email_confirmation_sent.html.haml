@@ -2,5 +2,15 @@
 .row
   .span8.offset2
     .hero-unit
-      %p 
-        Please find the email we just sent you and confirm it by clicking the web site in the message.
+      %span
+        %p 
+          Before you can access your account, we need you to confirm your email address.
+          Please check your inbox for the email we just sent you and confirm 
+          your email address by following the link within message.
+          Please be patient for the email may take several minutes to be received.
+        %br/
+        %p
+          Still haven't received your email? Click the button below to:
+      %span.center
+        = button_to "Resend Email Confirmation", resend_confirm_email_user_path(@user.id),
+                    class: "btn btn-primary", style: "text-align: center;"
