@@ -5,6 +5,7 @@ FactoryGirl.define do
     password "foobar"
     password_confirmation "foobar"
     confirmed true
+    first_login_at Time.now
 
     factory :admin do
       admin true
