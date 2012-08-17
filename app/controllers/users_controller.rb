@@ -17,7 +17,7 @@ class UsersController < ApplicationController
       @user = User.new
     end
   end
-
+  
   def create
     if signed_in?
       redirect_to home
@@ -118,10 +118,24 @@ class UsersController < ApplicationController
         email: subscribed.email,
         sent: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id}").count,
       opened: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and opened IS NOT NULL").count,
-      liked: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and worth_reading IS NOT NULL").count } 
+      liked: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and worth_reading IS NOT NULL").count,
+      id: subscribed.id } 
     end.sort_by {|h| -h[:liked] }
   end
 
+ # POST
+   def subscribe_to_me
+     @user = User.find(params[:id])
+     current_user.add_subscriber(@user)
+     redirect_to @user
+   end
+ 
+   def subscribe_me
+     @user = User.find(params[:id])
+     @user.add_subscriber(current_user)
+     redirect_to @user
+   end
+ 
   private
 
   def correct_user

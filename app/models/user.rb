@@ -59,6 +59,10 @@ class User < ActiveRecord::Base
     self.relationships.find_by_subscriber_id(subscriber.id).destroy
   end
 
+  def rem_subscribed!(subscribed)
+    self.reverse_relationships.find_by_subscribed_id(subscribed.id).destroy
+  end
+
   def send_msg_to_subscribers(email)
     self.subscribers.each do |subscriber|
       wr_log = email.wr_logs.create do |log|

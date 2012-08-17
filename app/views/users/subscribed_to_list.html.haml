@@ -12,6 +12,7 @@
       %th Sent
       %th Opened
       %th Liked
+      %th Delete
     - @subscribed_list.each do |item|
       %tr
         %td= item[:name]
@@ -19,5 +20,9 @@
         %td= item[:sent]
         %td= item[:opened]
         %td= item[:liked]
+        %td= link_to 'Delete', 
+          relationship_path(id: @user.reverse_relationships.find_by_subscribed_id(item[:id]), :subscribed => "1"),
+          method: :delete,
+          confirm: "Are you sure you want to delete #{item[:email]}?"
 
   = will_paginate @subscribed_to

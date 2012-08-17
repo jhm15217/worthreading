@@ -48,11 +48,20 @@ class RelationshipsController < ApplicationController
   end
 
   def destroy
-    @user = Relationship.find(params[:id]).subscriber
-    current_user.rem_subscriber!(@user)
-    respond_to do |format|
-      format.html { redirect_to relationships_path }
-      format.js
+    if params[:subscribed]
+      @user =  Relationship.find(params[:id]).subscribed
+      current_user.rem_subscribed!(@user)
+      respond_to do |format|
+        format.html { redirect_to subscribed_to_list_user_path current_user }
+        format.js
+      end
+    else
+      @user = Relationship.find(params[:id]).subscriber
+      current_user.rem_subscriber!(@user)
+      respond_to do |format|
+        format.html { redirect_to relationships_path }
+        format.js
+      end
     end
   end
 end
