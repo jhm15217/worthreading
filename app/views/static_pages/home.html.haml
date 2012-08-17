@@ -5,7 +5,7 @@
 
   = render 'shared/emails'
 
-  - if current_user.first_login_at > 15.seconds.ago
+  - if current_user.first_login_at && current_user.first_login_at > 15.seconds.ago
     = render 'shared/first_time_tutorial'
 
 - else
