@@ -55,12 +55,52 @@ describe "User pages" do
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
 
-    before { visit user_path(user) }
+    before do  
+      sign_in user 
+      visit user_path(user)
+    end
 
     it { should have_selector('h3',    text: user.name) }
     it { should have_selector('title', text: user.name) }
-  end
 
+    describe "adding a user as a subscriber button/subscribing to a user button" do
+      let(:other_user) { FactoryGirl.create(:user) }
+
+      context "when adding a user as a subscriber" do
+        before { visit user_path(other_user) }
+
+        it "should increment the user's subscribers count" do
+          expect do 
+            click_button "Add this person to my subscribers"
+          end.to change(user.subscribers, :count).by(1)
+        end
+
+        it "should increment the other user's subscribed users count" do 
+          expect do 
+            click_button "Add this person to my subscribers"
+          end.to change(other_user.subscribed_users, :count).by(1)
+        end
+      end
+
+      context "when subscribing to a user" do
+        before { visit user_path(other_user) }
+
+        it "should increment the other user's subscribers count" do
+          expect do
+            click_button "Subscribe to this person"
+          end.to change(other_user.subscribers, :count).by(1)
+        end
+      end
+
+      context "when subscribing to a user" do
+        it "should increment the user's subscribed_users count" do
+          expect do
+            click_button "Subscribe to this person"
+          end.to change(user.subscribed_users, :count).by(1)
+        end
+      end
+    end
+  end
 
   describe "signup page" do
     before { visit signup_path }

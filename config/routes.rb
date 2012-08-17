@@ -7,6 +7,7 @@ WorthReading::Application.routes.draw do
       put :likes
       get :subscribed_to_list
       post :subscribe_me
+      post :subscribe_to_me
     end
   end
 
@@ -26,8 +27,6 @@ WorthReading::Application.routes.draw do
   end
 
   root to: 'static_pages#home'
-  match '/users/:id',  to: 'users#subscribe_to_me'
-  match '/users/:id',  to: 'users#subscribe_to_me'
   match '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
