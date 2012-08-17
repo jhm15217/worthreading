@@ -5,12 +5,9 @@
 
   = render 'shared/emails'
 
-  - if current_user.first_login_at > 30.seconds.ago
+  - if current_user.first_login_at > 15.seconds.ago
     = render 'shared/first_time_tutorial'
-    :javascript
-      $ = function() {
-       $('#first_tutorial').modal
-      }
+
 - else
   .row
     .span8

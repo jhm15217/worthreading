@@ -13,3 +13,4 @@ $ ->
 
   $('#subscription_badge').popover subscription_badge_options
   $('#add_subscribers').popover  add_subscribers_options
+  $('#first-tutorial').modal 'show'
