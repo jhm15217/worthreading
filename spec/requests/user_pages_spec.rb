@@ -50,11 +50,8 @@ describe "User pages" do
     end
   end
 
-
-
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
-
     before do  
       sign_in user 
       visit user_path(user)
@@ -252,8 +249,7 @@ describe "User pages" do
     end
 
     it "should redirect to user profile page if already confirmed" do
-      user.confirmed = true
-      user.save(validate: false)
+      user.toggle!(:confirmed)
       visit confirm_email_path(id: user.id, confirmation_token: confirmation_token)
     end
 

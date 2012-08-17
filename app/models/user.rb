@@ -30,7 +30,6 @@ class User < ActiveRecord::Base
   has_many :receiver_wr_logs, foreign_key: "receiver_id", class_name: "WrLog", dependent: :destroy
 
   # WrLog Associations
-  # TODO Association might now work as needed; needs work
   has_many :sender_wr_logs, class_name: "WrLog", foreign_key: "sender_id"
 
   def feed

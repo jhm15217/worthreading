@@ -1,33 +1,44 @@
-%h1 Subscribers
-%br/
-%p
-  %small Separate email addresses by commas.
-= form_tag('/relationships', class: 'form-horizontal') do 
-  .input-append
-    %textarea.span4{ :name => "email_addresses",
-                                      :size => "18", 
-                                      :type => "text", 
-                                      :placeholder => "Enter email addresses." }
-    %button.btn.btn-large{type: "submit"} Add 
+.row
+  .span12
+    %h1 Subscribers
+    %br/
+.row
+  .span6
+    %p
+    = form_tag('/relationships', class: 'form-horizontal') do 
+      .input-append
+        %textarea.span4{ :name => "email_addresses",
+                         :size => "18", 
+                         :type => "text", 
+                         :placeholder => "Add subscribers. Enter email addresses.",
+                         :id => "add_subscribers" }
+        %button.btn.btn-large{type: "submit"} Add 
+  
+  .span6
+    .hero-unit{style: "padding: 5px;"}
+      %p 
+        To send emails to your subscribers, address your emails to subscribers@worth-reading.org
 
-- if !@user.subscribers.empty?
-  %table.table.table-condensed
-    %tr
-      %th Name
-      %th Email 
-      %th Sent
-      %th Opened
-      %th Liked
-      %th Delete
-    - @subscriber_list.each do |item|
-      %tr
-        %td= item[:name]
-        %td= link_to item[:email], emails_sent_to_subscriber_path(id: @user.id, receiver_id: item[:id] ) 
-        %td= item[:sent]
-        %td= item[:opened]
-        %td= item[:liked]
-        %td= link_to 'Delete', 
-          relationship_path(@user.relationships.find_by_subscriber_id(item[:id])),
-          method: :delete,
-          confirm: "Are you sure you want to delete #{item[:email]}?"
-  = will_paginate @subscribers
+.row
+  .span12
+    - if !@user.subscribers.empty?
+      %table.table.table-condensed
+        %tr
+          %th Name
+          %th Email 
+          %th Sent
+          %th Opened
+          %th Liked
+          %th Delete
+        - @subscriber_list.each do |item|
+          %tr
+            %td= item[:name]
+            %td= link_to item[:email], emails_sent_to_subscriber_path(id: @user.id, receiver_id: item[:id] ) 
+            %td= item[:sent]
+            %td= item[:opened]
+            %td= item[:liked]
+            %td= link_to 'Delete', 
+              relationship_path(@user.relationships.find_by_subscriber_id(item[:id])),
+              method: :delete,
+              confirm: "Are you sure you want to delete #{item[:email]}?"
+      = will_paginate @subscribers
