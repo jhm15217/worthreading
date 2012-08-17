@@ -22,4 +22,9 @@
             %td= link_to 'Show', user_email_path(@user, email)
       = will_paginate(@emails)
     - else
-      %p No emails sent.
+      .hero-unit 
+        %p 
+          No emails sent. Start by adding subscribers to you subscriber list and
+          sending an email to subcribers@worth-reading.org.
+        %p
+          Or send an email intended to johndoe@email.com to johndoe+email.com@worthreading.org

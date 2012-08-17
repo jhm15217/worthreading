@@ -1,13 +1,16 @@
 - if signed_in?
   - provide(:title, @user.name)
-  .row
-    %a{class: "btn", "data-toggle" => "modal", href: "#first_tutorial"}Launch Modal
-  .row
-    = render 'shared/first_time_tutorial'
 
   = render 'shared/tab_navigator'
 
   = render 'shared/emails'
+
+  - if current_user.first_login_at > 30.seconds.ago
+    = render 'shared/first_time_tutorial'
+    :javascript
+      $ = function() {
+       $('#first_tutorial').modal
+      }
 - else
   .row
     .span8

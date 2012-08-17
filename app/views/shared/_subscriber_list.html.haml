@@ -3,16 +3,21 @@
     %h1 Subscribers
     %br/
 .row
-  .span12
+  .span6
     %p
-      %small Separate email addresses by ", " (a comma and a space).
     = form_tag('/relationships', class: 'form-horizontal') do 
       .input-append
         %textarea.span4{ :name => "email_addresses",
-                                          :size => "18", 
-                                          :type => "text", 
-                                          :placeholder => "Enter email addresses." }
+                         :size => "18", 
+                         :type => "text", 
+                         :placeholder => "Add subscribers. Enter email addresses.",
+                         :id => "add_subscribers" }
         %button.btn.btn-large{type: "submit"} Add 
+  
+  .span6
+    .hero-unit{style: "padding: 5px;"}
+      %p 
+        To send emails to your subscribers, address your emails to subscribers@worth-reading.org
 
 .row
   .span12

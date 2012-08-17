@@ -7,6 +7,10 @@ class SessionsController < ApplicationController
     user = User.find_by_email(params[:session][:email])
     main_sign_in_checks = user && user.authenticate(params[:session][:password]) && user.confirmed
     if main_sign_in_checks && !user.first_login_at
+      user.first_login_at = DateTime.now
+      user.save!(validate: false)
+      sign_in user
+      redirect_to root_path
     elsif main_sign_in_checks
       sign_in user
       redirect_back_or root_path 
