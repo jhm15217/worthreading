@@ -59,6 +59,10 @@ describe "User pages" do
 
     it { should have_selector('h3',    text: user.name) }
     it { should have_selector('title', text: user.name) }
+
+    describe "adding a user as a subscriber button/subscribing to a user button" do
+    end
+    end
   end
 
 

@@ -2,7 +2,8 @@ class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:index, :edit, :update, :destroy, :following, :followers]
   before_filter :correct_user,   only: [:edit, :update, :subscribed_to_list]
   before_filter :admin_user,     only: :destroy
-    
+
+  # GET
   def show
     @user = User.find(params[:id])
     @emails = @user.emails
@@ -10,6 +11,7 @@ class UsersController < ApplicationController
     @email_count = @user.emails.count
   end
 
+  # GET
   def new
     if signed_in?
       redirect_to root_path
@@ -17,7 +19,8 @@ class UsersController < ApplicationController
       @user = User.new
     end
   end
-  
+
+  # POST
   def create
     if signed_in?
       redirect_to home
@@ -49,19 +52,23 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET
   def edit
   end
 
+  # GET
   def index
     @users = User.paginate(page: params[:page])
   end
 
+  # DELETE
   def destroy
     User.find(params[:id]).destroy
     flash[:success] = "User destroyed."
     redirect_to users_path
   end
 
+  # PUT
   def update
     if @user.update_attributes(params[:user])
       flash[:success] = "Profile updated"
@@ -72,6 +79,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST
   # This will handle a like request; i.e. User hits like button and the user 
   # their likes decreased while the user whom they liked will have their likes increased
   # TODO Allow an ajax request to handle the like request to circumvent redirection
@@ -89,12 +97,14 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST
   def resend_confirm_email
     @user = User.find(params[:id])
     UserMailer.welcome_email(@user).deliver
     redirect_to email_confirmation_path(id: @user.id)
   end
 
+  # GET
   # Confirms the email address of a user by matching confirmation token 
   def confirm_email
     confirmation_token = params[:confirmation_token]
@@ -123,19 +133,22 @@ class UsersController < ApplicationController
     end.sort_by {|h| -h[:liked] }
   end
 
- # POST
-   def subscribe_to_me
-     @user = User.find(params[:id])
-     current_user.add_subscriber(@user)
-     redirect_to @user
-   end
- 
-   def subscribe_me
-     @user = User.find(params[:id])
-     @user.add_subscriber(current_user)
-     redirect_to @user
-   end
- 
+  # POST
+  # Adds a user to my subscriber list from a user's show page
+  def subscribe_to_me
+    @user = User.find(params[:id])
+    current_user.add_subscriber(@user)
+    redirect_to @user
+  end
+
+  # POST
+  # Adds me to a user's subcriber list from a user's show page
+  def subscribe_me
+    @user = User.find(params[:id])
+    @user.add_subscriber(current_user)
+    redirect_to @user
+  end
+
   private
 
   def correct_user

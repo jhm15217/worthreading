@@ -4,21 +4,21 @@
   %br/
 
 .row
-  %aside.span5.offset1
+  %aside.span2.offset1
     %h3= @user.name
-    =if current_user.admin?
+    - if current_user.admin?
       %h4
-        =@user.email
-        =if !@user.confirmed?
+        = @user.email
+        = if !@user.confirmed?
           Not confirmed
     = gravatar_for @user
-    =if !current_user.subscribed_by?(@user)
-      =link_to 'Add this person to my subscribers', 
-        user_path(@user.id),
-        method: :add_subscriber,
-        param: current_user
-    =if !@user.subscribed_by?(current_user)
-      =link_to 'Subscribe to this person', 
-        subscribe_me_user_path(current_user),
-        method: :add_subscriber,
-        param: @user.id
+  %aside.span4
+    %br/
+    - if !current_user.subscribed_by?(@user)
+      = button_to 'Add this person to my subscribers', 
+        subscribe_to_me_user_path(@user),
+        class: "btn btn-primary"
+    - if !@user.subscribed_by?(current_user)
+      = button_to 'Subscribe to this person', 
+        subscribe_me_user_path(@user),
+        class: "btn btn-primary"
