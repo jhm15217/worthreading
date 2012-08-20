@@ -31,7 +31,7 @@ describe EmailsController do
       post :create, {'from' => user.email,
         'Delivered-To' => "joe+email.com@worth-reading.org", 
         'subject' => "Nothing", 
-        'body-plain' => "Lorem Ipsum" }
+        'body-html' => "Lorem Ipsum" }
       response.should be_successful 
     end
 
@@ -40,7 +40,7 @@ describe EmailsController do
 #        post :create, {'from' => user.email, 
 #          'Delivered-To' => "subscribers@worth-reading.org.mailgun.ort", 
 #          'subject' => "Nothing", 
-#          'body-plain' => "Lorem Ipsum" }
+#          'body-html' => "Lorem Ipsum" }
 #      end.to change(WrLog, :count).by(1)
 #    end
 
@@ -48,7 +48,7 @@ describe EmailsController do
         post :create, {'from' => user.email, 
           'Delivered-To' => "joe+email.com@worth-reading.org", 
           'subject' => "Nothing", 
-          'body-plain' => "Lorem Ipsum" }
+          'body-html' => "Lorem Ipsum" }
         User.find_by_email("joe@email.com").should_not be nil
       end
 
@@ -56,7 +56,7 @@ describe EmailsController do
         expect { post :create, {'from' => user.email, 
           'Delivered-To' => "joe+email.com@worth-reading.org", 
           'subject' => "Nothing", 
-          'body-plain' => "Lorem Ipsum" } }.
+          'body-html' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(1)
           # to change(Delayed::Job, :count).by(1)
       end
@@ -65,7 +65,7 @@ describe EmailsController do
         post :create, {'from' => user.email, 
           'Delivered-To' => "joe+email.com@worth-reading.org", 
           'subject' => "Nothing", 
-          'body-plain' => "Lorem Ipsum" }
+          'body-html' => "Lorem Ipsum" }
         user.subscribed_by?(User.find_by_email("joe@email.com")).should_not be nil
       end
     end
@@ -75,7 +75,7 @@ describe EmailsController do
       post :create, {'from' => user.email,
         'Delivered-To' => "subscribers@worth-reading.org", 
         'subject' => "Nothing", 
-        'body-plain' => "Lorem Ipsum" }
+        'body-html' => "Lorem Ipsum" }
       response.should be_successful 
     end
 
@@ -84,7 +84,7 @@ describe EmailsController do
 #        post :create, {'from' => user.email, 
 #          'Delivered-To' => "subscribers@worth-reading.org.mailgun.ort", 
 #          'subject' => "Nothing", 
-#          'body-plain' => "Lorem Ipsum" }
+#          'body-html' => "Lorem Ipsum" }
 #      end.to change(WrLog, :count).by(1)
 #    end
 
@@ -112,7 +112,7 @@ describe EmailsController do
         expect { post :create, {'from' => user.email, 
           'Delivered-To' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
-          'body-plain' => "Lorem Ipsum" } }.
+          'body-html' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
           # to change(Delayed::Job, :count).by(1)
       end
@@ -126,7 +126,7 @@ describe EmailsController do
         expect { post :create, {'from' => user4.email, 
           'Delivered-To' => "subscribers@worth-reading.org", 
           'subject' => "Nothing", 
-          'body-plain' => "Lorem Ipsum" } }.
+          'body-html' => "Lorem Ipsum" } }.
           to change(ActionMailer::Base.deliveries, :size).by(1)
           # to change(Delayed::Job, :count).by(1)
       end
