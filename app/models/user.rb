@@ -82,18 +82,8 @@ class User < ActiveRecord::Base
       log.emailed = Time.now
     end
     UserMailer.send_message(email, wr_log, receiver).deliver
-    self.add_subscriber(receiver)  #May already be subscribed
+    self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
   end
-
-  # Active Record Callbacks
-  before_save { |user| 
-    user.email = email.downcase
-    if user.new_record? 
-      user.likes = 50 
-      user.generate_confirmation_token
-    end
-  }
-  before_save :create_remember_token
 
   # The confirmation token used to confirm emails when creating a user is also
   # used to send and confirm the password reset link
@@ -110,6 +100,16 @@ class User < ActiveRecord::Base
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64
   end
+
+  # Active Record Callbacks
+  before_save { |user| 
+    user.email = email.downcase
+    if user.new_record? 
+      user.likes = 50 
+      user.generate_confirmation_token
+    end
+  }
+  before_save :create_remember_token
 
   private
 
