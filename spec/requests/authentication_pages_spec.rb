@@ -54,6 +54,8 @@ describe "Authentication" do
 
         it { should have_selector('title', text: 'Sign in') }
         it { should have_selector('div.alert.alert-error', text: 'confirmed') }
+        it { should have_selector('div.resend_confirmation input.btn'), 
+                                  value: 'Resend Email Confirmation'}
       end
     end
   end

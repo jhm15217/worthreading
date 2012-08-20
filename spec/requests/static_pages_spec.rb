@@ -46,4 +46,15 @@ describe "Static pages" do
     it { should have_selector('h1',    text: 'Contact') }
     it { should have_selector('title', text: full_title('Contact')) }
   end
+
+  describe "Email Confirmation Sent Page" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      user.toggle! :confirmed
+      visit { email_confirmation_path(id: user.id)}
+      it { should have_selector('input.btn'), 
+                                  value: 'Resend Email Confirmation'}
+    end
+    
+  end
 end
