@@ -270,9 +270,9 @@ describe User do
 
     context "should when a user is already subscribed to another user" do
       before { user1.add_subscriber! user2 }
-      it "should not add the subscriber" do
+      it "should not add the subscriber and raise an error" do
         expect { user1.send_msg_to_individual(email, user2) }.
-          to change(Relationship, :count).by(0)
+          should_not raise_error
       end
     end
   end
