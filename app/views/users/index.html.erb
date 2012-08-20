@@ -4,8 +4,7 @@
 <%= will_paginate %>
 
 <ul class="users">
-	 <%= render @users if current_user.admin? %>
-	 <%= render @users.where(confirmed: true) unless current_user.admin?  %>
+  <%= render @users %>
 </ul>
 
 <%= will_paginate %>
