@@ -39,7 +39,7 @@ class EmailsController < ApplicationController
         from: from[:email],
         to: params['Delivered-To'], 
         subject: params['subject'],
-        body: params['body-plain']
+        body: params['body-html']
       )
       if @email.save
         render text: "Email Received" 
