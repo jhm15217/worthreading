@@ -15,6 +15,7 @@ class SessionsController < ApplicationController
       sign_in user
       redirect_back_or root_path 
     elsif user && !user.confirmed
+      @user = user
       flash.now[:error] = "You haven't confirmed your email yet." 
       render 'new'
     else

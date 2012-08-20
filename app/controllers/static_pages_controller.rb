@@ -18,6 +18,7 @@ class StaticPagesController < ApplicationController
   end
 
   def email_confirmation_sent
+    redirect_to root_path and return unless params[:id]
     @user = User.find(params[:id])
   end
 end
