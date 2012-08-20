@@ -17,7 +17,7 @@
 <% WrLog.select('sender_id, count(sender_id) as sender_count,
                  count(opened) as opened_count, count(worth_reading) as
                  worth_reading_count' ).group('sender_id')
-                 .order('1.0*worth_reading_count/sender_count').reverse_order
+                 .order('worth_reading_count').reverse_order
                  .each do |line| %>
   <tr>
     <td><%= User.find(line.sender_id).name %></td>
