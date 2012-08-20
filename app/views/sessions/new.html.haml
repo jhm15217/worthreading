@@ -22,6 +22,6 @@
         Need another email confirmation? Click the button below to resend it: 
 
   .row
-    %span.center
+    .resend_confirmation.center
       = button_to "Resend Email Confirmation", resend_confirm_email_user_path(@user.id),
                   class: "btn btn-info", style: "text-align: center;"
