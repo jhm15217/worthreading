@@ -1,14 +1,27 @@
 - provide(:title, "Sign in")
-%h1 Sign in
+
+.row
+  %h1 Sign in
 .row
   .span6.offset3
     = form_for(:session, url: sessions_path) do |f|
-    = f.label :email
-    = f.text_field :email
-    = f.label :password
-    = f.password_field :password
-    %p= f.submit "Sign in", class: "btn btn-large btn-primary"
-    %p
-      Forgot password? #{link_to "Reset password", new_password_reset_path}
+      = f.label :email
+      = f.text_field :email
+      = f.label :password
+      = f.password_field :password
+      %p= f.submit "Sign in", class: "btn btn-large btn-primary"
       %p
-        New user? #{link_to "Sign up now!", signup_path}
+        Forgot password? #{link_to "Reset password", new_password_reset_path}
+        %p
+          New user? #{link_to "Sign up now!", signup_path}
+
+- if flash[:error] and flash[:error] == "You haven't confirmed your email yet." 
+  .row
+    .span6.offset3
+      %p 
+        Need another email confirmation? Click the button below to resend it: 
+
+  .row
+    %span.center
+      = button_to "Resend Email Confirmation", resend_confirm_email_user_path(@user.id),
+                  class: "btn btn-info", style: "text-align: center;"
