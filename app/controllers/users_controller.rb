@@ -58,7 +58,8 @@ class UsersController < ApplicationController
 
   # GET
   def index
-    @users = User.paginate(page: params[:page])
+    @users = current_user.admin? ? User.paginate(page: params[:page]) : 
+      User.where(confirmed: true).paginate(page: params[:page])
   end
 
   # DELETE
