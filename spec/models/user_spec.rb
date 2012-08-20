@@ -267,5 +267,13 @@ describe User do
       user1.send_msg_to_individual(email, user2)
       email.wr_logs.first.emailed.should_not be_nil
     end
+
+    context "should when a user is already subscribed to another user" do
+      before { user1.add_subscriber! user2 }
+      it "should not add the subscriber" do
+        expect { user1.send_msg_to_individual(email, user2) }.
+          to change(Relationship, :count).by(0)
+      end
+    end
   end
 end
