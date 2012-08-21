@@ -17,6 +17,7 @@ describe UserMailer do
 
     wr_log.sender_id = user.id
     wr_log.receiver_id = other_user.id
+    wr_log.email_id = email.id
     wr_log.save
   end
 
