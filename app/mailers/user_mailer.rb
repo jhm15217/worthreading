@@ -29,9 +29,9 @@ class UserMailer < ActionMailer::Base
     @wr_log =  wr_log
     @sender = User.find_by_email(@email.from)
 
-    if capture = @body.match(/(-- .*)/m)
+    if capture = @body.match(/(^-- .*)/m)
       @signature = capture[0]
-      @body = @body.gsub(/-- .*/m, "")
+      @body = @body.gsub(/^-- .*/m, "")
     end
 
     @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
