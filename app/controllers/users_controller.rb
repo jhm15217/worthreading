@@ -142,11 +142,23 @@ class UsersController < ApplicationController
     redirect_to @user
   end
 
+  def unsubscribe_to_me
+    @user = User.find(params[:id])
+    current_user.rem_subscriber!(@user)
+    redirect_to @user
+  end
+
   # POST
   # Adds me to a user's subcriber list from a user's show page
   def subscribe_me
     @user = User.find(params[:id])
     @user.add_subscriber(current_user)
+    redirect_to @user
+  end
+
+  def unsubscribe_me
+    @user = User.find(params[:id])
+    @user.rem_subscriber!(current_user)
     redirect_to @user
   end
 
