@@ -8,6 +8,8 @@ WorthReading::Application.routes.draw do
       get :subscribed_to_list
       post :subscribe_me
       post :subscribe_to_me
+      delete :unsubscribe_me
+      delete  :unsubscribe_to_me
     end
   end
 

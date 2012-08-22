@@ -17,6 +17,7 @@ describe UserMailer do
 
     wr_log.sender_id = user.id
     wr_log.receiver_id = other_user.id
+    wr_log.email_id = email.id
     wr_log.save
   end
 
@@ -52,10 +53,10 @@ describe UserMailer do
     end
 
     context "when there is a signature" do
-      before { email.body = email.body + "\n -- \n John Doe" and email.save }
+      before { email.body = email.body + "----- Forwarded Message ----\n-- \n John Doe" and email.save }
       it "should parse out a signature correctly and insert worth reading link in appropriate place" do
         UserMailer.send_message(email, wr_log, other_user).body.encoded.
-          should include("<div class='signature'>")
+          should match(/Forwarded Message.*<div class='signature'>/m)
       end
     end
 

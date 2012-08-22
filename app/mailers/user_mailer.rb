@@ -29,9 +29,9 @@ class UserMailer < ActionMailer::Base
     @wr_log =  wr_log
     @sender = User.find_by_email(@email.from)
 
-    if capture = @body.match(/(-- .*)/m)
+    if capture = @body.match(/(^-- .*)/m)
       @signature = capture[0]
-      @body = @body.gsub(/-- .*/m, "")
+      @body = @body.gsub(/^-- .*/m, "")
     end
 
     @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
@@ -49,6 +49,7 @@ class UserMailer < ActionMailer::Base
 
   def alert_change_in_wr_log(wr_log)
     @wr_log = wr_log
+    @email = Email.find(@wr_log.email_id)
     @sender = User.find_by_id(@wr_log.sender_id)
     @recipient = User.find_by_id(@wr_log.receiver_id)
     @autogen_msg = AUTOGEN_MSG
@@ -62,7 +63,7 @@ class UserMailer < ActionMailer::Base
       raise "Invalid action"
     end
 
-    mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}")
+    mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}: #{@email.subject}")
   end
 
   def error_email(error, user, email)

@@ -87,13 +87,51 @@ describe "User pages" do
             click_button "Subscribe to this person"
           end.to change(other_user.subscribers, :count).by(1)
         end
-      end
 
-      context "when subscribing to a user" do
         it "should increment the user's subscribed_users count" do
           expect do
             click_button "Subscribe to this person"
           end.to change(user.subscribed_users, :count).by(1)
+        end
+      end
+    end
+
+    describe "when unsubscribing to a user or unsubscribing a user from you using the button" do
+      let(:other_user) { FactoryGirl.create(:user) }
+      before do 
+        user.add_subscriber!(other_user)
+        other_user.add_subscriber!(user)
+      end
+
+      context "when removing a user as a subscriber" do
+        before { visit user_path(other_user) }
+
+        it "should decrement the user's subscribers count" do
+          expect do 
+            click_button "Remove this person from my subscribers"
+          end.to change(user.subscribers, :count).by(-1)
+        end
+
+        it "should decrement the other user's subscribed users count" do 
+          expect do 
+            click_button "Remove this person from my subscribers"
+          end.to change(other_user.subscribed_users, :count).by(-1)
+        end
+      end
+
+      context "when unsubscribing to a user" do
+        before { visit user_path(other_user) }
+
+        it "should decrement the other user's subscribers count" do
+          expect do
+            click_button "Unsubscribe to this person"
+          end.to change(other_user.subscribers, :count).by(-1)
+        end
+
+        it "should increment the user's subscribed_users count" do
+          expect do
+            click_button "Unsubscribe to this person"
+          end.to change(user.subscribed_users, :count).by(-1)
         end
       end
     end

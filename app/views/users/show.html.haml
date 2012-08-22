@@ -18,7 +18,17 @@
       = button_to 'Add this person to my subscribers', 
         subscribe_to_me_user_path(@user),
         class: "btn btn-primary"
+    - else 
+      = button_to  'Remove this person from my subscribers',
+        unsubscribe_to_me_user_path(@user),
+        class: "btn btn-primary",
+        method: :delete
     - if !@user.subscribed_by?(current_user)
       = button_to 'Subscribe to this person', 
         subscribe_me_user_path(@user),
         class: "btn btn-primary"
+    - else
+      = button_to  'Unsubscribe to this person',
+        unsubscribe_me_user_path(@user),
+        class: "btn btn-primary",
+        method: :delete
