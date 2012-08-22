@@ -39,6 +39,7 @@ WorthReading::Application.routes.draw do
   match  '/by_sender', to: 'wr_logs#by_sender'
   match  '/by_receiver', to: 'wr_logs#by_receiver'
   match  '/by_email', to: 'wr_logs#by_email'
+  match '/whats_this', to: 'static_pages#whats_this' 
  
   match 'wr_logs/:id/msg_opened/:token_identifier', 
     to: 'wr_logs#msg_opened',

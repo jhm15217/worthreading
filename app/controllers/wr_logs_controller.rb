@@ -14,6 +14,7 @@ class WrLogsController < ApplicationController
 
   # GET /wr_logs/1
   # GET /wr_logs/1.json
+  # Response page for clicking on the worth reading button
   def show
     @wr_log = WrLog.find(params[:id])
     @email = Email.find(@wr_log.email_id)
