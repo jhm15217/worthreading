@@ -5,8 +5,7 @@
 
   %body
     .msg-body
-      %p
-        = simple_format @body
+      %p= @body.html_safe
 
     .worth-reading-link
       %p
@@ -14,7 +13,7 @@
 
     - if @signature
       .signature
-        %p= simple_format @signature
+        %p= @signature.html_safe
 
     .web-beacon
       %p{ style: "visibility: hidden;", id: "web-beacon" }
