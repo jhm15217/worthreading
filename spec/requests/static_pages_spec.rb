@@ -55,6 +55,34 @@ describe "Static pages" do
       it { should have_selector('input.btn'), 
                                   value: 'Resend Email Confirmation'}
     end
-    
+  end
+
+  describe "What's this page" do
+    let(:sender) { FactoryGirl.create(:user) }
+    let(:email) { FactoryGirl.create(:email) }
+    let(:log) { FactoryGirl.create(:wr_log) }
+
+    before do
+      log.email_id = email.id
+      log.sender_id = sender.id
+      log.save
+    end
+
+    describe "when visiting with incorrect parameters" do
+      it "should redirect to homepage" do
+        get whats_this_path 
+        response.should redirect_to root_path
+      end
+    end
+
+    describe "when visiting with correct parameters" do
+      before { visit whats_this_path(id: log.id, token_identifier: log.token_identifier ) }
+      it "should not redirect to homepage" do
+        get whats_this_path(id: log.id, token_identifier: log.token_identifier) 
+        response.should_not redirect_to root_path
+      end
+
+      it { should have_selector('a', text: "Join Worth Reading") } 
+    end
   end
 end
