@@ -21,4 +21,8 @@ class StaticPagesController < ApplicationController
     redirect_to root_path and return unless params[:id]
     @user = User.find(params[:id])
   end
+
+  def whats_this
+    # @log = WrLog.find(params[:id])
+  end
 end
