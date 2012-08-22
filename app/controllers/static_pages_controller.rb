@@ -23,6 +23,12 @@ class StaticPagesController < ApplicationController
   end
 
   def whats_this
-    # @log = WrLog.find(params[:id])
+    @log = WrLog.find_by_id(params[:id])
+    if @log and @log.token_identifier == params[:token_identifier]
+      @sender =  @log.sender 
+      @email = @log.email
+    else 
+      redirect_to root_path
+    end
   end
 end

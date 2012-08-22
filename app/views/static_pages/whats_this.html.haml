@@ -2,18 +2,18 @@
   .span12
     .hero-unit
       %p
-        The sender of your email is using a service called worth-reading.org 
+        The sender of your email #{@sender.name} is using a service called worth-reading.org 
         to help him/her to understand who appreciates the messages he/she sends. 
         If you click the Worth Reading button, your approval will be noted and 
         might encourage them to send you similar messages in the future.
 
       %p
-        You can sign up for worth-reading.org yourself and use it to facilitate 
-        bulk mailings and track responses to them.
-
-      .br/
-      %p
+        Would you also like to  use worth-reading.org to facilitate your bulk mailings 
+        and track responses to them. Then sign up by clicking the following button:
         #{link_to "Join Worth Reading", signup_path, class: 'btn btn-primary' } 
 
+      %br/
       %p
-        #{link_to "Click Worth Reading for This message", '#'}
+        You can also click 
+        = link_to image_tag('worth_reading_button2.png'), '#'
+        here to let #{@sender.name} you liked the email #{@email.subject}.
