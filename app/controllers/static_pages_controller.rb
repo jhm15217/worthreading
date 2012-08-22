@@ -21,4 +21,14 @@ class StaticPagesController < ApplicationController
     redirect_to root_path and return unless params[:id]
     @user = User.find(params[:id])
   end
+
+  def whats_this
+    @log = WrLog.find_by_id(params[:id])
+    if @log and @log.token_identifier == params[:token_identifier]
+      @sender =  @log.sender 
+      @email = @log.email
+    else 
+      redirect_to root_path
+    end
+  end
 end
