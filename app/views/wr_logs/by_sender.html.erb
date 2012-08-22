@@ -13,19 +13,14 @@
     <th></th>
   </tr>
 
-
-<% WrLog.select('sender_id, count(sender_id) as sender_count,
-                 count(opened) as opened_count, count(worth_reading) as
-                 worth_reading_count' ).group('sender_id')
-                 .order('worth_reading_count').reverse_order
-                 .each do |line| %>
+<% @percents.each do |percent| %>
   <tr>
-    <td><%= User.find(line.sender_id).name %></td>
-   <td><%= line.sender_count %></td>
-   <td><%= (line.opened_count*100.0/line.sender_count).round %></td>
-    <td><%= (line.worth_reading_count*100.0/line.sender_count).round %></td>
+    <td><%= percent[:name] %></td>
+    <td><%= percent[:sender_count] %></td>
+    <td><%= percent[:opened_percent].round %></td>
+    <td><%= percent[:liked_percent].round %></td>
     <td></td>
   </tr>
-<% end %>
+  <% end %>
 </table>
 

@@ -127,10 +127,26 @@ class WrLogsController < ApplicationController
 
   #GET /by_sender
   def by_sender
+    lines = WrLog.select('sender_id, count(sender_id) as sender_count,
+                     count(opened) as opened_count, count(worth_reading) as
+                     liked_count').group('sender_id')
+    @percents = Array.new(lines.length){|i| { name: User.find(lines[i][:sender_id]).name,
+                                             sender_count: lines[i][:sender_count],
+                                             opened_percent: 100.0*lines[i][:opened_count]/lines[i][:sender_count],
+                                             liked_percent: 100.0*lines[i][:liked_count]/lines[i][:sender_count] } }
+    @percents.sort!{|x,y| -(x[:liked_percent] <=> y[:liked_percent])}    
   end
 
   #GET /by_receiver
   def by_receiver
+    lines = WrLog.select('receiver_id, count(receiver_id) as receiver_count,
+                     count(opened) as opened_count, count(worth_reading) as
+                     liked_count').group('receiver_id')
+    @percents = Array.new(lines.length){|i| { name: User.find(lines[i][:receiver_id]).name,
+                                             receiver_count: lines[i][:receiver_count],
+                                             opened_percent: 100.0*lines[i][:opened_count]/lines[i][:receiver_count],
+                                             liked_percent: 100.0*lines[i][:liked_count]/lines[i][:receiver_count] } }
+    @percents.sort!{|x,y| -(x[:liked_percent] <=> y[:liked_percent])}    
   end
 
   private
