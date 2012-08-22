@@ -132,8 +132,8 @@ class WrLogsController < ApplicationController
                      liked_count').group('sender_id')
     @percents = Array.new(lines.length){|i| { name: User.find(lines[i][:sender_id]).name,
                                              sender_count: lines[i][:sender_count],
-                                             opened_percent: 100.0*lines[i][:opened_count]/lines[i][:sender_count],
-                                             liked_percent: 100.0*lines[i][:liked_count]/lines[i][:sender_count] } }
+                                             opened_percent: 100.0*(lines[i][:opened_count].to_f)/lines[i][:sender_count].to_f,
+                                             liked_percent: 100.0*(lines[i][:liked_count].to_f)/lines[i][:sender_count].to_f } }
     @percents.sort!{|x,y| -(x[:liked_percent] <=> y[:liked_percent])}    
   end
 
@@ -144,8 +144,8 @@ class WrLogsController < ApplicationController
                      liked_count').group('receiver_id')
     @percents = Array.new(lines.length){|i| { name: User.find(lines[i][:receiver_id]).name,
                                              receiver_count: lines[i][:receiver_count],
-                                             opened_percent: 100.0*lines[i][:opened_count]/lines[i][:receiver_count],
-                                             liked_percent: 100.0*lines[i][:liked_count]/lines[i][:receiver_count] } }
+                                             opened_percent: 100.0*(lines[i][:opened_count].to_f)/lines[i][:receiver_count].to_f,
+                                             liked_percent: 100.0*(lines[i][:liked_count].to_f)/lines[i][:receiver_count].to_f } }
     @percents.sort!{|x,y| -(x[:liked_percent] <=> y[:liked_percent])}    
   end
 
