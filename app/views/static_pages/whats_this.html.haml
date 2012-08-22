@@ -15,5 +15,6 @@
       %br/
       %p
         You can also click 
-        = link_to image_tag('worth_reading_button2.png'), '#'
+        = link_to image_tag('worth_reading_button2.png'), 
+          wr_log_path(worth_reading: "1", id: @log.id, token_identifier: @log.token_identifier) 
         here to let #{@sender.name} you liked the email #{@email.subject}.
