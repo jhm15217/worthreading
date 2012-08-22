@@ -52,11 +52,24 @@ describe UserMailer do
         should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
     end
 
-    context "when there is a signature" do
-      before { email.body = email.body + "----- Forwarded Message ----\n-- \n John Doe" and email.save }
+    context "when there is a text email signature" do
+      before { email.body = email.body + "----- Forwarded message ----\n-- \n John Doe" and email.save }
       it "should parse out a signature correctly and insert worth reading link in appropriate place" do
         UserMailer.send_message(email, wr_log, other_user).body.encoded.
-          should match(/Forwarded Message.*<div class='signature'>/m)
+          should match(/Forwarded message.*<div class='signature'>/m)
+      end
+    end
+
+    context "when there is an html email signature" do 
+      before do 
+        email.body = "The top story has some compelling graphs. Too bad 
+          most voters are not persuaded by graphs.<br><br><div class=\"gmail_quote\">
+          ---------- Forwarded message ----------<br>From: -- <br>John Doe" 
+        email.save
+      end
+      it "should parse out a signature correctly and insert worth reading link in appropriate place" do
+        UserMailer.send_message(email, wr_log, other_user).body.encoded.
+          should match(/Forwarded message.*<div class='signature'>/m)
       end
     end
 
