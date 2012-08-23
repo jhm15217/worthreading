@@ -9,7 +9,11 @@
 
     .worth-reading-link
       %p
-        = link_to image_tag(@worth_img_url, alt: "Worth Reading"), @worth_reading_url
+        = link_to image_tag(@worth_img_url, alt: "Worth Reading", 
+          title: "Worth Reading", 
+          width: "173px", 
+          height: "56px"),
+          @worth_reading_url
       %p
         = link_to "What's this?", @whats_this_url 
 
