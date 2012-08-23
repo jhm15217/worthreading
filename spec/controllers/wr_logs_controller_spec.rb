@@ -82,7 +82,7 @@ describe WrLogsController do
         end
       end
 
-      context "and receiver is register" do
+      context "and receiver is registered" do
         it "updates the requested wr_log" do
           get :show, {  id: wr_log.id, worth_reading: "1",
                         token_identifier: wr_log.token_identifier }

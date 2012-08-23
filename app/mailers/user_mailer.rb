@@ -55,16 +55,18 @@ class UserMailer < ActionMailer::Base
     @recipient = User.find_by_id(@wr_log.receiver_id)
     @autogen_msg = AUTOGEN_MSG
 
-    case @wr_log.action
-    when "worth reading"
-      @alert = "found your email worth reading"
-    when "opened"
-      @alert = "opened your email"
-    else
-      raise "Invalid action"
-    end
+   if @sender[:email_notify]
+      case @wr_log.action
+      when "worth reading"
+        @alert = "liked your email"
+      when "opened"
+        @alert = "opened your email"
+      else
+        raise "Invalid action"
+      end
 
-    mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}: #{@email.subject}")
+      mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}: #{@email.subject}")
+    end
   end
 
   def error_email(error, user, email)

@@ -11,3 +11,6 @@
 
 <%= f.label :password_confirmation, "Confirm Password" %>
 <%= f.password_field :password_confirmation %>
+
+<%= f.label :email_notify, "Notify me of events by email" %>
+<%= f.check_box :email_notify, {checked: true }%>

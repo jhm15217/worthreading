@@ -10,6 +10,8 @@
 #  password_digest        :string(255)
 #  remember_token         :string(255)
 #  admin                  :boolean         default(FALSE)
+#  email_notify           :boolean         default(TRUE)
+#  cohort                 :integer         default(0)
 #  likes                  :integer
 #  confirmed              :boolean         default(FALSE)
 #  confirmation_token     :string(255)
@@ -17,7 +19,7 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :name, :email, :password, :password_confirmation, :email_notify
   has_secure_password
   has_many :emails, dependent: :destroy
 
@@ -105,7 +107,7 @@ class User < ActiveRecord::Base
   before_save { |user| 
     user.email = email.downcase
     if user.new_record? 
-      user.likes = 50 
+      user.likes = 50
       user.generate_confirmation_token
     end
   }

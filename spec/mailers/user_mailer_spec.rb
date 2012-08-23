@@ -81,8 +81,8 @@ describe UserMailer do
   describe "Alerting user of a change in the wr_log" do
     context "when a User finds an email worth reading" do 
       before { wr_log.action = "worth reading" }
-      it "should indicate an email was worth reading" do
-        UserMailer.alert_change_in_wr_log(wr_log).body.encoded.should match(/worth reading/m)
+      it "should indicate an email was liked" do
+        UserMailer.alert_change_in_wr_log(wr_log).body.encoded.should match(/liked/m)
       end
 
       it "should render the alert of a change in the wr log email successfully" do
