@@ -71,6 +71,7 @@ class UsersController < ApplicationController
 
   # PUT
   def update
+    puts params[:user]
     if @user.update_attributes(params[:user])
       flash[:success] = "Profile updated"
       sign_in @user
