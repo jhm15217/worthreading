@@ -23,6 +23,13 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
+  def confirm_email_change(user, new_email)
+    @user = user
+    @new_email = new_email
+
+    mail(to: @new_email, subject: "Confirm Change in Email Address")
+  end
+
   def send_message(email, wr_log, recipient)
     @email = email
     @body = @email.body
