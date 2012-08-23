@@ -63,7 +63,10 @@ class EmailsController < ApplicationController
           # @user.delay.send_msg_to_subscribers(@email)
 
         end
-      else
+      elsif @email.to == 'notifications@worth-reading.org'  # log this
+        #don't bounce this
+      end
+    
         UserMailer.error_email("Bad email recipient: #{@email.to}", @user, @email).deliver
       end
     else
