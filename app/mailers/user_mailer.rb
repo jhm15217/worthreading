@@ -41,6 +41,10 @@ class UserMailer < ActionMailer::Base
                                     token_identifier: @wr_log.token_identifier, 
                                     host: Rails.env.production? ? PROD_URL : DEV_URL,
                                     protocol: PROTOCOL)
+    @whats_this_url = whats_this_url(id: @wr_log.id, 
+                                     token_identifier: @wr_log.token_identifier,
+                                     host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                     protocol: PROTOCOL) 
     @beacon_url = msg_opened_url(id: @wr_log.id, 
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
