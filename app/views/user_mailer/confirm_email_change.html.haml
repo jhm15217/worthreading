@@ -5,7 +5,10 @@ Dear #{@user.name},
   following: #{@new_email}.
 
 %p
-  To confirm this change please follow the following link: #{@change_email_url}
+  To confirm this change please follow the following link: 
+
+%p
+  #{@change_email_url}
 
 %p
   = @autogen_msg

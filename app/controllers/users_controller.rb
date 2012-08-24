@@ -21,10 +21,12 @@ class UsersController < ApplicationController
   end
 
   def confirm_email_change
-    @user = User.params[:id]
+    @user = User.find(params[:id])
     if @user && @user.confirmation_token == params[:confirmation_token]
       @user.email = params[:new_email]
       @user.save(validate: false)
+      sign_in @user
+      redirect_to edit_user_path(@user), flash: { success: "Email successfully updated" } 
     else
       redirect_to root_path, flash: { error: "Invalid Access" }
     end
@@ -87,13 +89,17 @@ class UsersController < ApplicationController
   # PUT
   def update
     puts params[:user]
-    if params[:user][:email]
+
+    # When user attempts to update email address
+    if @email = params[:user][:email] and !User.find_by_email(@email)
       @user.generate_confirmation_token
       @user.save(validate: false)
-      # send email confirmation
+      sign_in @user
+
+      UserMailer.confirm_email_change(@user, @email).deliver
 
       redirect_to edit_user_path(@user), 
-        flash: { :notice => "An email has been sent to your new email address."}
+        flash: { :notice => "An email has been sent to your new email address #{@email}"}
     elsif @user.update_attributes(params[:user])
       flash[:success] = "Profile updated"
       sign_in @user
