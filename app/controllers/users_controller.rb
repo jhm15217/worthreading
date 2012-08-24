@@ -20,6 +20,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def confirm_email_change
+    @user = User.params[:id]
+    if @user && @user.confirmation_token == params[:confirmation_token]
+      @user.email = params[:new_email]
+      @user.save(validate: false)
+    else
+      redirect_to root_path, flash: { error: "Invalid Access" }
+    end
+  end
+
   # POST
   def create
     if signed_in?
@@ -78,10 +88,9 @@ class UsersController < ApplicationController
   def update
     puts params[:user]
     if params[:user][:email]
-      # send email confirmation
       @user.generate_confirmation_token
       @user.save(validate: false)
-
+      # send email confirmation
 
       redirect_to edit_user_path(@user), 
         flash: { :notice => "An email has been sent to your new email address."}

@@ -26,7 +26,10 @@ class UserMailer < ActionMailer::Base
   def confirm_email_change(user, new_email)
     @user = user
     @new_email = new_email
+    @autogen_msg = AUTOGEN_MSG
 
+    # confirmation_token, new_email, user id
+    @change_email_url 
     mail(to: @new_email, subject: "Confirm Change in Email Address")
   end
 

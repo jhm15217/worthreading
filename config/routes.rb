@@ -5,6 +5,7 @@ WorthReading::Application.routes.draw do
     member do
       get :edit_email
       get :subscribed_to_list
+      get :confirm_email_change
       put :likes
       post :resend_confirm_email
       post :subscribe_me

@@ -1,0 +1,11 @@
+Dear #{@user.name},
+
+%p
+  You have requested your email for Worth Reading to be changed to the 
+  following: #{@new_email}.
+
+%p
+  To confirm this change please follow the following link: #{@change_email_url}
+
+%p
+  = @autogen_msg
