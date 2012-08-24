@@ -23,6 +23,20 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to Worth Reading")
   end
 
+  # Check if email taken
+  def confirm_email_change(user, new_email)
+    @user = user
+    @new_email = new_email
+    @autogen_msg = AUTOGEN_MSG
+
+    @change_email_url = confirm_email_change_user_url(id: @user.id,
+                                    confirmation_token: @user.confirmation_token,
+                                    new_email: new_email,
+                                    host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                    protocol: PROTOCOL)
+    mail(to: @new_email, subject: "Confirm Change in Email Address")
+  end
+
   def send_message(email, wr_log, recipient)
     @email = email
     @body = @email.body
