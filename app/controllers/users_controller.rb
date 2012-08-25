@@ -166,11 +166,7 @@ class UsersController < ApplicationController
   # GET
   def received
     @user = User.find(params[:id])
-    if Rails.env.development?
-      @r_emails = Email.where("'emails'.'to' = '#{@user.email}'")
-    else
-      @r_emails = Email.where("to = '#{@user.email}'")
-    end
+    @r_emails = Email.where("'emails'.'to' = '#{@user.email}'")
   end
 
   # POST
