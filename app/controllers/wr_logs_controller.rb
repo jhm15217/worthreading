@@ -27,8 +27,6 @@ class WrLogsController < ApplicationController
     if params[:token_identifier] != @wr_log.token_identifier
       redirect_to root_path, 
         flash: { error: "I'm sorry you are not allowed to access that page"}
-    elsif @wr_log.worth_reading
-      redirect_to root_path, flash: { notice: "You already liked the message" }
     elsif worth_reading_criteria 
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now

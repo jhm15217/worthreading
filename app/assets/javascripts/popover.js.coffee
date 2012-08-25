@@ -9,7 +9,7 @@ $ ->
     animation: true,
     placement: 'bottom',
     trigger: 'focus',
-    content: 'Be sure to separate email addresses by a ", "(a comma and a space)'
+    content: 'Separate email addresses by a comma.'
 
   $('#subscription_badge').popover subscription_badge_options
   $('#add_subscribers').popover  add_subscribers_options

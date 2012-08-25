@@ -1,0 +1,21 @@
+= render 'shared/tab_navigator'
+.row
+  - if !@r_emails.empty?
+    %br/
+    %table.table.table-condensed
+      %tr
+        %th When
+        %th From
+        %th Subject
+      - @r_emails.each do |email|
+        %tr
+          %td= email.created_at.to_formatted_s(:short)
+          %td= User.find_by_email(email.from)
+          %td= link_to email.subject, user_email_path(@user, email)
+    = will_paginate(@emails)
+  - else
+    .hero-unit 
+      %p 
+        No emails received. Start by adding sources to you source list. 
+        Click on the source list tab above.
+        

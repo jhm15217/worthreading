@@ -34,11 +34,12 @@ class RelationshipsController < ApplicationController
           current_user.add_subscriber!(@user)
         end
       end
-      if !failed_addresses.blank?
-        flash.now[:error] = "Malformed email address(es)"
-        params[:email_addresses] = failed_addresses
-        render
-      end
+    end
+    if !failed_addresses.blank?
+      # I want to put the bad addresses back into the form so the user can correct them. How?
+      flash.now[:error] = "Malformed email address(es)"
+      params[:email_addresses] = failed_addresses
+      render
     end
 
     respond_to do |format|

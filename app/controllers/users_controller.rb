@@ -135,6 +135,13 @@ class UsersController < ApplicationController
     end.sort_by {|h| -h[:liked] }
   end
 
+  # GET
+  def received
+    @user = User.find(params[:id])
+    @r_emails = Email.where("'emails'.'to' = '#{@user.email}'")
+    puts @r_emails.inspect
+    end
+
   # POST
   # Adds a user to my subscriber list from a user's show page
   def subscribe_to_me

@@ -12,7 +12,7 @@ class EmailsController < ApplicationController
     if signed_in? && current_user.admin?
       @emails = Email.paginate(page: params[:page])
     else
-      @emails = current_user.emails.paginate(page: params[:page])
+      @emails = Email.where("'emails'.'from' = ? OR 'emails'.'to' = ?", current_user.email, current_user.email).paginate(page: params[:page])
     end
 
     respond_to do |format|

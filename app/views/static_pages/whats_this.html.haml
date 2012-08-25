@@ -1,20 +1,11 @@
-.row
-  .span12
-    .hero-unit
-      %p
-        The sender of your email #{@sender.name} is using a service called worth-reading.org 
-        to help him/her to understand who appreciates the messages he/she sends. 
-        If you click the Worth Reading button, your approval will be noted and 
-        might encourage them to send you similar messages in the future.
+.hero-unit
+  %p
+    I am using a service called worth-reading.org to help me know who likes the messages that I send.
+    If you click wr_log_path(worth_reading: "1", id: @log.id, token_identifier: @log.token_identifier) it will encourage me to send you
+    similar messages.
+  %br/
 
-      %p
-        Would you also like to  use worth-reading.org to facilitate your bulk mailings 
-        and track responses to them. Then sign up by clicking the following button:
-        #{link_to "Join Worth Reading", signup_path, class: 'btn btn-primary' } 
+  %p
+    If you would also like to  use worth-reading.org sign up by clicking
+    #{link_to "Join Worth Reading", signup_path, class: 'btn btn-primary' } 
 
-      %br/
-      %p
-        You can also click 
-        = link_to image_tag('worth_reading_button2.png'), 
-          wr_log_path(worth_reading: "1", id: @log.id, token_identifier: @log.token_identifier) 
-        here to let #{@sender.name} you liked the email #{@email.subject}.

@@ -4,7 +4,6 @@ class StaticPagesController < ApplicationController
       @user = current_user 
       @emails = @user.emails.paginate(page: params[:page])
     else
-      @users = User.all order: 'likes DESC'
     end
   end
 

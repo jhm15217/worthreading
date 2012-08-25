@@ -1,14 +1,12 @@
 = render 'shared/tab_navigator'
 .row
-  %h1 Sent
-.row
   - if !@emails.empty?
     %br/
     %table.table.table-condensed
       %tr
         %th When
         %th Subject
-        %th Sent
+        %th= Sent
         %th Opened
         %th Liked
       - @emails.each do |email|

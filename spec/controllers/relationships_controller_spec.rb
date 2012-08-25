@@ -32,7 +32,7 @@ describe RelationshipsController do
 
     context "with an invalid email" do
       before { other_user.email = " " }
-      it "should redirect with a flash message 'Invalid email address'" do
+      it "should redirect with a flash message 'Malformed email address'" do
         post :create, { email_addresses: other_user.email }
         response.should be_redirect
         flash.now[:error].should =~ /Malformed email address/i
