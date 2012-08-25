@@ -167,7 +167,6 @@ class UsersController < ApplicationController
   def received
     @user = User.find(params[:id])
     @r_emails = Email.where("'emails'.'to' = '#{@user.email}'")
-    puts @r_emails.inspect
     end
 
   # POST

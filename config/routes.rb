@@ -3,6 +3,11 @@ WorthReading::Application.routes.draw do
   resources :users do
     resources :emails, only: [:index, :show, :destroy]
     member do
+      get :edit_email
+      get :subscribed_to_list
+      get :received
+      get :confirm_email_change
+      put :likes
       post :resend_confirm_email
       post :subscribe_me
       post :subscribe_to_me
@@ -38,6 +43,7 @@ WorthReading::Application.routes.draw do
   match  '/by_receiver', to: 'wr_logs#by_receiver'
   match  '/by_email', to: 'wr_logs#by_email'
   match '/whats_this', to: 'static_pages#whats_this'
+  match '/add_sources', to: 'relationships#add_sources'
  
   match 'wr_logs/:id/msg_opened/:token_identifier', 
     to: 'wr_logs#msg_opened',

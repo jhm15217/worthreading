@@ -1,9 +1,15 @@
-.span6
-  = render 'shared/tab_navigator'
-
-  .row
-  - if !@subscribed_list.empty?
-    .row
+.row
+  .span6
+    = render 'shared/tab_navigator'
+    = form_tag('/add_sources', class: 'form-horizontal') do 
+      .input-append
+        %textarea.span4{ :name => "email_addresses",
+                       :size => "18", 
+                       :type => "text", 
+                       :placeholder => "Enter email addresses.",
+                       :id => "add_sources" }
+        %button.btn.btn-large{type: "submit"} Add 
+    - if !@subscribed_list.empty?
       %table.table.table-condensed
         %tr
           %th Name
@@ -23,15 +29,12 @@
               confirm: "Are you sure you want to delete #{item[:email]}?"
 
       = will_paginate @subscribed_to
-
-  - else
-    .row
+    - else
       .hero-unit
         %p 
           You are not subscribed to anyone. You can check out the users list
           and find some users you can subscribe to. To access the users list
           you can click on the Users link on the navigation bar at the top-right.
-.span4
-  =render 'shared/best_recent_messages'
-.br
-.div
+  .span4
+    =render 'shared/best_recent_messages'
+.row

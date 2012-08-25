@@ -48,6 +48,40 @@ class RelationshipsController < ApplicationController
     end
   end
 
+  # Adds subscribers
+  # Creates a user if user doesn't exist
+  def add_sources
+    failed_addresses = ""
+    email_address_list(params[:email_addresses]).each do |user_parts|
+      @user = find_or_register(user_parts[:email])
+      if !@user
+        failed_addresses = failed_addresses + '"' + user_parts[:name] + '"<' + user_parts[:email] + '>, '
+      else
+        if @user.subscribed_by?(current_user)
+          flash[:error] = "#{user_parts[:email]} was already on your list."
+        else
+          if @user.name == "Unknown" and user_parts[:name] != ""
+            @user.name = user_parts[:name]
+            @user.password = @user.password_confirmation = "Unknown"
+            @user.save!
+          end
+          @user.add_subscriber!(current_user)
+        end
+      end
+    end
+    if !failed_addresses.blank?
+      # I want to put the bad addresses back into the form so the user can correct them. How?
+      flash.now[:error] = "Malformed email address(es)"
+      params[:email_addresses] = failed_addresses
+      render
+    end
+
+    respond_to do |format|
+      format.html { redirect_to subscribed_to_list_user_path current_user }
+      format.js
+    end
+  end
+
   def destroy
     if params[:subscribed]
       @user =  Relationship.find(params[:id]).subscribed

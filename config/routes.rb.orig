@@ -5,13 +5,10 @@ WorthReading::Application.routes.draw do
     member do
       get :edit_email
       get :subscribed_to_list
-<<<<<<< HEAD
       get :received
-=======
       get :confirm_email_change
       put :likes
       post :resend_confirm_email
->>>>>>> 0aa3d8a6da7029eaf2dcf4da3ac09a7bb05efa4f
       post :subscribe_me
       post :subscribe_to_me
       delete :unsubscribe_me

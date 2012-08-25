@@ -1,12 +1,5 @@
 = render 'shared/tab_navigator'
 .row
-<<<<<<< HEAD
-  %h1 Sent
-=======
-  .span12
-    %h1 Emails
->>>>>>> 0aa3d8a6da7029eaf2dcf4da3ac09a7bb05efa4f
-.row
   - if !@emails.empty?
     %br/
     %table.table.table-condensed

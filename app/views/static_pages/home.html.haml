@@ -1,29 +1,31 @@
-.span6
-  - if signed_in?
-    - provide(:s_or_r, "Sent")
+.row
+  .span6
+    - if signed_in?
+      - provide(:s_or_r, "Sent")
 
-    = render 'shared/sent'
+      = render 'shared/sent'
 
-    - if current_user.first_login_at && current_user.first_login_at > 15.seconds.ago
-      = render 'shared/first_time_tutorial'
+      - if current_user.first_login_at && current_user.first_login_at > 15.seconds.ago
+        = render 'shared/first_time_tutorial'
 
-  - else
-    %h2 Welcome to Worth Reading
-    %p
-      When you send the same message to several people would you like to:
-    %ul
-      %li 
-        %p send individual messages to each of them?
-      %li 
-        %p discover when they open the message?
-      %li 
-        %p discover if they like the message? 
-    %p
-      Then sign up for Worth Reading.
-    %br/
-    %p.center
-      = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
+    - else
+      %h2 Welcome to Worth Reading
+      %p
+        When you send the same message to several people would you like to:
+      %ul
+        %li 
+          %p send individual messages to each of them?
+        %li 
+          %p discover when they open the message?
+        %li 
+          %p discover if they like the message? 
+      %p
+        Then sign up for Worth Reading.
+      %br/
+      %p.center
+        = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
 
-.span4
-  =render 'shared/best_recent_messages'
+  .span4
+    =render 'shared/best_recent_messages'
+.row
 
