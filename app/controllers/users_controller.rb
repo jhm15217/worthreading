@@ -166,8 +166,12 @@ class UsersController < ApplicationController
   # GET
   def received
     @user = User.find(params[:id])
-    @r_emails = Email.where("'emails'.'to' = '#{@user.email}'")
+    if Rails.env.development?
+      @r_emails = Email.where("'emails'.'to' = '#{@user.email}'")
+    else
+      @r_emails = Email.where("to = '#{@user.email}'")
     end
+  end
 
   # POST
   # Adds a user to my subscriber list from a user's show page
