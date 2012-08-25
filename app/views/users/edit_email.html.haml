@@ -1,0 +1,20 @@
+.row
+  .span12
+    %h1 Change Email Address
+    %br/
+
+.row
+  .span6.offset4
+    = form_for(@user) do |f|
+      = f.label :email 
+      = f.text_field :email
+      %br/
+      = f.submit "Request change", class: "btn btn-primary"
+
+.row
+  .span6.offset3
+    .alert.alert-info
+      %b Note: 
+      After requesting for a change in your email address, we will send an
+      email to you new email address. You must confirm your new email address 
+      before we can change it.
