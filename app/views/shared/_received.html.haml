@@ -1,16 +1,16 @@
 = render 'shared/tab_navigator'
-- if !@r_emails.empty?
+- if !@lines.empty?
   %table.table.table-condensed
     %tr
       %th When
       %th From
       %th Subject
-    - @r_emails.each do |email|
+    - @lines.each do |line|
       %tr
-        %td= email.created_at.to_formatted_s(:short)
-        %td= User.find_by_email(email.from)
-        %td= link_to email.subject, user_email_path(@user, email)
-  = will_paginate(@emails)
+        %td= line[:time]
+        %td= line[:from]
+        %td= link_to Email.find(line[:subject]).subject.shorten, user_email_path(@user, line[:subject])
+    = will_paginate @lines
 - else
   .hero-unit 
     %p 
