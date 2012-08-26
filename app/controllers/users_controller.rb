@@ -1,3 +1,5 @@
+require 'will_paginate/array' 
+
 class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:index, :edit, :update, :destroy, :following, :followers, :show]
   before_filter :correct_user,   only: [:edit, :update, :subscribed_to_list]
