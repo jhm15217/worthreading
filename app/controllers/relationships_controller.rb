@@ -1,5 +1,5 @@
 class RelationshipsController < ApplicationController
-  before_filter :signed_in_user
+  before_filter :signed_in_user, except: [:email_unsubscribe, :unsubscribe_from_mailing_list]
 
   def index
     @user = current_user
@@ -103,10 +103,16 @@ class RelationshipsController < ApplicationController
   # Methods for unsubscribing from a user from an email message sent 
   # GET
   def email_unsubscribe
+    @relationship = Relationship.find(params[:id])
+    @subscribed = @relationship.subscribed
+    @subscriber = @relationship.subscriber
   end
 
   # DELETE
   def unsubscribe_from_mailing_list 
+    @relationship = Relationship.find(params[:id])
+    @relationship.destroy
+    redirect_to root_path, flash: { success: "Unsubscribed from the mailing list"}
   end
 
 end

@@ -43,6 +43,7 @@ describe RelationshipsController do
   describe "removing a subscriber" do 
     before { user.add_subscriber!(other_user) }
     let(:relationship) { user.relationships.find_by_subscriber_id(other_user) }
+
     it "should decrease subscriber count by 1" do
       expect do
         delete :destroy, { id: relationship.id }

@@ -1,0 +1,14 @@
+.row
+  .span12
+    %h1 Unsubscribe Request
+
+.row
+  .span12
+    .hero-unit
+      %p 
+        You have requested to unsubscribe your email #{@subscriber.email} from 
+        #{@subscribed.name} (#{@subscribed.email}). To confirm your request click the 
+        following button:
+      %p.center 
+        = button_to "Unsubscribe me", 
+          unsubscribe_from_mailing_list_relationship_path(id: @relationship.id)
