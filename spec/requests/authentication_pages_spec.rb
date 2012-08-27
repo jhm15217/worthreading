@@ -35,7 +35,6 @@ describe "Authentication" do
       context "and when account is confirmed" do 
         before { sign_in user }
 
-        it { should have_selector('title', text: user.name) }
         it { should have_link('Users',    href: users_path) }
         it { should have_link('Settings', href: edit_user_path(user)) }
         it { should have_link('Sign out', href: signout_path) }
@@ -76,7 +75,7 @@ describe "Authentication" do
         describe "after signing in" do
 
           it "should render the desired protected page" do
-            page.should have_selector('title', text: 'Edit user')
+            page.should have_selector('title', text: 'Account Settings')
           end
         end
       end
@@ -142,4 +141,3 @@ describe "Authentication" do
     end
   end
 end
-

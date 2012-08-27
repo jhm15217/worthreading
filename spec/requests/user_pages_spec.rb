@@ -226,7 +226,7 @@ describe "User pages" do
 
     describe "page" do
       it { should have_selector('h1',    text: "Update your profile") }
-      it { should have_selector('title', text: "Edit user") }
+      it { should have_selector('title', text: "Account Settings") }
       it { should have_link('change', href: 'http://gravatar.com/emails') }
     end
 
@@ -245,7 +245,6 @@ describe "User pages" do
         click_button "Save the changes"
       end
 
-      it { should have_selector('title', text: new_name) }
       it { should have_selector('div.alert.alert-success') }
       it { should have_link('Sign out', href: signout_path) }
       specify { user.reload.name.should  == new_name }
