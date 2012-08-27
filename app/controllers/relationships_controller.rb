@@ -104,15 +104,22 @@ class RelationshipsController < ApplicationController
   # GET
   def email_unsubscribe
     @relationship = Relationship.find(params[:id])
-    @subscribed = @relationship.subscribed
-    @subscriber = @relationship.subscriber
+    if @relationship.token_identifier == params[:token_identifier]
+      @subscribed = @relationship.subscribed
+      @subscriber = @relationship.subscriber
+    else
+      redirect_to root_path, flash: { error: "Invalid access" }
+    end
   end
 
   # DELETE
   def unsubscribe_from_mailing_list 
     @relationship = Relationship.find(params[:id])
-    @relationship.destroy
-    redirect_to root_path, flash: { success: "Unsubscribed from the mailing list"}
+    if @relationship.token_identifier == params[:token_identifier]
+      @relationship.destroy
+      redirect_to root_path, flash: { success: "Unsubscribed from the mailing list"}
+    else
+      redirect_to root_path, flash: { error: "Invalid access" }
+    end
   end
-
 end

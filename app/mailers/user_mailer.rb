@@ -42,6 +42,9 @@ class UserMailer < ActionMailer::Base
     @body = @email.body
     @wr_log =  wr_log
     @sender = User.find_by_email(@email.from)
+    @receiver = recipient
+    @relationship = Relationship.where(subscriber_id: @receiver.id, 
+                                       subscribed_id: @sender.id).first
 
     # Parsing the email signature
     if capture = @body.match(/(-- <br>.*)/m) || @body.match(/(^-- \n.*)/m)
@@ -63,7 +66,11 @@ class UserMailer < ActionMailer::Base
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
-    # @unsubscribe_url  
+    @unsubscribe_url = email_unsubscribe_relationship_path(id: @relationship.id, 
+                                 token_identifier: @relationship.token_identifier, 
+                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                 protocol: PROTOCOL)
+)
 
     mail(from: email.from, to: recipient.email, subject: email.subject)
   end

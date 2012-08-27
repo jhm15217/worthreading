@@ -11,4 +11,5 @@
         following button:
       %p.center 
         = button_to "Unsubscribe me", 
-          unsubscribe_from_mailing_list_relationship_path(id: @relationship.id)
+          unsubscribe_from_mailing_list_relationship_path(id: @relationship.id, 
+          token_identifier: @relationship.token_identifier)
