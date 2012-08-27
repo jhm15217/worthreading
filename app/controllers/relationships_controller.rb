@@ -99,4 +99,14 @@ class RelationshipsController < ApplicationController
       end
     end
   end
+
+  # Methods for unsubscribing from a user from an email message sent 
+  # GET
+  def email_unsubscribe
+  end
+
+  # DELETE
+  def unsubscribe_from_mailing_list 
+  end
+
 end

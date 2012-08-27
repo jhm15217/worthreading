@@ -63,6 +63,8 @@ class UserMailer < ActionMailer::Base
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
+    # @unsubscribe_url  
+
     mail(from: email.from, to: recipient.email, subject: email.subject)
   end
 
