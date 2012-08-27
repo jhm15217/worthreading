@@ -45,7 +45,8 @@ def make_users(number = 20)
                        email:    "admin@email.com",
                        password: "foobar",
                        password_confirmation: "foobar",
-                       email_notify: false)
+                       email_notify: false,
+                       forward: true)
   admin.toggle!(:confirmed)
   admin.toggle!(:admin)
   puts "Creating #{number - 1} other users..."
@@ -57,7 +58,8 @@ def make_users(number = 20)
                      email:    email,
                      password: password,
                      password_confirmation: password,
-                     email_notify: true )
+                     email_notify: true,
+                     forward: true )
     u.toggle!(:confirmed)
     u.likes = rand(25..200) and u.save
   end

@@ -9,7 +9,7 @@ module UsersHelper
   end
   
   def find_or_register(email_address)
-     User.where(email: email_address.downcase).first_or_create!(name:"Unknown",password:"Unknown", password_confirmation:"Unknown", email_notify: true)
+     User.where(email: email_address.downcase).first_or_create!(name:"Unknown",password:"Unknown", password_confirmation:"Unknown", email_notify: true, forward: true)
    rescue
      nil
   end

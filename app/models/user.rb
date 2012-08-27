@@ -11,6 +11,7 @@
 #  remember_token         :string(255)
 #  admin                  :boolean         default(FALSE)
 #  email_notify           :boolean         default(TRUE)
+#  forward                :boolean         default(TRUE)
 #  cohort                 :integer         default(0)
 #  likes                  :integer
 #  confirmed              :boolean         default(FALSE)
@@ -19,7 +20,7 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :name, :email, :password, :password_confirmation, :email_notify
+  attr_accessible :name, :email, :password, :password_confirmation, :email_notify, :forward
   has_secure_password
   has_many :emails, dependent: :destroy
 

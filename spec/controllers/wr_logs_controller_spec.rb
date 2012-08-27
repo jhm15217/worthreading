@@ -65,7 +65,6 @@ describe WrLogsController do
 
     describe "Receiver following Worth Reading link in email" do
       context "and receiver is unregistered" do
-        before { receiver.toggle!(:confirmed) }
         it "updates the requested wr_log" do
           get :show, {  id: wr_log.id, worth_reading: "1",
                         token_identifier: wr_log.token_identifier }
@@ -83,24 +82,42 @@ describe WrLogsController do
       end
 
       context "and receiver is registered" do
+        before { receiver.add_subscriber!(sender) }
         it "updates the requested wr_log" do
           get :show, {  id: wr_log.id, worth_reading: "1",
                         token_identifier: wr_log.token_identifier }
 
-          # responded is set to true
           wr_log.reload
           wr_log.action.should == "worth reading"
 
           #  TODO Needs work
           # response.should have_selector("a", href: "http://worth-reading.org/registered") 
         end
-      end
 
-      it "should send an email alerting Sender that the receiver liked their email" do
-        expect { get :show, {  id: wr_log.id, worth_reading: "1",
-                        token_identifier: wr_log.token_identifier } }.
-          to change(ActionMailer::Base.deliveries, :size).by(1)
-          # to change(Delayed::Job, :count).by(1)
+        it "should forward email to subscribers and notify sender" do
+          expect { get :show, {  id: wr_log.id, worth_reading: "1",
+                          token_identifier: wr_log.token_identifier } }.
+            to change(ActionMailer::Base.deliveries, :size).by(2)
+            # to change(Delayed::Job, :count).by(2)
+
+        end
+
+        it "should notify sender that the receiver liked their email" do
+          sender.toggle!(:email_notify)  # make false
+          expect { get :show, {  id: wr_log.id, worth_reading: "1",
+                          token_identifier: wr_log.token_identifier } }.
+            to change(ActionMailer::Base.deliveries, :size).by(1)
+            # to change(Delayed::Job, :count).by(1)
+        end
+
+        it "should not send any email if senders email_notify and receivers forward boxes are not checked" do
+          sender.toggle!(:email_notify)
+          receiver.toggle!(:forward)
+          expect { get :show, {  id: wr_log.id, worth_reading: "1",
+                          token_identifier: wr_log.token_identifier } }.
+            to change(ActionMailer::Base.deliveries, :size).by(0)
+            # to change(Delayed::Job, :count).by(0)
+        end
       end
     end
 
