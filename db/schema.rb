@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120827184230) do
+ActiveRecord::Schema.define(:version => 20120827200915) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -40,10 +40,11 @@ ActiveRecord::Schema.define(:version => 20120827184230) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "subscriber_id"
     t.integer  "subscribed_id"
+    t.string   "token_identifier"
   end
 
   add_index "relationships", ["subscribed_id", "subscriber_id"], :name => "index_relationships_on_subscribed_id_and_subscriber_id", :unique => true
