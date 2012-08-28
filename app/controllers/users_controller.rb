@@ -168,7 +168,7 @@ class UsersController < ApplicationController
   # GET
   def received
     @user = User.find(params[:id])
-    @lines = WrLog.where(receiver_id: @user.id).map do |wrlog| 
+    @lines = WrLog.where(receiver_id: @user.id).sort!{|t1, t2| t2.created_at<=> t1.created_at}.map do |wrlog| 
                            { time: Email.find(wrlog.email_id).created_at.to_formatted_s(:short), 
                              from: (if User.find(wrlog.sender_id)
                                       User.find(wrlog.sender_id).name
