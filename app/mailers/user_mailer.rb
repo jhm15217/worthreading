@@ -66,11 +66,11 @@ class UserMailer < ActionMailer::Base
                                  token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
-    @unsubscribe_url = email_unsubscribe_relationship_path(id: @relationship.id, 
+
+    @unsubscribe_url = email_unsubscribe_relationship_url(id: @relationship.id, 
                                  token_identifier: @relationship.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
-)
 
     mail(from: email.from, to: recipient.email, subject: email.subject)
   end

@@ -5,11 +5,15 @@
 .row
   .span12
     .hero-unit
-      %p 
+      %p.center
         You have requested to unsubscribe your email #{@subscriber.email} from 
         #{@subscribed.name} (#{@subscribed.email}). To confirm your request click the 
         following button:
-      %p.center 
+      %div{style: "text-align: center;"}
         = button_to "Unsubscribe me", 
           unsubscribe_from_mailing_list_relationship_path(id: @relationship.id, 
-          token_identifier: @relationship.token_identifier)
+          token_identifier: @relationship.token_identifier), 
+          class: "btn btn-primary", 
+          confirm: "Are you sure you wish to unsubscribe?",
+          style: "text-align: center;",
+          method: :delete 
