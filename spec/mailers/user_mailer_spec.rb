@@ -125,33 +125,40 @@ describe UserMailer do
 
   describe "when sending a user a password reset email" do
     it "should render the error email without erorr" do
-      lambda { UserMailer.password_reset(user) }.should_not raise_error
+      expect { UserMailer.password_reset(user) }.should_not raise_error
     end
 
     it "should deliver successfully" do
-      lambda { UserMailer.password_reset(user).deliver }.should_not raise_error
+      expect { UserMailer.password_reset(user).deliver }.should_not raise_error
     end
   end
-  # Parsing implementation tests 
-  #  describe "Parsed email" do 
-  #    it "should render the first part of the message email successfully" do 
-  #      lambda { UserMailer.first_pt_msg(email) }.should_not raise_error
-  #    end
-  #
-  #    it "should deliver successfully" do
-  #      lambda { UserMailer.first_pt_msg(email).deliver }.should_not raise_error
-  #    end
-  #
-  #    context "rendered w/o error" do
-  #      before { @mailer = UserMailer.first_pt_msg(email) }
-  #        it "should parse the correct content" do
-  #          @mailer.body.encoded.should match(/before/m)
-  #        end
-  #
-  #        it "should not contain content after the more button" do
-  #          @mailer.body.encoded.should_not match(/after/m)
-  #        end
-  #    end
-  #  end
 
+  # Parsing implementation tests 
+  describe "Parsed email" do 
+    let(:email) { FactoryGirl.create(:email) }
+    
+    before do
+      email.body = "Before <more> After" 
+      email.save
+    end
+
+    it "should render the first part of the message email successfully" do 
+      expect { UserMailer.first_pt_msg(email) }.should_not raise_error
+    end
+  
+    it "should deliver successfully" do
+      expect { UserMailer.first_pt_msg(email).deliver }.should_not raise_error
+    end
+  
+    context "rendered w/o error" do
+      before { @mailer = UserMailer.first_pt_msg(email) }
+        it "should parse the correct content" do
+          @mailer.body.encoded.should match(/before/im)
+        end
+  
+        it "should not contain content after the more button" do
+          @mailer.body.encoded.should_not match(/after/im)
+        end
+    end
+  end
 end
