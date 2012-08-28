@@ -84,8 +84,8 @@ class User < ActiveRecord::Base
       log.receiver_id = receiver.id 
       log.emailed = Time.now
     end
-    UserMailer.send_message(email, wr_log, receiver).deliver
     self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
+    UserMailer.send_message(email, wr_log, receiver).deliver
   end
 
   # The confirmation token used to confirm emails when creating a user is also
