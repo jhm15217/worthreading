@@ -43,6 +43,7 @@ describe RelationshipsController do
   describe "removing a subscriber" do 
     before { user.add_subscriber!(other_user) }
     let(:relationship) { user.relationships.find_by_subscriber_id(other_user) }
+
     it "should decrease subscriber count by 1" do
       expect do
         delete :destroy, { id: relationship.id }
@@ -52,6 +53,45 @@ describe RelationshipsController do
     it "should respond with a redirect" do
       delete :destroy, { id: relationship.id }
       response.should be_redirect
+    end
+  end
+
+  describe "unsubscribing via email" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let(:subscription) { user.relationships.create { |r| r.subscriber_id = user2.id } }
+
+    describe "visiting the unsubscribe page from an email link" do
+      context "when parameters are invalid" do 
+        it "should be a redirect" do
+          get :email_unsubscribe 
+          response.should be_redirect
+        end 
+      end
+
+      context "when params are valid" do
+        it "should be a success" do
+          get :email_unsubscribe, 
+            {id: subscription.id, token_identifier: subscription.token_identifier }
+          response.should be_success
+        end 
+      end
+    end
+
+    describe "when clicking the unsubscribe button" do
+      # it "should decrease relationship count by 1" do 
+      #   expect do  
+      #     delete :unsubscribe_from_mailing_list,
+      #       { id: subscription.id, token_identifier: subscription.token_identifier }
+      #   end.to change(Relationship, :count).by(-1)
+      # end
+
+      it "should redirect with a success message" do
+        delete :unsubscribe_from_mailing_list,
+          { id: subscription.id, token_identifier: subscription.token_identifier }
+        response.should be_redirect
+        flash[:success].should =~ /unsubscribed/i
+      end
     end
   end
 

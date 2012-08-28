@@ -10,13 +10,13 @@
 #  password_digest        :string(255)
 #  remember_token         :string(255)
 #  admin                  :boolean         default(FALSE)
-#  email_notify           :boolean         default(TRUE)
-#  forward                :boolean         default(TRUE)
-#  cohort                 :integer         default(0)
 #  likes                  :integer
 #  confirmed              :boolean         default(FALSE)
 #  confirmation_token     :string(255)
 #  password_reset_sent_at :datetime
+#  first_login_at         :datetime
+#  email_notify           :boolean         default(TRUE)
+#  cohort                 :integer         default(0)
 #
 
 class User < ActiveRecord::Base
@@ -84,8 +84,8 @@ class User < ActiveRecord::Base
       log.receiver_id = receiver.id 
       log.emailed = Time.now
     end
-    UserMailer.send_message(email, wr_log, receiver).deliver
     self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
+    UserMailer.send_message(email, wr_log, receiver).deliver
   end
 
   # The confirmation token used to confirm emails when creating a user is also
