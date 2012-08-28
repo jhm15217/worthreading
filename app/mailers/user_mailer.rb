@@ -41,7 +41,7 @@ class UserMailer < ActionMailer::Base
     @email = email
     @body = @email.body
     @wr_log =  wr_log
-    @sender = User.find_by_email(@email.from)
+    @sender = wr_log.sender
     @receiver = recipient
     @relationship = Relationship.where(subscriber_id: @receiver.id, 
                                        subscribed_id: @sender.id).first
