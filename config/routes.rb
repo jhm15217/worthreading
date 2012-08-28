@@ -21,8 +21,15 @@ WorthReading::Application.routes.draw do
       get :recipient_list
     end
   end
+
+  resources :relationships, only: [:create, :destroy, :index] do
+    member do 
+      get :email_unsubscribe 
+      delete :unsubscribe_from_mailing_list
+    end
+  end
+
   resources :sessions, only: [:new, :create, :destroy]
-  resources :relationships, only: [:create, :destroy, :index]
   resources :password_resets, only: [:new, :create, :update]
 
   resources :wr_logs do

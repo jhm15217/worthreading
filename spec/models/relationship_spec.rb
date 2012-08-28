@@ -2,11 +2,12 @@
 #
 # Table name: relationships
 #
-#  id            :integer         not null, primary key
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
-#  subscriber_id :integer
-#  subscribed_id :integer
+#  id               :integer         not null, primary key
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  subscriber_id    :integer
+#  subscribed_id    :integer
+#  token_identifier :string(255)
 #
 
 require 'spec_helper'
@@ -20,6 +21,9 @@ describe Relationship do
   subject { relationship }
 
   it { should be_valid }
+  it { should respond_to(:subscriber)}
+  it { should respond_to(:subscribed)}
+  it { should respond_to(:token_identifier)}
 
   describe "accessible attributes" do
     it "should not allow access to subscribed_id" do

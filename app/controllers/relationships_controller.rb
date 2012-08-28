@@ -1,5 +1,5 @@
 class RelationshipsController < ApplicationController
-  before_filter :signed_in_user
+  before_filter :signed_in_user, except: [:email_unsubscribe, :unsubscribe_from_mailing_list]
 
   def index
     @user = current_user
@@ -97,6 +97,31 @@ class RelationshipsController < ApplicationController
         format.html { redirect_to relationships_path }
         format.js
       end
+    end
+  end
+
+  # Methods for unsubscribing from a user from an email message sent 
+  # GET
+  def email_unsubscribe
+    
+    if @relationship = Relationship.find_by_id(params[:id]) and 
+      @relationship.token_identifier == params[:token_identifier]
+
+      @subscribed = @relationship.subscribed
+      @subscriber = @relationship.subscriber
+    else
+      redirect_to root_path, flash: { error: "Invalid access" }
+    end
+  end
+
+  # DELETE
+  def unsubscribe_from_mailing_list 
+    @relationship = Relationship.find(params[:id])
+    if @relationship.token_identifier == params[:token_identifier]
+      @relationship.destroy
+      redirect_to root_path, flash: { success: "Unsubscribed from the mailing list"}
+    else
+      redirect_to root_path, flash: { error: "Invalid access" }
     end
   end
 end

@@ -10,6 +10,7 @@ describe UserMailer do
                    the more button. } }
 
   before do  
+    user.add_subscriber!(other_user)
     email.from = user.email
     email.to = other_user.email
     email.body = body
