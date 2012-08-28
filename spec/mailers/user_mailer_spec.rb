@@ -135,23 +135,17 @@ describe UserMailer do
 
   # Parsing implementation tests 
   describe "Parsed email" do 
-    let(:email) { FactoryGirl.create(:email) }
-    
-    before do
-      email.body = "Before <more> After" 
-      email.save
-    end
 
     it "should render the first part of the message email successfully" do 
-      expect { UserMailer.first_pt_msg(email) }.should_not raise_error
+      expect { UserMailer.first_pt_msg(email, wr_log) }.should_not raise_error
     end
   
     it "should deliver successfully" do
-      expect { UserMailer.first_pt_msg(email).deliver }.should_not raise_error
+      expect { UserMailer.first_pt_msg(email, wr_log).deliver }.should_not raise_error
     end
   
     context "rendered w/o error" do
-      before { @mailer = UserMailer.first_pt_msg(email) }
+      before { @mailer = UserMailer.first_pt_msg(email, wr_log) }
         it "should parse the correct content" do
           @mailer.body.encoded.should match(/before/im)
         end

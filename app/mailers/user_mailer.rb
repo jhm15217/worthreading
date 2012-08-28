@@ -128,16 +128,31 @@ class UserMailer < ActionMailer::Base
   # Implementation for parsing out an email with more than one more button
   # Utilizes regex to capture everything before the first more button and sends 
   # out that first part in an email
-  def first_pt_msg(email)
+  def first_pt_msg(email, wr_log)
     @email = email
+    @wr_log = wr_log
+    @sender = @wr_log.sender
+    @receiver = @wr_log.receiver
+    @relationship = Relationship.where(subscriber_id: @receiver.id, subscribed_id: @sender.id).first
   
     @body = get_first_part(@email)  
-    @sender = User.find_by_email(@email.from)
     @see_more_url = email_url(id: email.id,
                               host: (Rails.env.production? ? PROD_URL : DEV_URL),
                               protocol: Rails.env.production? ? 'https' : 'http')
-    mail(from: email.from, 
-         to: email.to, 
+    @beacon_url = msg_opened_url(id: @wr_log.id, 
+                                 token_identifier: @wr_log.token_identifier, 
+                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                 protocol: PROTOCOL)
+    @unsubscribe_url = email_unsubscribe_relationship_url(id: @relationship.id, 
+                                 token_identifier: @relationship.token_identifier, 
+                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                 protocol: PROTOCOL)
+    @whats_this_url = whats_this_url(id: @wr_log.id, 
+                                     token_identifier: @wr_log.token_identifier,
+                                     host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                     protocol: PROTOCOL) 
+    mail(from: @sender.email, 
+         to: @receiver.email, 
          subject: email.subject)
   end
 
