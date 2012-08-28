@@ -84,6 +84,8 @@ class User < ActiveRecord::Base
       log.receiver_id = receiver.id 
       log.emailed = Time.now
     end
+    puts "JHM"
+    puts wr_log.inspect
     UserMailer.send_message(email, wr_log, receiver).deliver
     self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
   end

@@ -1,9 +1,9 @@
 require 'will_paginate/array' 
 
 class UsersController < ApplicationController
-  before_filter :signed_in_user, only: [:index, :edit, :update, :destroy, :following, :followers, :show]
+  before_filter :signed_in_user, only: [:index, :edit, :update, :destroy, :show]
   before_filter :correct_user,   only: [:edit, :update, :subscribed_to_list]
-  before_filter :admin_user,     only: :destroy
+  before_filter :admin_user,     only: [:edit, :show, :update, :subscribed_to_list, :received, :destroy ]
 
   # GET
   def show
