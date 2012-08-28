@@ -70,7 +70,7 @@ class UserMailer < ActionMailer::Base
                                  protocol: PROTOCOL)
 
     @unsubscribe_url = email_unsubscribe_relationship_url(id: @relationship.id, 
-                                 token_identifier: @relationship.token_identifier, 
+                                 token_identifier: @wr_log.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
 

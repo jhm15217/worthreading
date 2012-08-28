@@ -17,6 +17,7 @@
 #  confirmed              :boolean         default(FALSE)
 #  confirmation_token     :string(255)
 #  password_reset_sent_at :datetime
+#  first_login_at         :datetime
 #
 
 class User < ActiveRecord::Base
@@ -67,7 +68,7 @@ class User < ActiveRecord::Base
 
   def send_msg_to_subscribers(email)
     self.subscribers.each do |subscriber|
-      wr_log = email.wr_logs.create do |log|
+      wr_log = email.wr_logs.create! do |log|
         log.action = "email"
         log.sender_id = self.id
         log.receiver_id = subscriber.id 
@@ -80,7 +81,7 @@ class User < ActiveRecord::Base
   end
 
   def send_msg_to_individual(email, receiver)
-    wr_log = email.wr_logs.create do |log|
+    wr_log = email.wr_logs.create! do |log|
       log.action = "email"
       log.sender_id = self.id
       log.receiver_id = receiver.id 
