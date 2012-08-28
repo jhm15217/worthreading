@@ -115,9 +115,6 @@ class RelationshipsController < ApplicationController
   end
 
   # DELETE
-  # TODO Bug if unsubscribing from someone already to subscribed to
-  # TODO Tests
-  # TODO Center out button
   def unsubscribe_from_mailing_list 
     @relationship = Relationship.find(params[:id])
     if @relationship.token_identifier == params[:token_identifier]
