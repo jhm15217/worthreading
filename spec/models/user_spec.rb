@@ -14,6 +14,9 @@
 #  confirmed              :boolean         default(FALSE)
 #  confirmation_token     :string(255)
 #  password_reset_sent_at :datetime
+#  first_login_at         :datetime
+#  email_notify           :boolean         default(TRUE)
+#  cohort                 :integer         default(0)
 #
 
 require 'spec_helper'
