@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(:version => 20120827200915) do
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
     t.datetime "first_login_at"
-    t.boolean  "email_notify"
-    t.integer  "cohort"
+    t.boolean  "email_notify",           :default => true
+    t.integer  "cohort",                 :default => 0
     t.boolean  "forward"
   end
 
