@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
     end
     self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
 
-    email.body =~ /<more>/ ? UserMailer.first_pt_msg(email, wr_log).deliver : 
+    email.body =~ /<more>/m ? UserMailer.first_pt_msg(email, wr_log).deliver : 
       UserMailer.send_message(email, wr_log, receiver).deliver
   end
 

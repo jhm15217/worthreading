@@ -164,7 +164,7 @@ class UserMailer < ActionMailer::Base
 
   #  Method for parsing out a more button 
   def get_first_part(email)
-    first_pt_regex = /(^.*)#{MORE_INDICATOR}/m
+    first_pt_regex = /(^.*)#{MORE_INDICATOR}/m || /(^.*&lt;more&gt;)/m
     if match = first_pt_regex.match(email.body)
       $1
     else
