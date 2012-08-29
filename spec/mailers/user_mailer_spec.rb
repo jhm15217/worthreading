@@ -154,5 +154,15 @@ describe UserMailer do
           @mailer.body.encoded.should_not match(/after/im)
         end
     end
+
+    it "should have the correct link for the More button link" do
+      UserMailer.first_pt_msg(email, wr_log).body.
+        encoded.should include("http://localhost:3000/emails/#{email.id}")
+    end
+
+    it "should have a web beacon" do
+      UserMailer.first_pt_msg(email, wr_log).body.encoded.
+        should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
+    end
   end
 end
