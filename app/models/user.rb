@@ -74,8 +74,6 @@ class User < ActiveRecord::Base
         log.receiver_id = subscriber.id 
         log.emailed = Time.now
       end
-      puts "JHM"
-      puts wr_log.inspect
       UserMailer.send_message(email, wr_log, subscriber).deliver
     end
   end
