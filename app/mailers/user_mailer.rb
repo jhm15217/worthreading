@@ -135,6 +135,7 @@ class UserMailer < ActionMailer::Base
     @receiver = @wr_log.receiver
     @relationship = Relationship.where(subscriber_id: @receiver.id, subscribed_id: @sender.id).first
   
+    # Gets first part of email as body of message
     @body = get_first_part(@email)  
     @see_more_url = email_url(id: email.id,
                               host: (Rails.env.production? ? PROD_URL : DEV_URL),
