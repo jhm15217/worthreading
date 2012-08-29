@@ -1,5 +1,5 @@
 class EmailsController < ApplicationController
-  before_filter :signed_in_user, except: [:create]
+  before_filter :signed_in_user, except: [:create, :show]
   before_filter :correct_user, only: [:emails_sent_to_subscriber]
 
   # This is used to disable Rails request forger protection for this controller
@@ -21,8 +21,18 @@ class EmailsController < ApplicationController
   end
 
   # GET /emails/1
+  # NOTE Need to fix up user access 
   def show
     @email = Email.find(params[:id])
+    if params[:more] == "1" 
+      log = WrLog.find(params[:wr_log])
+
+      if log.token_identifier == params[:token_identifier]
+        log.action = "more"
+        log.email_part = 2
+        log.save
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -49,7 +59,7 @@ class EmailsController < ApplicationController
           @user.send_msg_to_individual(@email, receiver)
         else
           UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
-           @user, @email).deliver
+                                 @user, @email).deliver
         end
       elsif @email.to == "subscribers@worth-reading.org"
         if @user.subscribers.empty?

@@ -138,7 +138,9 @@ class UserMailer < ActionMailer::Base
     # Gets first part of email as body of message
     @body = get_first_part(@email)  
     @see_more_url = email_url(id: email.id,
+                              wr_log: wr_log.id,
                               more: "1",
+                              token_identifier: @wr_log.token_identifier, 
                               host: (Rails.env.production? ? PROD_URL : DEV_URL),
                               protocol: Rails.env.production? ? 'https' : 'http')
     @beacon_url = msg_opened_url(id: @wr_log.id, 
@@ -146,9 +148,9 @@ class UserMailer < ActionMailer::Base
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
     @unsubscribe_url = email_unsubscribe_relationship_url(id: @relationship.id, 
-                                 token_identifier: @relationship.token_identifier, 
-                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
-                                 protocol: PROTOCOL)
+                                                          token_identifier: @relationship.token_identifier, 
+                                                          host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                                          protocol: PROTOCOL)
     @whats_this_url = whats_this_url(id: @wr_log.id, 
                                      token_identifier: @wr_log.token_identifier,
                                      host: Rails.env.production? ? PROD_URL : DEV_URL,
