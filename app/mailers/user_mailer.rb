@@ -138,6 +138,7 @@ class UserMailer < ActionMailer::Base
     # Gets first part of email as body of message
     @body = get_first_part(@email)  
     @see_more_url = email_url(id: email.id,
+                              more: "1",
                               host: (Rails.env.production? ? PROD_URL : DEV_URL),
                               protocol: Rails.env.production? ? 'https' : 'http')
     @beacon_url = msg_opened_url(id: @wr_log.id, 

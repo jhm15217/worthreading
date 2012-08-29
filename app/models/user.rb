@@ -75,11 +75,7 @@ class User < ActiveRecord::Base
         log.emailed = Time.now
       end
 
-      if email.body =~ /<more>/m 
-        UserMailer.first_pt_msg(email, wr_log).deliver 
-      else
-        UserMailer.send_message(email, wr_log, subscriber).deliver
-      end
+      email.body =~ /<more>/m ? UserMailer.first_pt_msg(email, wr_log).deliver : UserMailer.send_message(email, wr_log, subscriber).deliver
     end
   end
 
