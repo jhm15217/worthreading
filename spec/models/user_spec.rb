@@ -249,6 +249,19 @@ describe User do
       user1.send_msg_to_subscribers(email)
       email.wr_logs.first.emailed.should_not be_nil
     end
+
+    context "when a message has a more button" do
+      before do 
+        email.body += "<more>" 
+        email.save
+      end
+
+      it "should send the first part of the message" 
+    end
+
+    context "when a message doesn't have a more button" do
+      it "should send a regular message with the worth reading button" 
+    end
   end
 
   describe "sending a message to one person" do
