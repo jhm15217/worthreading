@@ -4,7 +4,14 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
 
   %body
-    %p
-      = @body
-    %p
-      = link_to "See More", @see_more_url
+    .msg-body
+      %p
+        = @body.html_safe
+
+    .more-button
+      %p
+        = link_to "See More", @see_more_url
+
+    .web-beacon
+      %p{ style: "visibility: hidden;", id: "web-beacon" }
+        = image_tag(@beacon_url, alt: "")
