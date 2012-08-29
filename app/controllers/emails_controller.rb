@@ -22,6 +22,7 @@ class EmailsController < ApplicationController
 
   # GET /emails/1
   # NOTE Need to fix up user access 
+  # NOTE Need to insert worth-reading button at the bottom of last part
   def show
     @email = Email.find(params[:id])
     if params[:more] == "1" 
