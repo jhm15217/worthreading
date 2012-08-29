@@ -52,7 +52,7 @@ class UserMailer < ActionMailer::Base
       @body = @body.gsub(/#{@signature}/m, "")
     end
     puts "JHM2"
-    puts @wrlog.inspect
+    puts @relationship.inspect
 
     @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
     @worth_reading_url = wr_log_url(worth_reading: "1",
