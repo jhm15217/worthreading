@@ -9,23 +9,24 @@
         = render 'shared/first_time_tutorial'
 
     - else
-      %h2 Welcome to Worth Reading
-      %p
-        When you send the same message to several people would you like to:
-      %ul
-        %li 
-          %p send individual messages to each of them?
-        %li 
-          %p discover when they open the message?
-        %li 
-          %p discover if they like the message? 
-        %li 
-          %p support their forwarding it to others? 
-      %p
-        Then sign up for Worth Reading.
-      %br/
-      %p.center
-        = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
+      .hero-unit
+        %h2 Welcome to Worth Reading
+        %p
+          When you send the same message to several people would you like to:
+        %ul
+          %li 
+            %p send individual messages to each of them?
+          %li 
+            %p discover when they open the message?
+          %li 
+            %p discover if they like the message? 
+          %li 
+            %p support their forwarding it to others? 
+        %p
+          Then sign up for Worth Reading.
+        %br/
+        %p.center
+          = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
 
   .span6
     =render 'shared/best_recent_messages'
