@@ -16,7 +16,7 @@
           %td= link_to WrLog.where("email_id = #{email.id}").count, recipient_list_email_path(email.id)
           %td= WrLog.where("opened IS NOT NULL and email_id = #{email.id}").count
           %td= WrLog.where("worth_reading IS NOT NULL and email_id = #{email.id}").count
-    = will_paginate(@emails)
+    = will_paginate @emails, inner_window: 1 
   - else
     .hero-unit 
       %p 
