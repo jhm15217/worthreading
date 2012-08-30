@@ -10,7 +10,7 @@
         %td= line[:time]
         %td= line[:from]
         %td= link_to Email.find(line[:subject]).subject.shorten, user_email_path(@user, line[:subject])
-    = will_paginate @lines
+  = will_paginate @lines
 - else
   .hero-unit 
     %p 
