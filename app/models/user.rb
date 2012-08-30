@@ -75,7 +75,9 @@ class User < ActiveRecord::Base
         log.emailed = Time.now
       end
 
-      email.body =~ /<more>/m || /(^.*&lt;more&gt;)/m ? UserMailer.first_pt_msg(email, wr_log).deliver : UserMailer.send_message(email, wr_log, subscriber).deliver
+      email.body.match(/<more>/m) || email.body.match(/(^.*&lt;more&gt;)/m) ? 
+        UserMailer.first_pt_msg(email, wr_log).deliver : 
+        UserMailer.send_message(email, wr_log, subscriber).deliver
     end
   end
 
@@ -88,7 +90,8 @@ class User < ActiveRecord::Base
     end
     self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
 
-    email.body =~ /<more>/m || /(^.*&lt;more&gt;)/m ? UserMailer.first_pt_msg(email, wr_log).deliver : 
+    email.body.match(/<more>/m) || email.body.match(/(^.*&lt;more&gt;)/m) ? 
+      UserMailer.first_pt_msg(email, wr_log).deliver : 
       UserMailer.send_message(email, wr_log, receiver).deliver
   end
 
