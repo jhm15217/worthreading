@@ -1,5 +1,13 @@
 class String
 
+  def make_safe(x = true)
+    if self =~ /(.*)<script>/
+      self
+    else
+      self.html_safe
+    end
+  end
+
   def shorten (count = 30)
     if self.length >= count
       shortened = self[0, count]
@@ -10,5 +18,5 @@ class String
       self
     end
   end
-
+  
 end

@@ -2,19 +2,19 @@
 
 <p>
   <b>From:</b>
-  <%= @email.from %>
+  <%= @email.from.make_safe %>
 </p>
 
 <p>
   <b>To:</b>
-  <%= @email.to %>
+  <%= @email.to.make_safe %>
 </p>
 
 <p>
   <b>Subject:</b>
-  <%= @email.subject %>
+  <%= @email.subject.make_safe %>
 </p>
 
 <p>
-  <%= @email.body.html_safe %>
+  <%= @email.body.make_safe %>
 </p>

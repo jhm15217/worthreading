@@ -7,6 +7,6 @@
   - best_recent_emails.each do |line|
     %tr
       %td= User.find(line.sender_id).name
-      %td= link_to Email.find(line.email_id).subject.shorten(12), email_path(line.email_id)
+      %td= link_to Email.find(line.email_id).subject.shorten, email_path(line.email_id)
       %td= line.liked
 
