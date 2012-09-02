@@ -33,6 +33,9 @@ class EmailsController < ApplicationController
         log.email_part = 2
         log.save
       end
+
+      @parts = @email.body.split(/&lt;more&gt;|<more>/m)
+      # @parts.paginate(page: params[:page], per_page: 1)
     end
 
     respond_to do |format|

@@ -1,12 +1,11 @@
 require "spec_helper"
-
 describe UserMailer do
   let(:user) { FactoryGirl.create(:user) }
   let(:other_user) { FactoryGirl.create(:user) }
   let(:email) { FactoryGirl.create(:email) }
   let(:wr_log) { FactoryGirl.create(:wr_log) }
   let(:body)  { %Q{Hello world! Have to check the correct information is 
-                   captured before.\n <more>\n This is more information after 
+                   captured before.\n&lt;more&gt; \n This is more information after 
                    the more button. } }
 
   before do  
