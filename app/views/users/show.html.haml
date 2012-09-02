@@ -6,11 +6,10 @@
 .row
   %aside.span4.offset1
     %h3= @user.name
-    - if current_user.admin?
-      %h4
-        = @user.email
-        - if !@user.confirmed?
-          <br>Not confirmed
+    %h4
+      = @user.email
+      - if !@user.confirmed?
+        <br>Not confirmed
     = gravatar_for @user
   %aside.span4
     %br/

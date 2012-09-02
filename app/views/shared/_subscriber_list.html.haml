@@ -23,7 +23,7 @@
         %th
       - @subscriber_list.each do |item|
         %tr
-          %td= item[:name]
+          %td= link_to item[:subscriber].name, user_path(item[:subscriber])
           %td= item[:sent]
           %td= item[:opened]
           %td= item[:liked]

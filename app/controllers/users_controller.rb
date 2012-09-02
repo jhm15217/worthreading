@@ -156,7 +156,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @subscribed_to = @user.subscribed_users.paginate(page: params[:page])
     @subscribed_list = @subscribed_to.map do |subscribed|
-      { name: subscribed.name,
+      { subscribee: subscribed,
         email: subscribed.email,
         sent: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id}").count,
       opened: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and opened IS NOT NULL").count,
@@ -170,11 +170,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @lines = WrLog.where(receiver_id: @user.id).sort!{|t1, t2| t2.created_at<=> t1.created_at}.map do |wrlog| 
                            { time: Email.find(wrlog.email_id).created_at.to_formatted_s(:short), 
-                             from: (if User.find(wrlog.sender_id)
-                                      User.find(wrlog.sender_id).name
-                                   else
-                                       wrlog.sender.id
-                                   end),
+                             from: User.find(wrlog.sender_id),
                               subject: wrlog.email_id  }
                            end.paginate(page: params[:page])
   end

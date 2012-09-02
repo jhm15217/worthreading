@@ -5,7 +5,7 @@ class RelationshipsController < ApplicationController
     @user = current_user
     @subscribers = @user.subscribers.paginate(page: params[:page])
     @subscriber_list = @subscribers.map do |subscriber|
-      {name: subscriber.name,
+      {subscriber: subscriber,
         email: subscriber.email,
         id: subscriber.id,
         sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,

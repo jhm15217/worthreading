@@ -46,15 +46,13 @@ class EmailsController < ApplicationController
   # POST /emails
   def create
     if (from = email_address_parts(params['from'])) and (@user = find_or_register(from[:email]))  
-      @email = @user.emails.new(
+      @email = @user.emails.create!(
         from: from[:email],
         to: params['Delivered-To'], 
         subject: params['subject'],
         body: params['body-html']
       )
-      if @email.save
-        render text: "Email Received" 
-      end
+      render text: "Email Received" 
       if receiver = @email.to.match(/(.*)\+(.*)@/) #It's an individual email address
         if receiver = find_or_register(receiver.captures[0] + '@' + receiver.captures[1])
           @user.send_msg_to_individual(@email, receiver)
@@ -78,6 +76,7 @@ class EmailsController < ApplicationController
         #don't bounce this
       else
         UserMailer.error_email("Bad email recipient: #{@email.to}", @user, @email).deliver
+        puts Time.now + "Bad email recipient: #{@email.to}"
       end
     else
       redirect_to root_path  ## params['sender'] is bad 
