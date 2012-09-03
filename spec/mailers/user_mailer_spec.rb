@@ -4,21 +4,9 @@ describe UserMailer do
   let(:other_user) { FactoryGirl.create(:user) }
   let(:email) { FactoryGirl.create(:email) }
   let(:wr_log) { FactoryGirl.create(:wr_log) }
-  let(:body)  { %Q{Hello world! Have to check the correct information is 
-                   captured before.\n&lt;more&gt; \n This is more information after 
-                   the more button. } }
 
   before do  
     user.add_subscriber!(other_user)
-    email.from = user.email
-    email.to = other_user.email
-    email.body = body
-    email.save
-
-    wr_log.sender_id = user.id
-    wr_log.receiver_id = other_user.id
-    wr_log.email_id = email.id
-    wr_log.save
   end
 
   describe "Welcome Email/Confirmation Email" do 
@@ -31,7 +19,22 @@ describe UserMailer do
     end
   end
 
-  describe "Sending a message" do
+  describe "Sending a more-free message" do
+    let(:body)  { %Q{Hello world! Have to check the correct information is 
+                     captured before.} }
+
+    before do  
+      email.from = user.email
+      email.to = other_user.email
+      email.body = body
+      email.save
+
+      wr_log.sender_id = user.id
+      wr_log.receiver_id = other_user.id
+      wr_log.email_id = email.id
+      wr_log.save
+    end
+
     it "should render the message successfully" do 
       lambda { UserMailer.send_message(email, wr_log, other_user) }.should_not raise_error
     end
@@ -78,7 +81,56 @@ describe UserMailer do
     end
   end
 
+  describe "Sending a message with a <more>" do
+    let(:body)  { %Q{Hello world! Have to check the correct information is 
+                     captured before.<more>Rest of Message.} }
+
+    before do  
+      email.from = user.email
+      email.to = other_user.email
+      email.body = body
+      email.save
+
+      wr_log.sender_id = user.id
+      wr_log.receiver_id = other_user.id
+      wr_log.email_id = email.id
+      wr_log.save
+    end
+
+    it "should render the message successfully" do 
+      lambda { UserMailer.send_message(email, wr_log, other_user) }.should_not raise_error
+    end
+    
+    it "should have a More link" do
+      UserMailer.send_message(email, wr_log, other_user).body.encoded.should match(/More/m)
+    end
+
+    it "should have a web beacon" do
+      UserMailer.send_message(email, wr_log, other_user).body.encoded.
+        should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
+    end
+
+    it "should deliver successfully" do
+      lambda { UserMailer.send_message(email, wr_log, other_user).deliver }.should_not raise_error
+    end
+  end
+
   describe "Alerting user of a change in the wr_log" do
+    let(:body)  { %Q{Hello world! Have to check the correct information is 
+                     captured before.} }
+
+    before do  
+      email.from = user.email
+      email.to = other_user.email
+      email.body = body
+      email.save
+
+      wr_log.sender_id = user.id
+      wr_log.receiver_id = other_user.id
+      wr_log.email_id = email.id
+      wr_log.save
+    end
+
     context "when a User finds an email worth reading" do 
       before { wr_log.action = "worth reading" }
       it "should indicate an email was liked" do
@@ -132,36 +184,4 @@ describe UserMailer do
     end
   end
 
-  # Parsing implementation tests 
-  describe "Parsed email" do 
-
-    it "should render the first part of the message email successfully" do 
-      expect { UserMailer.first_pt_msg(email, wr_log) }.should_not raise_error
-    end
-  
-    it "should deliver successfully" do
-      expect { UserMailer.first_pt_msg(email, wr_log).deliver }.should_not raise_error
-    end
-  
-    context "rendered w/o error" do
-      before { @mailer = UserMailer.first_pt_msg(email, wr_log) }
-        it "should parse the correct content" do
-          @mailer.body.encoded.should match(/before/im)
-        end
-  
-        it "should not contain content after the more button" do
-          @mailer.body.encoded.should_not match(/after/im)
-        end
-    end
-
-    it "should have the correct link for the More button link" do
-      UserMailer.first_pt_msg(email, wr_log).body.
-        encoded.should include("http://localhost:3000/emails/#{email.id}")
-    end
-
-    it "should have a web beacon" do
-      UserMailer.first_pt_msg(email, wr_log).body.encoded.
-        should include("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/#{wr_log.id}/msg_opened/#{wr_log.token_identifier}\" />")
-    end
-  end
 end

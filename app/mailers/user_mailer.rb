@@ -52,26 +52,34 @@ class UserMailer < ActionMailer::Base
       @body = @body.gsub(/#{@signature}/m, "")
     end
 
-    @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
-    @worth_reading_url = wr_log_url(worth_reading: "1",
+    if @part = get_nth_part(@body, 1)
+      @see_more_url = email_url(id: email.id,
+                              wr_log: wr_log.id,
+                              more: "1",
+                              token_identifier: @wr_log.token_identifier, 
+                              host: (Rails.env.production? ? PROD_URL : DEV_URL),
+                              protocol: Rails.env.production? ? 'https' : 'http')
+    else
+      @worth_img_url = "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png"
+      @worth_reading_url = wr_log_url(worth_reading: "1",
                                     id: @wr_log.id,
                                     token_identifier: @wr_log.token_identifier, 
                                     host: Rails.env.production? ? PROD_URL : DEV_URL,
                                     protocol: PROTOCOL)
-    @whats_this_url = whats_this_url(id: @wr_log.id, 
+      @whats_this_url = whats_this_url(id: @wr_log.id, 
                                      token_identifier: @wr_log.token_identifier,
                                      host: Rails.env.production? ? PROD_URL : DEV_URL,
                                      protocol: PROTOCOL) 
-    @beacon_url = msg_opened_url(id: @wr_log.id, 
-                                 token_identifier: @wr_log.token_identifier, 
-                                 host: Rails.env.production? ? PROD_URL : DEV_URL, 
-                                 protocol: PROTOCOL)
-
-    @unsubscribe_url = email_unsubscribe_relationship_url(id: @relationship.id, 
+      @unsubscribe_url = email_unsubscribe_relationship_url(id: @relationship.id, 
                                  token_identifier: @relationship.token_identifier, 
                                  host: Rails.env.production? ? PROD_URL : DEV_URL, 
                                  protocol: PROTOCOL)
+    end
 
+    @beacon_url = msg_opened_url(id: @wr_log.id, 
+                               token_identifier: @wr_log.token_identifier, 
+                               host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                               protocol: PROTOCOL)
     mail(from: email.from, to: recipient.email, subject: email.subject)
   end
 
@@ -136,7 +144,7 @@ class UserMailer < ActionMailer::Base
     @relationship = Relationship.where(subscriber_id: @receiver.id, subscribed_id: @sender.id).first
   
     # Gets first part of email as body of message
-    @body = get_first_part(@email)  
+    @body = get_nth_part(@email, 1)  
     @see_more_url = email_url(id: email.id,
                               wr_log: wr_log.id,
                               more: "1",
@@ -163,12 +171,16 @@ class UserMailer < ActionMailer::Base
   private 
 
   #  Method for parsing out a more button 
-  def get_first_part(email)
-    first_pt_regex =  /(^.*?)(&lt;more&gt;|#{MORE_INDICATOR})/m
-    if match = first_pt_regex.match(email.body)
-      $1
-    else
-      email.body
+  def get_nth_part(body, n)
+    next_pt_regex =  /(.*?)(&lt;more&gt;|#{MORE_INDICATOR})(.*)/m
+    while n > 0
+      if next_pt_regex.match(body)
+        n = n - 1
+        body = $3
+      else
+        return nil
+      end
     end
+    $1
   end
 end
