@@ -19,7 +19,7 @@
           %th
         - @subscribed_list.each do |item|
           %tr
-            %td= item[:name]
+            %td= link_to item[:subscribee].name, user_path(item[:subscribee])
             %td= item[:sent]
             %td= item[:opened]
             %td= item[:liked]
@@ -28,7 +28,7 @@
               method: :delete,
               confirm: "Are you sure you want to delete #{item[:email]}?"
 
-      = will_paginate @subscribed_to
+      = will_paginate @subscribed_to, inner_windw: 1
     - else
       .hero-unit
         %p 

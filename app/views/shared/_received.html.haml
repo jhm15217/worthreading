@@ -8,9 +8,9 @@
     - @lines.each do |line|
       %tr
         %td= line[:time]
-        %td= line[:from]
+        %td= link_to line[:from].name, user_path(line[:from])
         %td= link_to Email.find(line[:subject]).subject.shorten, user_email_path(@user, line[:subject])
-    = will_paginate @lines
+  = will_paginate @lines, inner_window: 1
 - else
   .hero-unit 
     %p 
