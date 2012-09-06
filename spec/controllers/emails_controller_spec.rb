@@ -32,17 +32,18 @@ describe EmailsController do
         'Delivered-To' => "joe+email.com@worth-reading.org", 
         'subject' => "Nothing", 
         'body-html' => "Lorem Ipsum" }
-      response.should be_successful 
+      response.should be_successful
     end
 
-#    it "should add an entry to WrLog" do
-#      expect do
-#        post :create, {'from' => user.email, 
-#          'Delivered-To' => "subscribers@worth-reading.org.mailgun.ort", 
-#          'subject' => "Nothing", 
-#          'body-html' => "Lorem Ipsum" }
-#      end.to change(WrLog, :count).by(1)
-#    end
+    it "should add an entry to WrLog" do
+      expect do
+        user.add_subscriber!(user2)
+        post :create, {'from' => user.email, 
+          'Delivered-To' => "subscribers@worth-reading.org", 
+          'subject' => "Nothing", 
+          'body-html' => "Lorem Ipsum" }
+      end.to change(WrLog, :count).by(1)
+   end
 
       it "should create the individual" do
         post :create, {'from' => user.email, 
@@ -70,24 +71,6 @@ describe EmailsController do
       end
     end
 
-  describe "receiving an email from via a POST request from Mailgun" do
-    it "should render a text 'Email Received' after a successful save" do
-      post :create, {'from' => user.email,
-        'Delivered-To' => "subscribers@worth-reading.org", 
-        'subject' => "Nothing", 
-        'body-html' => "Lorem Ipsum" }
-      response.should be_successful 
-    end
-
-#    it "should add an entry to WrLog" do
-#      expect do
-#        post :create, {'from' => user.email, 
-#          'Delivered-To' => "subscribers@worth-reading.org.mailgun.ort", 
-#          'subject' => "Nothing", 
-#          'body-html' => "Lorem Ipsum" }
-#      end.to change(WrLog, :count).by(1)
-#    end
-
     it "should redirect if Email could has bad sender" do
       post :create, {'from' => " ", 
         'Delivered-To' => "jan@mail.com", 
@@ -98,7 +81,8 @@ describe EmailsController do
 #    it "should report error if Email could has bad receiver" do
 #      post :create, {'from' => user.email, 
 #        'Delivered-To' => "jan+mail@worth-reading.org", 
-#        'subject' => "Nothing"}
+#        'subject' => "Nothing",
+#        'body-html' => 'blah, blah, blah'}
 #      response.should be_error
 #    end
 
@@ -131,7 +115,7 @@ describe EmailsController do
           # to change(Delayed::Job, :count).by(1)
       end
     end
-  end
+
 
   describe "GET Show for more button clicking" do
     let(:email) { FactoryGirl.create(:email) }

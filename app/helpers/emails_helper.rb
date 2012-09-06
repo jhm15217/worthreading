@@ -31,5 +31,4 @@ module EmailsHelper
       nil
     end
   end
-  
 end

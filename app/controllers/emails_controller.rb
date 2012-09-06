@@ -58,7 +58,7 @@ class EmailsController < ApplicationController
       render text: "Email Received" 
       if receiver = @email.to.match(/(.*)\+(.*)@/) #It's an individual email address
         if receiver = find_or_register(receiver.captures[0] + '@' + receiver.captures[1])
-          @user.send_msg_to_individual(@email, receiver)
+         send_msg_to_individual( @user, receiver, @email) 
         else
           UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
                                  @user, @email).deliver
@@ -70,21 +70,24 @@ class EmailsController < ApplicationController
 
           #UserMailer.delay.send_error(error, @user, @email)
         else
-          @user.send_msg_to_subscribers(@email)
-
-          # @user.delay.send_msg_to_subscribers(@email)
+          @user.subscribers.each do |subscriber|
+            send_msg_to_individual(@user, subscriber, @email)
+          end
+          
+          # @user.delay.send_msg_to_subscribers(@email, {|log_entry| UserMailer.send})
 
         end
       elsif @email.to == 'notifications@worth-reading.org'  # log this
         #don't bounce this
       else
         UserMailer.error_email("Bad email recipient: #{@email.to}", @user, @email).deliver
-        puts Time.now + "Bad email recipient: #{@email.to}"
+        puts Time.now.to_s + ": Bad email recipient: #{@email.to}"
       end
     else
       redirect_to root_path  ## params['sender'] is bad 
     end
   end
+
 
   # DELETE /emails/1
   def destroy

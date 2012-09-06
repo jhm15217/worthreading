@@ -66,31 +66,6 @@ class User < ActiveRecord::Base
     self.reverse_relationships.find_by_subscribed_id(subscribed.id).destroy
   end
 
-  def send_msg_to_subscribers(email)
-    self.subscribers.each do |subscriber|
-      wr_log = email.wr_logs.create! do |log|
-        log.action = "email"
-        log.sender_id = self.id
-        log.receiver_id = subscriber.id 
-        log.emailed = Time.now
-      end
-
-	  UserMailer.send_message(email, wr_log, subscriber).deliver
-    end
-  end
-
-  def send_msg_to_individual(email, receiver)
-    wr_log = email.wr_logs.create! do |log|
-      log.action = "email"
-      log.sender_id = self.id
-      log.receiver_id = receiver.id 
-      log.emailed = Time.now
-    end
-    self.add_subscriber(receiver) unless self.subscribed_by?(receiver)  #May already be subscribed
-
-	UserMailer.send_message(email, wr_log, receiver).deliver
-  end
-
   # The confirmation token used to confirm emails when creating a user is also
   # used to send and confirm the password reset link
   # The time the email is sent is recorded to help establish a 1 hour expiration rule

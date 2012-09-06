@@ -22,6 +22,9 @@
 require 'spec_helper'
 
 describe User do
+  
+  let(:ac) { ApplicationController.new }
+  
 
   before do
     @user = User.new(name: "Example User", email: "user@example.com", 
@@ -275,12 +278,12 @@ describe User do
     end
 
     it "should send a message to the peson" do
-      expect { user1.send_msg_to_individual(email, user2) }.
+      expect { ac.instance_eval{send_msg_to_individual(email, user2)} }.
         to change(ActionMailer::Base.deliveries, :size).by(1)
     end
 
     it "should create a wr_log for the message" do
-      user1.send_msg_to_individual(email, user2)
+     send_msg_to_individual(email, user2)
       email.wr_logs.first.emailed.should_not be_nil
     end
 

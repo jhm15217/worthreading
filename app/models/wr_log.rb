@@ -23,11 +23,10 @@ class WrLog < ActiveRecord::Base
   belongs_to :receiver, class_name: "User"
   before_create :create_token_identifier
 
-  private
+ private
   def create_token_identifier
     self.token_identifier = SecureRandom.urlsafe_base64
   end
-  
   # Validataions
   validates :sender_id, presence: true
   validates :email_id, presence:   true

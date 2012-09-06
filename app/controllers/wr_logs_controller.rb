@@ -1,6 +1,10 @@
 class WrLogsController < ApplicationController
   before_filter :admin_user, only: [:by_email, :by_sender, :by_receiver ]
 
+  # Constants
+  PROD_URL = "www.worth-reading.org"
+  DEV_URL = "localhost:3000"
+  PROTOCOL = 'http'
   # GET /wr_logs
   # GET /wr_logs.json
   def index
@@ -21,24 +25,28 @@ class WrLogsController < ApplicationController
     @receiver = User.find_by_id(@wr_log.receiver_id) 
     @sender = User.find_by_id(@wr_log.sender_id)
     
-    worth_reading_criteria = params[:worth_reading] == "1" && 
-      params[:token_identifier] == @wr_log.token_identifier && !@wr_log.worth_reading 
-
     if params[:token_identifier] != @wr_log.token_identifier
       redirect_to root_path, 
         flash: { error: "I'm sorry you are not allowed to access that page"}
-    elsif worth_reading_criteria 
+      end
+
+    if params[:worth_reading] && !@wr_log.worth_reading 
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save
-
       if @sender.email_notify?
         UserMailer.alert_change_in_wr_log(@wr_log).deliver
       end
-
       if @receiver.forward?
-        @receiver.send_msg_to_subscribers(@email)
+        @receiver.subscribers.each do |subscriber|
+          send_msg_to_individual(@receiver, subscriber, @email)
+        end
       end
+    elsif params[:more]
+      @wr_log.action = "more"
+      @wr_log.worth_reading = Time.now
+      @wr_log.save
+      display_message(@wr_log, params[:more].to_i + 1)
 
       # UserMailer.delay.alert_change_in_wr_log(@wr_log)
       respond_to do |format|
