@@ -1,0 +1,2 @@
+class ChromeExtensionController < ApplicationController
+end
