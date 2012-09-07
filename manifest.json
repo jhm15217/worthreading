@@ -7,6 +7,9 @@
     "default_icon": "icon.png"
   },
 	"background": {
-    "scripts": ["content.js"]
-  }
+    "scripts": ["jquery-1.8.1.min.js", "content.js"]
+  },
+	"permission": [
+		"tabs"
+		]
 }
