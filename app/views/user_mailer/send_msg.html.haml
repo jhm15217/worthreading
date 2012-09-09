@@ -5,35 +5,35 @@
   -if @message[:more]
     %body
       .msg-body
-      -if @message[:body]
-        %p= @message[:body].html_safe
+        -if @message[:body]
+          %p= @message[:body].html_safe
       .more-button
-      %p
-        = link_to "More", @message[:more]
+        %p
+          = link_to "More", @message[:more]
   -else
     %body
       .msg-body
-      -if @message[:body]
-        %p= @message[:body].html_safe
+        -if @message[:body]
+          %p= @message[:body].html_safe
       .worth-reading-link
-      %p
-        = link_to image_tag(@message[:image], alt: "Worth Reading", 
-          title: "Worth Reading", 
-          width: "173px", 
-          height: "56px"),
-          @message[:worth_reading]
+        %p
+          = link_to image_tag(@message[:image], alt: "Worth Reading",
+            title: "Worth Reading",
+            width: "173px",
+            height: "56px"),
+            @message[:worth_reading]
       .whats-this-link
-      %p
-        = link_to "What's this?", @message[:whats_this] 
+        %p
+          = link_to "What's this?", @message[:whats_this]
 
       .unsubscribe-link
-      %p
-        = link_to "Unsubscribe", @message[:unsubscribe]
+        %p
+          = link_to "Unsubscribe", @message[:unsubscribe]
 
       - if @message[:signature]
         .signature
-        %p= @message[:signature].html_safe
+          %p= @message[:signature].html_safe
 
   .web-beacon
     %p{ style: "visibility: hidden;", id: "web-beacon" }
-    = image_tag(@beacon_url, alt: "")
+      = image_tag(@beacon_url, alt: "")

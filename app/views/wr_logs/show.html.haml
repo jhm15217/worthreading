@@ -5,30 +5,30 @@
   -if @message[:more]
     %body
       .msg-body
-      %p
-        = @message[:body]
+        %p
+          = @message[:body]
       .more-button
-      %p
-        = link_to "More", @message[:more]
+        %p
+          = link_to "More", @message[:more]
   -else
     %body
       .msg-body
-      %p= @message[:body]
+        %p= @message[:body]
       .worth-reading-link
-      %p
-        = link_to image_tag(@message[:image], alt: "Worth Reading", 
-          title: "Worth Reading", 
-          width: "173px", 
-          height: "56px"),
-          @message[:worth_reading]
+        %p
+          = link_to image_tag(@message[:image], alt: "Worth Reading", 
+            title: "Worth Reading", 
+            width: "173px", 
+            height: "56px"),
+            @message[:worth_reading]
       .whats-this-link
-      %p
-        = link_to "What's this?", @message[:whats_this] 
+        %p
+          = link_to "What's this?", @message[:whats_this] 
 
       .unsubscribe-link
-      %p
-        = link_to "Unsubscribe", @message[:unsubscribe]
+        %p
+          = link_to "Unsubscribe", @message[:unsubscribe]
 
       - if @message[:signature]
         .signature
-        %p= @message[:signature]
+          %p= @message[:signature]
