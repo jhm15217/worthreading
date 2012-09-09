@@ -90,8 +90,6 @@ class UsersController < ApplicationController
 
   # PUT
   def update
-    puts params[:user]
-
     # When user attempts to update email address
     if @email = params[:user][:email] and !User.find_by_email(@email)
       @user.generate_confirmation_token

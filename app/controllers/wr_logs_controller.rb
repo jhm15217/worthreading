@@ -39,16 +39,14 @@ class WrLogsController < ApplicationController
       end
       if @receiver.forward?
         @receiver.subscribers.each do |subscriber|
-          send_msg_to_individual(@receiver, subscriber, @email)
+          UserMailer.send_msg(@receiver, subscriber, @email).deliver
         end
       end
     elsif params[:more]
       @wr_log.action = "more"
       @wr_log.worth_reading = Time.now
       @wr_log.save
-      display_message(@wr_log, params[:more].to_i + 1)
-
-      # UserMailer.delay.alert_change_in_wr_log(@wr_log)
+      @message = UserMailer.abstract_message(@wr_log, params[:more].to_i + 1)
       respond_to do |format|
         format.html # show.html.erb
         format.json { render json: @wr_log }

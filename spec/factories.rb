@@ -15,14 +15,16 @@ FactoryGirl.define do
   end
 
   factory :email do 
-    sequence(:to)  { |n| "someone_#{n}@email.com"}
-    sequence(:from)  { |n| "someone_#{n+1}@email.com"}
-    subject "Nothing"
-    body  %Q{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam 
+    body = %Q{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam 
       sed ligula a orci gravida ornare. In laoreet orci sit amet lorem eleifend 
       pharetra. Nunc interdum eros in magna condimentum dignissim. Suspendisse 
       sit amet metus neque.
-      <more>} 
+      <more>}
+    sequence(:to)  { |n| "someone_#{n}@email.com"}
+    sequence(:from)  { |n| "someone_#{n+1}@email.com"}
+    subject "Nothing"
+    body body
+    parts body.split('<more>')   
   end
 
   factory :wr_log do

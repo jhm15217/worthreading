@@ -5,15 +5,16 @@
   -if @message[:more]
     %body
       .msg-body
-      %p
-        = @message[:body]
+      -if @message[:body]
+        %p= @message[:body].html_safe
       .more-button
       %p
         = link_to "More", @message[:more]
   -else
     %body
       .msg-body
-      %p= @message[:body]
+      -if @message[:body]
+        %p= @message[:body].html_safe
       .worth-reading-link
       %p
         = link_to image_tag(@message[:image], alt: "Worth Reading", 
@@ -31,4 +32,8 @@
 
       - if @message[:signature]
         .signature
-        %p= @message[:signature]
+        %p= @message[:signature].html_safe
+
+  .web-beacon
+    %p{ style: "visibility: hidden;", id: "web-beacon" }
+    = image_tag(@beacon_url, alt: "")

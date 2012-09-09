@@ -1,3 +1,4 @@
+require 'emails_helper'
 # == Schema Information
 #
 # Table name: emails
@@ -7,20 +8,101 @@
 #  to         :string(255)
 #  subject    :string(255)
 #  body       :text
+#  parts      :string          yaml
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #  user_id    :integer
 #
 
 class Email < ActiveRecord::Base
-  attr_accessible :body, :from, :to, :subject
+  attr_accessible :body, :from, :to, :subject, :parts
   belongs_to :user
   has_many :wr_logs, dependent: :destroy
+  serialize :parts
   
   before_save { |email| 
     email.from = from.downcase
     email.to = to.downcase
   }
+
+  def find_or_register(email_address)
+     User.where(email: email_address.downcase).first_or_create!(name:"Unknown",password:"Unknown", password_confirmation:"Unknown", email_notify: true, forward: true)
+   rescue
+     nil
+  end
+  
+  def process(sender)
+    email_address_list(to).collect do |address|
+      if m = address[:email].match(/(.*)\+(.*)@/) #It's an individual email address
+        if receiver = find_or_register(m.captures[0] + '@' + m.captures[1])
+         UserMailer.send_msg(sender, receiver, self) 
+        else
+          UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
+                                 @user, @email)
+        end
+      elsif address[:email] == "subscribers@worth-reading.org"
+        if sender.subscribers.empty?
+          error = "There are no subscribers on your list. Please add subscribers to your list"
+          UserMailer.error_email(error, sender, self)
+
+          #UserMailer.delay.send_error(error, sender, self)
+        else
+          sender.subscribers.collect do |subscriber|
+            UserMailer.send_msg(sender, subscriber, self)
+            # @user.delay.send_msg(sender, subscriber, self)
+          end
+
+        end
+      elsif to == 'notifications@worth-reading.org'  # log this somehow
+        #don't bounce this
+      else
+        puts Time.now.to_s + ": Bad email recipient: #{address[:email]}"
+        UserMailer.error_email("Bad email recipient: #{address[:email]}", sender, self)
+      end
+    end
+  end
+    
+  def deliver_all(list)
+    list.each do |item|
+      if item.class == Mail::Message
+        item.deliver
+      else
+        deliver_all(item)
+      end
+    end
+  end
+    
+  def email_address_list(email_addresses)
+    result = []
+    until !email_addresses
+        x = email_addresses.match('\s*("[^"]*"[^,]*|\s*[^,]*)(,(.*)|\s*)')
+        if x
+          result = result + [x.captures[0]]
+          email_addresses = x.captures[2]
+        else
+          email_addresses = nil
+        end
+      end
+    result.map{|x| email_address_parts(x) }.select{|x|x}
+  end
+
+  VALID_EMAIL_REGEX = /^[_a-z0-9+\-]+(\.[_a-z0-9+\-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i
+
+  # Captures formats:
+  # "John Doe"<johndoe@example.com>, John Doe<johndoe@example.com>, johndoe@example.com
+  def email_address_parts(email_address)
+    if parts = (email_address.match('"([^"]*)"\s*<(.*)>') or email_address.match('([a-zA-Z\s.]*)<(.*)>'))
+      name = parts.captures[0]
+      email_address = parts.captures[1]
+    else
+      name = ""
+    end
+    if email_address.match(VALID_EMAIL_REGEX)
+      { name: name.strip, email: email_address.strip }
+    else
+      nil
+    end
+  end
 
   # Email stats
   def num_times_opened
@@ -33,10 +115,8 @@ class Email < ActiveRecord::Base
 
   default_scope order: 'emails.created_at DESC'
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :from, presence: true,
     format: { with: VALID_EMAIL_REGEX }
   validates :to, presence: true,
     format: { with: VALID_EMAIL_REGEX }
-  validates :body, presence: true
 end

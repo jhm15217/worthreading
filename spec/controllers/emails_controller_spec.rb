@@ -35,6 +35,14 @@ describe EmailsController do
       response.should be_successful
     end
 
+    it "should create the individual" do
+      post :create, {'from' => user.email, 
+        'Delivered-To' => "joe+email.com@worth-reading.org", 
+        'subject' => "Nothing", 
+        'body-html' => "Lorem Ipsum" }
+      User.find_by_email("joe@email.com").should_not be nil
+    end
+
     it "should add an entry to WrLog" do
       expect do
         user.add_subscriber!(user2)
@@ -45,38 +53,30 @@ describe EmailsController do
       end.to change(WrLog, :count).by(1)
    end
 
-      it "should create the individual" do
-        post :create, {'from' => user.email, 
-          'Delivered-To' => "joe+email.com@worth-reading.org", 
-          'subject' => "Nothing", 
-          'body-html' => "Lorem Ipsum" }
-        User.find_by_email("joe@email.com").should_not be nil
-      end
-
-      it "should send an email to the individual" do
-        expect { post :create, {'from' => user.email, 
-          'Delivered-To' => "joe+email.com@worth-reading.org", 
-          'subject' => "Nothing", 
-          'body-html' => "Lorem Ipsum" } }.
-          to change(ActionMailer::Base.deliveries, :size).by(1)
-          # to change(Delayed::Job, :count).by(1)
-      end
-
-      it "should make an individual a suscriber" do
-        post :create, {'from' => user.email, 
-          'Delivered-To' => "joe+email.com@worth-reading.org", 
-          'subject' => "Nothing", 
-          'body-html' => "Lorem Ipsum" }
-        user.subscribed_by?(User.find_by_email("joe@email.com")).should_not be nil
-      end
+    it "should send an email to the individual" do
+      expect { post :create, {'from' => user.email, 
+        'Delivered-To' => "joe+email.com@worth-reading.org", 
+        'subject' => "Nothing", 
+        'body-html' => "Lorem Ipsum" } }.
+        to change(ActionMailer::Base.deliveries, :size).by(1)
+        # to change(Delayed::Job, :count).by(1)
     end
 
-    it "should redirect if Email could has bad sender" do
-      post :create, {'from' => " ", 
-        'Delivered-To' => "jan@mail.com", 
-        'subject' => "Nothing"}
-      response.should be_redirect
+    it "should make an individual a suscriber" do
+      post :create, {'from' => user.email, 
+        'Delivered-To' => "joe+email.com@worth-reading.org", 
+        'subject' => "Nothing", 
+        'body-html' => "Lorem Ipsum" }
+      user.subscribed_by?(User.find_by_email("joe@email.com")).should_not be nil
     end
+
+  it "should redirect if Email could has bad sender" do
+    post :create, {'from' => " ", 
+      'Delivered-To' => "jan@mail.com", 
+      'subject' => "Nothing"}
+    response.should be_redirect
+  end
+end
 
 #    it "should report error if Email could has bad receiver" do
 #      post :create, {'from' => user.email, 
@@ -86,21 +86,29 @@ describe EmailsController do
 #      response.should be_error
 #    end
 
-    context "with subscribers on his/her list" do
-      before do
-        user.add_subscriber!(user2)
-        user.add_subscriber!(user3)
-      end
-
-      it "should send out email to all subscribers" do
-        expect { post :create, {'from' => user.email, 
-          'Delivered-To' => "subscribers@worth-reading.org", 
-          'subject' => "Nothing", 
-          'body-html' => "Lorem Ipsum" } }.
-          to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
-          # to change(Delayed::Job, :count).by(1)
-      end
+  context "with subscribers on his/her list" do
+    before do
+      user.add_subscriber!(user2)
+      user.add_subscriber!(user3)
     end
+
+    it "should send out email to all subscribers" do
+      expect { post :create, {'from' => user.email, 
+        'Delivered-To' => "subscribers@worth-reading.org", 
+        'subject' => "Nothing", 
+        'body-html' => "Lorem Ipsum" } }.
+        to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
+        # to change(Delayed::Job, :count).by(1)
+    end
+
+    it "should render a text 'Email Received' after a successful save if <more> is in body" do
+      post :create, {'from' => user.email,
+        'Delivered-To' => "joe+email.com@worth-reading.org", 
+        'subject' => "Nothing", 
+        'body-html' => "Lorem Ipsum<more>blah" }
+      response.should be_successful
+    end
+  end
 
     context "without any subscribers on the list" do
       let(:user4) { FactoryGirl.create(:user) }
@@ -115,25 +123,9 @@ describe EmailsController do
           # to change(Delayed::Job, :count).by(1)
       end
     end
-
-
-  describe "GET Show for more button clicking" do
-    let(:email) { FactoryGirl.create(:email) }
-    let(:wr_log) { FactoryGirl.create(:wr_log) }
-
-    before do
-      wr_log.email_id = email.id
-      wr_log.save
-    end
-
-    it "should change the WrLog actions to more and part" do
-      get :show, { id: email.id, more: "1", wr_log: wr_log.id, token_identifier: wr_log.token_identifier }
-      wr_log.reload
-      wr_log.action.should == "more"
-      wr_log.email_part.should_not be_nil
-    end
-    
   end
+
+  describe "receiving an email containing <more> to individual via a POST request from Mailgun" do
   # 
   #   # This should return the minimal set of attributes required to create a valid
   #   # Email. As you add validations to Email, be sure to

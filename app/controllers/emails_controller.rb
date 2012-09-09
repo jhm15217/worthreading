@@ -48,47 +48,26 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    if (from = email_address_parts(params['from'])) and (@user = find_or_register(from[:email]))  
-      @email = @user.emails.create!(
-        from: from[:email],
+    if from = email_address_parts(params['from']) and @user = find_or_register(from[:email])
+      @email = @user.emails.new(
+        from: @user.email,
         to: params['Delivered-To'], 
         subject: params['subject'],
-        body: params['body-html']
+        body: params['body-html'],
+        parts: params['body-html'].split('<more>')
       )
-      render text: "Email Received" 
-      if receiver = @email.to.match(/(.*)\+(.*)@/) #It's an individual email address
-        if receiver = find_or_register(receiver.captures[0] + '@' + receiver.captures[1])
-         send_msg_to_individual( @user, receiver, @email) 
-        else
-          UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
-                                 @user, @email).deliver
-        end
-      elsif @email.to == "subscribers@worth-reading.org"
-        if @user.subscribers.empty?
-          error = "There are no subscribers on your list. Please add subscribers to your list"
-          UserMailer.error_email(error, @user, @email).deliver
-
-          #UserMailer.delay.send_error(error, @user, @email)
-        else
-          @user.subscribers.each do |subscriber|
-            send_msg_to_individual(@user, subscriber, @email)
-          end
-          
-          # @user.delay.send_msg_to_subscribers(@email, {|log_entry| UserMailer.send})
-
-        end
-      elsif @email.to == 'notifications@worth-reading.org'  # log this
-        #don't bounce this
-      else
-        UserMailer.error_email("Bad email recipient: #{@email.to}", @user, @email).deliver
-        puts Time.now.to_s + ": Bad email recipient: #{@email.to}"
+      if @email.save
+         render text: "Email Received"
+       else
+         puts "Bad email: " + @email.inspect
       end
+      @email.deliver_all(@email.process(@user))
     else
       redirect_to root_path  ## params['sender'] is bad 
     end
   end
 
-
+    
   # DELETE /emails/1
   def destroy
     @email = Email.find(params[:id])

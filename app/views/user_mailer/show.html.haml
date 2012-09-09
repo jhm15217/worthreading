@@ -39,7 +39,7 @@
   -else
     %h2
       Thank you for appreciating my message! It will encourage me to send you similar messages.
-    - unless @receiver.confirmed
+    - unless @receiver.confirmed?
       %p I am using a service called #{link_to "Worth Reading", signup_path } to help me know who likes the messages that I send.
       %br/
       %p You can close this window now.

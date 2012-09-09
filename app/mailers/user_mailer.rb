@@ -59,22 +59,63 @@ class UserMailer < ActionMailer::Base
     end
   end
 
-  # General method for sending user-to-user email
-  def show(log, part, see_more_url, signature, body, worth_img_url, worth_reading_url, whats_this_url, unsubscribe_url, beacon_url)
-    @part = part
-    @body = body
-    @see_more_url = see_more_url
-    @worth_img_url = worth_img_url
-    @worth_reading_url = worth_reading_url
-    @whats_this_url = whats_this_url
-    @unsubscribe_url = unsubscribe_url
-    @signature = signature
-    @beacon_url = beacon_url
-    t = mail(to: User.find(log.receiver_id).name, from: User.find(log.sender_id).name, subject: Email.find(log.email_id).subject, body: body)
-    puts t.inspect
-    t
+  def send_msg(sender, receiver, email)
+    wr_log = email.wr_logs.create! do |log|
+      log.action = "email"
+      log.sender_id = sender.id
+      log.receiver_id = receiver.id
+      log.email_id = email.id 
+      log.emailed = Time.now
+    end
+    sender.add_subscriber(receiver) unless sender.subscribed_by?(receiver)  #May already be subscribed
+
+    @beacon_url = msg_opened_url(id: wr_log.id, 
+                             token_identifier: wr_log.token_identifier, 
+                             host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                             protocol: PROTOCOL)
+	  @message = abstract_message(wr_log, 0)
+	  mail(to: User.find(wr_log.receiver_id).name, from: User.find(wr_log.sender_id).name, subject: Email.find(wr_log.email_id).subject)
   end
 
+  # Return a structure describing the message, indepedent of email or web page presentation
+  def abstract_message(wr_log, part_number)
+    email = Email.find(wr_log.email_id)
+    body = email.parts[part_number]
+    if email.parts.size == part_number + 1  # is this the last part
+      if capture = body.match(/.*(--.*)/m)
+        signature = capture[1]
+        body = body.gsub(/#{@signature}/m, "")
+      end
+      relationship = Relationship.where(subscriber_id: wr_log.receiver.id, 
+                                         subscribed_id: wr_log.sender.id).first
+        { body: body,
+           image: "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png",
+           worth_reading: wr_log_url(worth_reading: "1",
+                                         id: wr_log.id,
+                                         token_identifier: wr_log.token_identifier, 
+                                         host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                         protocol: PROTOCOL),
+           whats_this: whats_this_url(id: wr_log.id, 
+                                        token_identifier: wr_log.token_identifier,
+                                        host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                        protocol: PROTOCOL),
+           unsubscribe: email_unsubscribe_relationship_url(id: relationship.id, 
+                                      token_identifier: relationship.token_identifier, 
+                                      host: Rails.env.production? ? PROD_URL : DEV_URL, 
+                                      protocol: PROTOCOL),
+           signature: signature
+         }
+   else
+        { body: body,
+          more: wr_log_url(more: part_number.to_s,
+                                 id: wr_log.id,
+                                 token_identifier: wr_log.token_identifier, 
+                                 host: (Rails.env.production? ? PROD_URL : DEV_URL),
+                                 protocol: Rails.env.production? ? 'https' : 'http')
+        }
+    end
+  end
+    
   def error_email(error, user, email)
     @sender = user
     @error = error
