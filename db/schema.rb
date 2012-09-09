@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907010707) do
+ActiveRecord::Schema.define(:version => 20120909165043) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -34,10 +34,10 @@ ActiveRecord::Schema.define(:version => 20120907010707) do
     t.string   "to"
     t.string   "subject"
     t.text     "body"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "user_id"
-    t.string   "parts"
+    t.text     "parts",      :limit => 255
   end
 
   create_table "relationships", :force => true do |t|
