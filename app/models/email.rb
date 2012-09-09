@@ -65,7 +65,6 @@ class Email < ActiveRecord::Base
   def deliver_all(list)
     list.each do |item|
       if item.class == Mail::Message
-        puts item.inspect
         item.deliver
       else
         deliver_all(item)
