@@ -74,7 +74,7 @@ class UserMailer < ActionMailer::Base
                              host: Rails.env.production? ? PROD_URL : DEV_URL, 
                              protocol: PROTOCOL)
 	  @message = abstract_message(wr_log, 0)
-	  mail(to: User.find(wr_log.receiver_id).name, from: User.find(wr_log.sender_id).name, subject: Email.find(wr_log.email_id).subject)
+	  mail(to: User.find(wr_log.receiver_id).email, from: User.find(wr_log.sender_id).email, subject: Email.find(wr_log.email_id).subject)
   end
 
   # Return a structure describing the message, indepedent of email or web page presentation
