@@ -8,7 +8,7 @@ require 'emails_helper'
 #  to         :string(255)
 #  subject    :string(255)
 #  body       :text
-#  parts      :string          yaml
+#  parts      :text            yaml
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #  user_id    :integer
