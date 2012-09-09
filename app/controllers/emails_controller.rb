@@ -61,7 +61,8 @@ class EmailsController < ApplicationController
          render text: "Email Received"
        else
          puts "Bad email: " + @email.inspect
-      end
+       end
+      puts "parts: " + @email.parts.inspect
       @email.deliver_all(@email.process(@user))
     else
       redirect_to root_path  ## params['sender'] is bad 

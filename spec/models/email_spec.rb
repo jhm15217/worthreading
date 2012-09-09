@@ -176,14 +176,14 @@ describe Email do
     it "should render the message successfully" do 
       lambda { @email.process(user) }.should_not raise_error
     end
-    
-    it "should have a More link" do
-      @email.process(user)[0][0].body.encoded.should match(/More/m)
+
+    it "should not have whole message" do
+      @email.process(user)[0][0].body.encoded.should_not match(/Rest of Message./m)
     end
 
-    it "should have a web beacon" do
+    it "should have a More url" do
       @email.process(user)[0][0].body.encoded.
-        should match("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/.*/msg_opened/.*\" />")
+        should match(/<div class='more-button'>.*http:\/\/localhost:3000\/wr_logs\/.*more\=.*/m)
     end
 
     it "should deliver successfully" do
@@ -198,7 +198,7 @@ describe Email do
     before do  
       @email = user.emails.create!(to: "subscribers@worth-reading.org",
                                     from: user.email,
-                                    subject: "Just to havn an instance", 
+                                    subject: "Just to have an instance",
                                     body: body,
                                     parts: body.split("<more>"))
     end

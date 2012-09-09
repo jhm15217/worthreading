@@ -64,7 +64,8 @@ class UserMailer < ActionMailer::Base
       log.action = "email"
       log.sender_id = sender.id
       log.receiver_id = receiver.id
-      log.email_id = email.id 
+      log.email_id = email.id
+      log.email_part = 0
       log.emailed = Time.now
     end
     sender.add_subscriber(receiver) unless sender.subscribed_by?(receiver)  #May already be subscribed
@@ -81,12 +82,11 @@ class UserMailer < ActionMailer::Base
   def abstract_message(wr_log, part_number)
     email = Email.find(wr_log.email_id)
     body = email.parts[part_number]
-    if email.parts.size == part_number + 1  # is this the last part
+    puts body
+    if email.parts.size == part_number + 1  # is this the last part?
       if capture = body.match(/(.*)(--.*)/m)
         body = capture[1]
         signature = capture[2]
-        puts "body: " + body
-        puts "signature: " + signature
       end
       relationship = Relationship.where(subscriber_id: wr_log.receiver.id, 
                                          subscribed_id: wr_log.sender.id).first
