@@ -83,7 +83,7 @@ class Email < ActiveRecord::Base
           email_addresses = nil
         end
       end
-    result.map{|x| email_address_parts(x) }.select{|x|x}
+    result.map{ |x| email_address_parts(x) }.select{|x|x}
   end
 
   VALID_EMAIL_REGEX = /^[_a-z0-9+\-]+(\.[_a-z0-9+\-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i
