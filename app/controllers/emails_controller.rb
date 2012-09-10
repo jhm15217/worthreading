@@ -57,6 +57,7 @@ class EmailsController < ApplicationController
         body: params['body-html'],
         parts: params['body-html'].split('&lt;more&gt;|<more>')
       )
+      puts @email.parts.inspect
       if @email.save
          render text: "Email Received"
        else
