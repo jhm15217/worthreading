@@ -82,7 +82,6 @@ class UserMailer < ActionMailer::Base
   def abstract_message(wr_log, part_number)
     email = Email.find(wr_log.email_id)
     body = email.parts[part_number]
-    puts body
     if email.parts.size == part_number + 1  # is this the last part?
       if capture = body.match(/(.*)(--.*)/m)
         body = capture[1]
