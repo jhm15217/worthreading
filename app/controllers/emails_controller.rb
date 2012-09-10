@@ -55,7 +55,7 @@ class EmailsController < ApplicationController
         to: params['Delivered-To'], 
         subject: params['subject'],
         body: params['body-html'],
-        parts: params['body-html'].split('&lt;more&gt;|<more>')
+        parts: params['body-html'].split(/&lt;more&gt;|<more>/)
       )
       puts @email.parts.inspect
       if @email.save
