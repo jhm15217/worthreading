@@ -12,16 +12,14 @@ class ChromeExtensionController < ApplicationController
   # Creates the email that will include the link that will be 
   # sent to a user's subscribers
   def create
-    render inline: "<%= debug(params) %>" and return
     @user = current_user
-    @user.emails.create!(
+    
+    @email = @user.emails.create!(
       from: @user.email,
       to: "subscribers@worth-reading.org",
       subject: params[:subject],
-      body: params['body-html']
+      body: params['body'].gsub("\n", "\n<br />")
     )
-    @user.subscribers.each do |subscriber|
-      # Send message to each subscriber
-    end
+    @email.deliver_all(@email.process(@user))
   end
 end
