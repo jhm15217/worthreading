@@ -16,6 +16,7 @@ describe ChromeExtensionController do
         should_not raise_error 
     end
     
+    # TODO Rework test
     # it "should send an email to all users" do
     #   expect { post :create, { :subject => "A subject", 
     #     :body => "Hey check out \n www.google.com" } }.
