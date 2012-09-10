@@ -21,5 +21,6 @@ class ChromeExtensionController < ApplicationController
       body: params['body'].gsub("\n", "\n<br />")
     )
     @email.deliver_all(@email.process(@user))
+    redirect_to root_path, flash: { success: "Email successfully sent" }
   end
 end
