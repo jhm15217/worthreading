@@ -1,0 +1,18 @@
+.row
+  .span12
+    %h1 Send link to your subscribers
+    %br/
+
+.row
+  .span6.offset4
+    = form_tag('/chrome_extension') do 
+      %b Subject of the email sent:
+      %br/
+      = text_field_tag 'subject'
+      %br/
+
+      %b Body of the email sent to your subscribers:
+      %br/
+      = text_area_tag 'body', @link
+      %br/
+      = submit_tag 'Send email to subscribers', class: "btn btn-primary"
