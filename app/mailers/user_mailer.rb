@@ -74,49 +74,10 @@ class UserMailer < ActionMailer::Base
                              token_identifier: wr_log.token_identifier, 
                              host: Rails.env.production? ? PROD_URL : DEV_URL, 
                              protocol: PROTOCOL)
-	  @message = abstract_message(wr_log, 0)
+	  @message = wr_log.abstract_message
 	  mail(to: User.find(wr_log.receiver_id).email, from: User.find(wr_log.sender_id).email, subject: Email.find(wr_log.email_id).subject)
   end
 
-  # Return a structure describing the message, indepedent of email or web page presentation
-  def abstract_message(wr_log, part_number)
-    email = Email.find(wr_log.email_id)
-    body = email.parts[part_number]
-    if email.parts.size == part_number + 1  # is this the last part?
-      if capture = body.match(/(.*)(--.*)/m)
-        body = capture[1]
-        signature = capture[2]
-      end
-      relationship = Relationship.where(subscriber_id: wr_log.receiver.id, 
-                                         subscribed_id: wr_log.sender.id).first
-        { body: body,
-           image: "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png",
-           worth_reading: wr_log_url(worth_reading: "1",
-                                         id: wr_log.id,
-                                         token_identifier: wr_log.token_identifier, 
-                                         host: Rails.env.production? ? PROD_URL : DEV_URL,
-                                         protocol: PROTOCOL),
-           whats_this: whats_this_url(id: wr_log.id, 
-                                        token_identifier: wr_log.token_identifier,
-                                        host: Rails.env.production? ? PROD_URL : DEV_URL,
-                                        protocol: PROTOCOL),
-           unsubscribe: email_unsubscribe_relationship_url(id: relationship.id, 
-                                      token_identifier: relationship.token_identifier, 
-                                      host: Rails.env.production? ? PROD_URL : DEV_URL, 
-                                      protocol: PROTOCOL),
-           signature: signature
-         }
-   else
-        { body: body,
-          more: wr_log_url(more: part_number.to_s,
-                                 id: wr_log.id,
-                                 token_identifier: wr_log.token_identifier, 
-                                 host: (Rails.env.production? ? PROD_URL : DEV_URL),
-                                 protocol: Rails.env.production? ? 'https' : 'http')
-        }
-    end
-  end
-    
   def error_email(error, user, email)
     @sender = user
     @error = error

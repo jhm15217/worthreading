@@ -2,33 +2,28 @@
 %html
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  .msg-body
+    %p= @message[:body]
   -if @message[:more]
-    %body
-      .msg-body
-        %p
-          = @message[:body]
-      .more-button
-        %p
-          = link_to "More", @message[:more]
+    .more-button
+      %p
+        = link_to "More...", wr_log_path(@message[:more])
   -else
-    %body
-      .msg-body
-        %p= @message[:body]
-      .worth-reading-link
-        %p
-          = link_to image_tag(@message[:image], alt: "Worth Reading", 
-            title: "Worth Reading", 
-            width: "173px", 
-            height: "56px"),
-            @message[:worth_reading]
-      .whats-this-link
-        %p
-          = link_to "What's this?", @message[:whats_this] 
+    .worth-reading-link
+      %p
+        = link_to image_tag(@message[:image], alt: "Worth Reading", 
+          title: "Worth Reading", 
+          width: "173px", 
+          height: "56px"),
+          wr_log_path(@message[:worth_reading])
+    .whats-this-link
+      %p
+        = link_to "What's this?", whats_this_path(@message[:whats_this] )
 
-      .unsubscribe-link
-        %p
-          = link_to "Unsubscribe", @message[:unsubscribe]
+    .unsubscribe-link
+      %p
+        = link_to "Unsubscribe", email_unsubscribe_relationship_url(@message[:unsubscribe])
 
-      - if @message[:signature]
-        .signature
-          %p= @message[:signature]
+    - if @message[:signature]
+      .signature
+        %p= @message[:signature]

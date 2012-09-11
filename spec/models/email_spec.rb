@@ -99,7 +99,7 @@ describe Email do
 
       it "should have the correct link for the Worth Reading link" do
         @email.process(user)[0][0].body.
-          encoded.should match("http://localhost:3000/wr_logs/.*token_identifier=.*;worth_reading\=1")
+          encoded.should match("wr_logs.*token_identifier=.*;worth_reading\=1")
       end
 
       it "should have a web beacon" do
@@ -183,7 +183,7 @@ describe Email do
 
     it "should have a More url" do
       @email.process(user)[0][0].body.encoded.
-        should match(/<div class='more-button'>.*http:\/\/localhost:3000\/wr_logs\/.*more\=.*/m)
+        should match(/<div class='more-button'>.*wr_logs\/.*more\=.*/m)
     end
 
     it "should deliver successfully" do

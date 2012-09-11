@@ -140,6 +140,7 @@ describe WrLogsController do
       wr_log.email_id = email.id
       wr_log.receiver_id = receiver.id
       wr_log.sender_id = sender.id
+      wr_log.email_part = 0
       wr_log.save
       sender.add_subscriber!(receiver)
       
@@ -148,7 +149,7 @@ describe WrLogsController do
     end
 
     it "assigns the requested wr_log as @wr_log" do
-      get :show, {:id => wr_log.id, more: "1", 
+      get :show, {:id => wr_log.id, more: "0",
         token_identifier: wr_log.token_identifier }, valid_session
       assigns(:wr_log).should eq(wr_log)
     end
@@ -157,7 +158,7 @@ describe WrLogsController do
     describe "Receiver following More link in email" do
       context "and receiver is unregistered" do
         it "updates the requested wr_log" do
-          get :show, {  id: wr_log.id, more: "1",
+          get :show, {  id: wr_log.id, more: "0",
                         token_identifier: wr_log.token_identifier }
           wr_log.reload
           wr_log.action.should == "more"
@@ -168,7 +169,7 @@ describe WrLogsController do
       context "and receiver is registered" do
         before { receiver.add_subscriber!(sender) }
         it "updates the requested wr_log" do
-          get :show, {  id: wr_log.id, more: "1",
+          get :show, {  id: wr_log.id, more: "0",
                         token_identifier: wr_log.token_identifier }
 
           wr_log.reload
@@ -192,6 +193,7 @@ describe WrLogsController do
       wr_log.email_id = email.id
       wr_log.receiver_id = receiver.id
       wr_log.sender_id = sender.id
+      wr_log.email_part = 0
       wr_log.save
     end
 
@@ -284,30 +286,38 @@ describe WrLogsController do
   end
 
   describe "PUT update" do
-    let (:email) { Email.create(to: "receiver@email.com", from: "sender@email.com", subject: "Subject",
-                                body: "Blah, blah, blah. 
-                                   <more>
-                                   Bleh, bleh, bleh.
-                                   <more>
-                                   Blih.") }
-    let (:sender) { User.find_by_email("sender@email.com")}
-    let (:receiver) { User.find_by_email("receiver@email.com")}
+    let (:email) { FactoryGirl.create(:email) }
+    let (:sender) { FactoryGirl.create(:user) }
+    let (:receiver) { FactoryGirl.create(:user) }
+    let(:wr_log) { FactoryGirl.create(:wr_log) }
 
-    describe "with valid params" do
-      pending "is an incomplete/error filled test" do
-        it "updates the requested wr_log" do
-          wr_log = WrLog.create!(action: "email", email_id: email.id, receiver_id: receiver.id, email_part: 0, responded: true )
-          put :update, { id: wr_log.id, request: "more" }
-          # There should be a new WrLog entry like wr_log
-          new_wr_log = WrLog.where("action = more AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND
-                                    email_part = 1 AND responded = true" ).first!
-                                    # We render a page containing "Bleh, bleh, bleh. <href: ....>" where the button is another more put with the new
-                                    #   entry's id and the command "more"
-                                    response.should have_selector("a", href: "http://worth-reading.org/wr_log/#{new_wr_log.id}", content: "request=more") 
-        end
+    before do
+      email[:body] = "First<more>Second<more>Third"
+      email[:parts] = ["First", "Second", "Third"]
+      email.save
+      wr_log.action = "email"
+      wr_log.email_id = email.id
+      wr_log.receiver_id = receiver.id
+      wr_log.sender_id = sender.id
+      wr_log.email_part = 0
+      wr_log.save
+      sender.add_subscriber(receiver)
+    end
+
+    describe "with valid params, more=0" do
+      render_views
+      it "updates the requested wr_log" do
+        put :show, { id: wr_log.id, more: "0", token_identifier: wr_log.token_identifier   }
+        # There should be a new WrLog entry like wr_log
+        WrLog.where("action = 'more' AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND email_part = '1'").
+            first!.id.should == wr_log.id
+        # We render a page containing "Bleh bleh bleh". <href: ....> where the button is another more put with value
+        # of 1 and the command "more"
+
+        response.body.should match("wr_logs/#{wr_log.id}.*more=1")
       end
 
-      it "assigns the requested wr_log as @wr_log" do
+        it "assigns the requested wr_log as @wr_log" do
         wr_log = WrLog.create! valid_attributes
         put :update, {:id => wr_log.to_param, :wr_log => valid_attributes}, valid_session
         assigns(:wr_log).should eq(wr_log)
@@ -320,7 +330,22 @@ describe WrLogsController do
       end
     end
 
-    describe "with invalid params" do
+    describe "with valid params, more=1" do
+      render_views
+      it "updates the requested wr_log" do
+        put :show, { id: wr_log.id, more: "1", token_identifier: wr_log.token_identifier   }
+        # There should be a new WrLog entry like wr_log
+        WrLog.where("action = 'more' AND email_id = #{email.id} AND receiver_id = #{receiver.id} AND email_part = '2'").
+            first!.id.should == wr_log.id
+        # We render a page containing "Bleh bleh bleh". <href: ....> where the button is another more put with value
+        # of 1 and the command "more"
+
+        response.body.should match("wr_logs/#{wr_log.id}.*worth_reading")
+      end
+    end
+
+
+      describe "with invalid params" do
       it "assigns the wr_log as @wr_log" do
         wr_log = WrLog.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted

@@ -17,25 +17,60 @@
 #
 
 class WrLog < ActiveRecord::Base
+  include ActionView::Helpers::UrlHelper
+  PROD_URL = "www.worth-reading.org"
+  DEV_URL = "localhost:3000"
+  PROTOCOL = 'http'
+
+
   attr_accessible :action, :email_id, :email_part, :receiver_id, :responded, :sender_id
   belongs_to :email
   belongs_to :sender, class_name: "User"
   belongs_to :receiver, class_name: "User"
   before_create :create_token_identifier
 
-  def send_msg_to_individual(sender, receiver, email)
-    wr_log = email.wr_logs.create! do |log|
-      log.action = "email"
-      log.sender_id = sender.id
-      log.receiver_id = receiver.id 
-      log.emailed = Time.now
+  # Return a structure describing the message, indepedent of email or web page presentation
+  def abstract_message
+    email = Email.find(email_id)
+    body = email.parts[email_part]
+    if email.parts.size == email_part + 1  # is this the last part?
+      if capture = body.match(/(.*)(--.*)/m)
+        body = capture[1]
+        signature = capture[2]
+      end
+      relationship = Relationship.where(subscriber_id: receiver.id,
+                                        subscribed_id: sender.id).first!
+      { body: body,
+            image: "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png",
+            worth_reading: { controller: "wr_log",
+                             protocol: PROTOCOL,
+                             host: (Rails.env.production? ? PROD_URL : DEV_URL),
+                             id: id,
+                             worth_reading: "1",
+                             token_identifier: token_identifier
+                                  },
+            whats_this: { id: id,
+                         token_identifier: token_identifier,
+                         host: Rails.env.production? ? PROD_URL : DEV_URL,
+                         protocol: PROTOCOL },
+            unsubscribe: { id: relationship.id,
+                          token_identifier: relationship.token_identifier,
+                          host: Rails.env.production? ? PROD_URL : DEV_URL,
+                          protocol: PROTOCOL },
+            signature: signature
+      }
+    else
+      { body: body,
+            more: { more: email_part.to_s,
+                    id: id,
+                    token_identifier: token_identifier,
+                    host: (Rails.env.production? ? PROD_URL : DEV_URL),
+                    protocol: PROTOCOL}
+      }
     end
-    sender.add_subscriber(receiver) unless sender.subscribed_by?(receiver)  #May already be subscribed
-
-	  display_message(wr_log, 1).deliver
   end
 
- private
+  private
   def create_token_identifier
     self.token_identifier = SecureRandom.urlsafe_base64
   end

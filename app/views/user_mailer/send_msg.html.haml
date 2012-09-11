@@ -9,7 +9,7 @@
           %p= @message[:body].html_safe
       .more-button
         %p
-          = link_to "More", @message[:more]
+          = link_to "More", wr_log_url(@message[:more])
   -else
     %body
       .msg-body
@@ -21,14 +21,14 @@
             title: "Worth Reading",
             width: "173px",
             height: "56px"),
-            @message[:worth_reading]
+            wr_logs_url(@message[:worth_reading])
       .whats-this-link
         %p
-          = link_to "What's this?", @message[:whats_this]
+          = link_to "What's this?", whats_this_url(@message[:whats_this])
 
       .unsubscribe-link
         %p
-          = link_to "Unsubscribe", @message[:unsubscribe]
+          = link_to "Unsubscribe", email_unsubscribe_relationship_url(@message[:unsubscribe])
 
       - if @message[:signature]
         .signature
