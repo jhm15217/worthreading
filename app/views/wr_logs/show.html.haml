@@ -3,7 +3,7 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   .msg-body
-    %p= @message[:body]
+    %p= @message[:body].make_safe
   -if @message[:more]
     .more-button
       %p
