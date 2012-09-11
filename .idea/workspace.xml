@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cbe11f5f-762e-4669-a68d-981ac3cd5802" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/emails_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/emails_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/mailers/user_mailer.rb" afterPath="$PROJECT_DIR$/app/mailers/user_mailer.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/wr_log.rb" afterPath="$PROJECT_DIR$/app/models/wr_log.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml" afterPath="$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/wr_logs/show.html.haml" afterPath="$PROJECT_DIR$/app/views/wr_logs/show.html.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spec/controllers/wr_logs_controller_spec.rb" afterPath="$PROJECT_DIR$/spec/controllers/wr_logs_controller_spec.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spec/models/email_spec.rb" afterPath="$PROJECT_DIR$/spec/models/email_spec.rb" />
     </list>
     <ignored path="worthreading.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,15 +48,17 @@
         <entry file="file://$PROJECT_DIR$/spec/views/wr_logs/show.html.haml_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="17" column="62" selection-start="456" selection-end="456" vertical-scroll-proportion="-9.807693">
-              <folding />
+              <folding>
+                <marker date="1347387895000" expanded="true" signature="51:790" placeholder="do ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.html.haml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="show.html.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/wr_logs/show.html.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="101" selection-end="101" vertical-scroll-proportion="0.074257426">
+            <state line="4" column="0" selection-start="101" selection-end="101" vertical-scroll-proportion="-2.5">
               <folding />
             </state>
           </provider>
@@ -78,10 +73,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wr_logs_controller.rb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="wr_logs_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/wr_logs_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="41" selection-start="1527" selection-end="1527" vertical-scroll-proportion="-16.961538">
+            <state line="44" column="21" selection-start="1345" selection-end="1345" vertical-scroll-proportion="0.4540943">
               <folding />
             </state>
           </provider>
@@ -109,7 +104,9 @@
         <entry file="file://$PROJECT_DIR$/app/mailers/user_mailer.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="76" column="38" selection-start="2670" selection-end="2670" vertical-scroll-proportion="-16.038462">
-              <folding />
+              <folding>
+                <marker date="1347389432000" expanded="true" signature="2851:3098" placeholder=" ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -145,8 +142,8 @@
         <option value="$PROJECT_DIR$/app/controllers/emails_controller.rb" />
         <option value="$PROJECT_DIR$/app/models/wr_log.rb" />
         <option value="$PROJECT_DIR$/app/mailers/user_mailer.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/wr_logs/show.html.haml" />
+        <option value="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" />
       </list>
     </option>
   </component>
@@ -192,176 +189,6 @@
         <subPane subId="All">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="spec">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="spec">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="views">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="wr_logs">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="spec">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="views">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="spec">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="models">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="views">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="wr_logs">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="views">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="views">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="user_mailer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="worthreading">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="controllers">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -820,7 +647,9 @@
     <entry file="file://$PROJECT_DIR$/spec/views/wr_logs/show.html.haml_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="62" selection-start="456" selection-end="456" vertical-scroll-proportion="-9.807693">
-          <folding />
+          <folding>
+            <marker date="1347387895000" expanded="true" signature="51:790" placeholder="do ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -855,20 +684,22 @@
     <entry file="file://$PROJECT_DIR$/app/mailers/user_mailer.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="76" column="38" selection-start="2670" selection-end="2670" vertical-scroll-proportion="-16.038462">
+          <folding>
+            <marker date="1347389432000" expanded="true" signature="2851:3098" placeholder=" ... end" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/wr_logs/show.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="101" selection-end="101" vertical-scroll-proportion="-2.5">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/wr_logs_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="41" selection-start="1527" selection-end="1527" vertical-scroll-proportion="-16.961538">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/wr_logs/show.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="101" selection-end="101" vertical-scroll-proportion="0.074257426">
+        <state line="44" column="21" selection-start="1345" selection-end="1345" vertical-scroll-proportion="0.4540943">
           <folding />
         </state>
       </provider>

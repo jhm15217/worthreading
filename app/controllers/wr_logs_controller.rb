@@ -42,6 +42,7 @@ class WrLogsController < ApplicationController
           UserMailer.send_msg(@receiver, subscriber, @email).deliver
         end
       end
+      render :nothing
     elsif params[:more]
       @wr_log.action = "more"
       @wr_log.email_part = params[:more].to_i + 1
