@@ -30,7 +30,9 @@ class WrLogsController < ApplicationController
         flash: { error: "I'm sorry you are not allowed to access that page"}
       end
 
-    if params[:worth_reading] && !@wr_log.worth_reading 
+    puts "JHM1"
+    if params[:worth_reading] && !@wr_log.worth_reading
+      puts "WR"
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save
@@ -58,6 +60,7 @@ class WrLogsController < ApplicationController
         format.json { render json: @wr_log }
       end
     else
+      puts "Bad"
       redirect_to root_path, flash: { error: "Unknown request" }
     end
   end

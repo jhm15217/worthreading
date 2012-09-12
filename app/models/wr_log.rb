@@ -42,13 +42,11 @@ class WrLog < ActiveRecord::Base
                                         subscribed_id: sender.id).first!
       { body: body,
             image: "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png",
-            worth_reading: { controller: "wr_log",
-                             protocol: PROTOCOL,
+            worth_reading: { protocol: PROTOCOL,
                              host: (Rails.env.production? ? PROD_URL : DEV_URL),
                              id: id,
                              worth_reading: "1",
-                             token_identifier: token_identifier
-                                  },
+                             token_identifier: token_identifier },
             whats_this: { id: id,
                          token_identifier: token_identifier,
                          host: Rails.env.production? ? PROD_URL : DEV_URL,
