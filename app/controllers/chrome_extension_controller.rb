@@ -5,6 +5,7 @@ class ChromeExtensionController < ApplicationController
   # Page where users can choose to send a link after clicking 
   # the chrome-extension button
   def new
+    @user = current_user
     @link = params[:link]
   end
 
