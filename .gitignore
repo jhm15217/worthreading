@@ -24,3 +24,4 @@ doc/
 
 bundler_stubs/
 dev_env_vars.rb
+*.vim

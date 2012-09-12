@@ -38,6 +38,7 @@ class WrLog < ActiveRecord::Base
         body = capture[1]
         signature = capture[2]
       end
+
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
       { body: body,
