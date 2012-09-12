@@ -42,11 +42,11 @@ class WrLogsController < ApplicationController
         @receiver.subscribers.each do |subscriber|
           UserMailer.send_msg(@receiver, subscriber, @email).deliver
         end
+      end
       @message = { registered_user: @receiver.confirmed? }
       respond_to do |format|
         format.html # show.html.haml
         format.json { render json: @wr_log }
-        end
       end
     elsif params[:more]
       @wr_log.action = "more"
