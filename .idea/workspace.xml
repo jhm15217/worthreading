@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cbe11f5f-762e-4669-a68d-981ac3cd5802" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/wr_log.rb" afterPath="$PROJECT_DIR$/app/models/wr_log.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/wr_logs/show.html.haml" afterPath="$PROJECT_DIR$/app/views/wr_logs/show.html.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml" afterPath="$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml" />
     </list>
     <ignored path="worthreading.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,10 +34,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.html.haml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="show.html.haml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/wr_logs/show.html.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="6" selection-start="548" selection-end="548" vertical-scroll-proportion="-11.875">
+            <state line="19" column="6" selection-start="548" selection-end="548" vertical-scroll-proportion="0.28672034">
               <folding />
             </state>
           </provider>
@@ -55,10 +52,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wr_logs_controller.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="wr_logs_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/wr_logs_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="15" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.6611002">
+            <state line="62" column="15" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -67,7 +64,7 @@
       <file leaf-file-name="send_msg.html.haml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="95" selection-start="1102" selection-end="1102" vertical-scroll-proportion="-24.375">
+            <state line="25" column="8" selection-start="685" selection-end="685" vertical-scroll-proportion="-15.625">
               <folding />
             </state>
           </provider>
@@ -97,7 +94,6 @@
       <list>
         <option value="$PROJECT_DIR$/db/migrate/20120909165043_change_data_type_for_emails.rb" />
         <option value="$PROJECT_DIR$/app/models/email.rb" />
-        <option value="$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml" />
         <option value="$PROJECT_DIR$/spec/views/wr_logs/show.html.haml_spec.rb" />
         <option value="$PROJECT_DIR$/spec/models/email_spec.rb" />
         <option value="$PROJECT_DIR$/app/controllers/emails_controller.rb" />
@@ -108,6 +104,7 @@
         <option value="$PROJECT_DIR$/app/models/wr_log.rb" />
         <option value="$PROJECT_DIR$/app/views/wr_logs/show.html.haml" />
         <option value="$PROJECT_DIR$/app/controllers/wr_logs_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml" />
       </list>
     </option>
   </component>
@@ -846,23 +843,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml">
+    <entry file="file://$PROJECT_DIR$/app/controllers/wr_logs_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="95" selection-start="1102" selection-end="1102" vertical-scroll-proportion="-24.375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/wr_log.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="63" selection-start="1756" selection-end="1756" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/wr_logs/show.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="6" selection-start="548" selection-end="548" vertical-scroll-proportion="-11.875">
+        <state line="62" column="15" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -874,9 +857,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/wr_logs_controller.rb">
+    <entry file="file://$PROJECT_DIR$/app/models/wr_log.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="15" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.6611002">
+        <state line="48" column="63" selection-start="1756" selection-end="1756" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/user_mailer/send_msg.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="8" selection-start="685" selection-end="685" vertical-scroll-proportion="-15.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/wr_logs/show.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="6" selection-start="548" selection-end="548" vertical-scroll-proportion="0.28672034">
           <folding />
         </state>
       </provider>
