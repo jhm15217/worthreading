@@ -41,8 +41,8 @@ class WrLogsController < ApplicationController
         @receiver.subscribers.each do |subscriber|
           UserMailer.send_msg(@receiver, subscriber, @email).deliver
         end
+      @message = { registered_user: @receiver.confirmed? }
       end
-      render :nothing
     elsif params[:more]
       @wr_log.action = "more"
       @wr_log.email_part = params[:more].to_i + 1

@@ -64,22 +64,27 @@ describe WrLogsController do
     end
 
 
-    describe "Receiver following Worth Reading link in email" do
-      context "and receiver is unregistered" do
-        it "updates the requested wr_log" do
-          get :show, {  id: wr_log.id, worth_reading: "1",
-                        token_identifier: wr_log.token_identifier }
-          # responded is set to true
-          wr_log.reload
-          wr_log.action.should == "worth reading"
-          wr_log.worth_reading.should_not be_nil
+    describe "Receiver following Worth Reading link" do
+      it "updates the requested wr_log and says Tahnk you" do
+        get :show, {  id: wr_log.id, worth_reading: "1",
+                      token_identifier: wr_log.token_identifier }
+        # responded is set to true
+        wr_log.reload
+        wr_log.action.should == "worth reading"
+        wr_log.worth_reading.should_not be_nil
 
-          # We render a page explaining what the worth reading button means and 
-          # inviting him to register
-          #
-          #  TODO Needs work
-          # response.should have_selector("a", href: "http://worth-reading.org/unregistered") 
-        end
+        # We render a page explaining what the worth reading button means and
+        # inviting him to register
+        #
+
+        ##
+        #
+        #
+        #
+        #
+        #
+        #
+        #response.should =~ /Thank you/
       end
 
       context "and receiver is registered" do
@@ -285,7 +290,7 @@ describe WrLogsController do
     end
   end
 
-  describe "PUT update" do
+  describe "GET show" do
     let (:email) { FactoryGirl.create(:email) }
     let (:sender) { FactoryGirl.create(:user) }
     let (:receiver) { FactoryGirl.create(:user) }

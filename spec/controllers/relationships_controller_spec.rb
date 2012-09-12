@@ -56,22 +56,22 @@ describe RelationshipsController do
     end
   end
 
-  describe "unsubscribing via email" do
+  describe "unsubscribing" do
     let(:user) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
     let(:subscription) { user.relationships.create { |r| r.subscriber_id = user2.id } }
 
-    describe "visiting the unsubscribe page from an email link" do
+    describe "visiting the unsubscribe page from a link" do
       context "when parameters are invalid" do 
         it "should be a redirect" do
-          get :email_unsubscribe 
+          get :email_unsubscribe
           response.should be_redirect
         end 
       end
 
       context "when params are valid" do
         it "should be a success" do
-          get :email_unsubscribe, 
+          get :email_unsubscribe
             {id: subscription.id, token_identifier: subscription.token_identifier }
           response.should be_success
         end 
