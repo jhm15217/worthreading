@@ -8,9 +8,9 @@ describe ChromeExtensionController do
     User.all.each { |u| user.add_subscriber!(u) unless u == user }
   end
 
-
   describe "Sending email with link" do
     it "should not raise an error" do
+      puts user.subscribers
       expect { post :create, { :subject => "A subject", 
         :body => "Hey check out \n www.google.com" } }.
         should_not raise_error 

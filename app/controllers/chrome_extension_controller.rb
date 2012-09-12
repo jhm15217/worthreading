@@ -14,13 +14,13 @@ class ChromeExtensionController < ApplicationController
   # sent to a user's subscribers
   def create
     @user = current_user
-    
     @email = @user.emails.create!(
       from: @user.email,
       to: "subscribers@worth-reading.org",
       subject: params[:subject],
       body: params['body'].gsub("\n", "\n<br />")
     )
+
     @email.deliver_all(@email.process(@user))
     redirect_to root_path, flash: { success: "Email successfully sent" }
   end

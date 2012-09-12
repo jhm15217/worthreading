@@ -58,17 +58,17 @@ class EmailsController < ApplicationController
         parts: params['body-html'].split(/&lt;more&gt;|<more>/)
       )
       if @email.save
-         render text: "Email Received"
-       else
-         puts "Bad email: " + @email.inspect
-       end
+        render text: "Email Received"
+      else
+        puts "Bad email: " + @email.inspect
+      end
       @email.deliver_all(@email.process(@user))
     else
       redirect_to root_path  ## params['sender'] is bad 
     end
   end
 
-    
+
   # DELETE /emails/1
   def destroy
     @email = Email.find(params[:id])
