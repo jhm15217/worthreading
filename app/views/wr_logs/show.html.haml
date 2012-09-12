@@ -2,13 +2,15 @@
 %html
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-  .msg-body
-    %p= raw(@message[:body])
   -if @message[:more]
+    .msg-body
+      %p= raw(@message[:body])
     .more-button
       %p
         = link_to "More...", wr_log_path(@message[:more])
   -elsif @message[:worth_reading]
+    .msg-body
+      %p= raw(@message[:body])
     .worth-reading-link
       %p
         = link_to image_tag(@message[:image], alt: "Worth Reading", 
