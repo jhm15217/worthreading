@@ -31,7 +31,7 @@ class WrLogsController < ApplicationController
       end
 
 
-    if params[:worth_reading] && !@wr_log.worth_reading
+    if params[:worth_reading]
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save

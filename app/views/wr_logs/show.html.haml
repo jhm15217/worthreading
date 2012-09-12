@@ -29,9 +29,8 @@
       .signature
         %p= raw(@message[:signature])
   -else
-    %h2
-      Thank you for appreciating my message! It will encourage me to send you similar messages.
-      - unless @message[:registered_user]
-        %p I am using a service called #{link_to "Worth Reading", signup_path } to help me know who likes the messages that I send.
-      %br/
-      %p You can close this window now.
+    Thank you for appreciating my message! It will encourage me to send you similar messages.
+    - unless @message[:registered_user]
+      %p I am using a service called #{link_to "Worth Reading", signup_path } to help me know who likes the messages that I send.
+    %br/
+    %p You can close this window now.
