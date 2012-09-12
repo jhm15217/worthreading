@@ -3,7 +3,7 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   .msg-body
-    %p= @message[:body]
+    %p= raw(@message[:body])
   -if @message[:more]
     .more-button
       %p
@@ -26,7 +26,7 @@
 
     - if @message[:signature]
       .signature
-        %p= @message[:signature]
+        %p= raw(@message[:signature])
   -else
     %h2
       Thank you for appreciating my message! It will encourage me to send you similar messages.
