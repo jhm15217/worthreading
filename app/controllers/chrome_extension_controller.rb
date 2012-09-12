@@ -19,6 +19,7 @@ class ChromeExtensionController < ApplicationController
       to: "subscribers@worth-reading.org",
       subject: params[:subject],
       body: params['body'].gsub("\n", "\n<br />")
+      parts: params['body'].split(/&lt;more&gt;|<more>/)
     )
 
     @email.deliver_all(@email.process(@user))
