@@ -8,11 +8,11 @@
     = form_tag('/chrome_extension') do 
       %b Subject of the email sent:
       %br/
-      = text_field_tag 'subject', nil, class: "span6", placeholder: "Subject"
+      = text_field_tag 'subject', @subject, class: "span6", placeholder: "Subject"
       %br/
 
       %b Body of the email sent to your subscribers:
       %br/
-      = text_area_tag 'body', "#{@link}\n\n#{@user.name}", class: "span6", rows: "15"
+      = text_area_tag 'body', "#{@text}\n\n#{@link}\n\n#{@user.name}", class: "span6", rows: "15"
       %br/
       = submit_tag 'Send email to subscribers', class: "btn btn-primary"
