@@ -10,6 +10,9 @@
     "scripts": ["jquery-1.8.1.min.js", "content.js"]
   },
 	"permissions": [
-		"tabs"
+		"tabs",
+    "http://*/*", 
+    "https://*/*",
+    "clipboardWrite"  
 		]
 }
