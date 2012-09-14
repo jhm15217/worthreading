@@ -6,9 +6,14 @@
 .row
   .span6.offset3
     = form_tag('/chrome_extension') do 
+      %b To:
+      %br/
+      = text_field_tag 'to', 'subscribers@worth-reading.org', class: "span6"
+      %br/
+
       %b Subject of the email sent:
       %br/
-      = text_field_tag 'subject', @subject, class: "span6", placeholder: "Subject"
+      = text_field_tag 'subject', @subject, class: "span6"
       %br/
 
       %b Body of the email sent to your subscribers:

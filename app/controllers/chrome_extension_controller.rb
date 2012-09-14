@@ -6,9 +6,9 @@ class ChromeExtensionController < ApplicationController
   # the chrome-extension button
   def new
     @user = current_user
-    @subject = params[:subject]
     @text = params[:text]
     @link = params[:link]
+    @subject = params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/)
   end
 
   # POST 
