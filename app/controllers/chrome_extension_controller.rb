@@ -18,7 +18,7 @@ class ChromeExtensionController < ApplicationController
     @user = current_user
     @email = @user.emails.create!(
       from: @user.email,
-      to: "subscribers@worth-reading.org",
+      to: params[:to],
       subject: params[:subject],
       body: params['body'].gsub("\n", "\n<br />"),
       parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
