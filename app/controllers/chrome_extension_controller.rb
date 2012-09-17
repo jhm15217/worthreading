@@ -1,3 +1,4 @@
+require 'uri'
 class ChromeExtensionController < ApplicationController
   before_filter :signed_in_user
   protect_from_forgery :except => :new
@@ -7,9 +8,9 @@ class ChromeExtensionController < ApplicationController
   # the chrome-extension button
   def new
     @user = current_user
-    @text = params[:text]
+    @text = URI.unescape(params[:text]) unless params[:text].blank?
     @link = params[:link]
-    @subject = params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/) unless params[:text].blank?
+    @subject = URI.unescape(params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/)) unless params[:text].blank?
   end
 
   # POST 
