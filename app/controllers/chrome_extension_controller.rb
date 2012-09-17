@@ -8,7 +8,7 @@ class ChromeExtensionController < ApplicationController
     @user = current_user
     @text = params[:text]
     @link = params[:link]
-    @subject = params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/)
+    @subject = params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/) unless params[:text].blank?
   end
 
   # POST 
