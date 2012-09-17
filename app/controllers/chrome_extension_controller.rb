@@ -1,5 +1,6 @@
 class ChromeExtensionController < ApplicationController
   before_filter :signed_in_user
+  protect_from_forgery :except => :new
 
   # GET chrome_extension/new
   # Page where users can choose to send a link after clicking 
