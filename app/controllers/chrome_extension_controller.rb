@@ -10,7 +10,7 @@ class ChromeExtensionController < ApplicationController
     @user = current_user
     @text = URI.unescape(params[:text]) unless params[:text].blank?
     @link = params[:link]
-    @subject = URI.unescape(params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/)) unless params[:text].blank?
+    @subject = URI.unescape(params[:text]).match(/^.{120,}?[.?!]+(?=\s|$)/) unless params[:text].blank?
   end
 
   # POST 
