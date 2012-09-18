@@ -8,7 +8,7 @@ class ChromeExtensionController < ApplicationController
   def new
     require 'uri'
     @user = current_user
-    if params([:text])
+    if params[:text]
       @text = URI.unescape(params[:text]) unless URI.unescape(params[:text]).blank?
       @link = params[:link]
       @subject = URI.unescape(params[:text]).match(/^.{120,}?[.?!]+(?=\s|$)/) unless URI.unescape(params[:text]).blank?
