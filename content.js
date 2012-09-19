@@ -7,6 +7,7 @@ function fakePost(text, link) {
     var form = document.createElement("form");
     form.setAttribute("method", "post");
     form.setAttribute("action", "http://www.worth-reading.org/chrome_extension/new");
+    form.setAttribute("accept-charset", "UTF-8");
     var params = {text: text, link: link};
     for(var key in params) {
         var hiddenField = document.createElement("input");
