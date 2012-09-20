@@ -65,8 +65,11 @@ WorthReading::Application.routes.draw do
     to: 'emails#emails_sent_to_subscriber',
     as: 'emails_sent_to_subscriber'
 
+  # Extension Routes
   match 'chrome_extension/new', to: 'chrome_extension#new' 
+  match 'firefox_extension/new', to: 'chrome_extension#new' 
   post 'chrome_extension', to: 'chrome_extension#create'
+  post 'firefox_extension', to: 'chrome_extension#create'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

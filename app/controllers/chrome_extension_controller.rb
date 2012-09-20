@@ -1,14 +1,18 @@
 class ChromeExtensionController < ApplicationController
   before_filter :signed_in_user
+  protect_from_forgery :except => :new
 
   # GET chrome_extension/new
   # Page where users can choose to send a link after clicking 
   # the chrome-extension button
   def new
+    require 'uri'
     @user = current_user
-    @text = params[:text]
-    @link = params[:link]
-    @subject = params[:text].match(/^.{120,}?[.?!]+(?=\s|$)/)
+    if params[:text]
+      @text = URI.unescape(params[:text]) unless URI.unescape(params[:text]).blank?
+      @link = params[:link]
+      @subject = URI.unescape(params[:text]).match(/^.{120,}?[.?!]+(?=\s|$)/) unless URI.unescape(params[:text]).blank?
+    end
   end
 
   # POST 
