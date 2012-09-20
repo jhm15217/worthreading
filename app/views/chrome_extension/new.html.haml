@@ -8,7 +8,7 @@
     = form_tag('/chrome_extension') do 
       %b To:
       %br/
-      = text_field_tag 'to', @user.subscribers.map{|id| User.find(id)}.map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', '), class: "span6"
+      = text_field_tag 'to', @user.subscribers.map{|id| User.find(id)}.map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', '), class: "span6", rows: "1"
       %br/
 
       %b Subject of the email sent:
@@ -18,6 +18,6 @@
 
       %b Body of the email sent to your subscribers:
       %br/
-      = text_area_tag 'body', "#{@text}\n\n#{@link}\n\n#{@user.name}", class: "span6", rows: "15"
+      = text_area_tag 'body', "#{@text}\n\n#{@link}\n\n#{@user.name}", class: "span6", rows: "10"
       %br/
       = submit_tag 'Send email to subscribers', class: "btn btn-primary"
