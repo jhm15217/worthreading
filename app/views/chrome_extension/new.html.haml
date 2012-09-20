@@ -8,7 +8,7 @@
     = form_tag('/chrome_extension') do 
       %b To:
       %br/
-      = text_field_tag 'to', 'subscribers@worth-reading.org', class: "span6"
+      = text_field_tag 'to', @user.subscribers.map{|id| User.find(id)}.map{|user| '"' + user.name + '"<' + user.email + '>'}.join{', '}, class: "span6"
       %br/
 
       %b Subject of the email sent:

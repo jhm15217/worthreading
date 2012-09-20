@@ -51,11 +51,13 @@ class UserMailer < ActionMailer::Base
         @alert = "liked your email"
       when "opened"
         @alert = "opened your email"
+      when "more"
+        @alert = "turned a page"
       else
         raise "Invalid action"
       end
 
-      mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}: #{@email.subject}")
+      mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}: #{@email.subject}").deliver
     end
   end
 

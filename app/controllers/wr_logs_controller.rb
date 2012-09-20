@@ -35,9 +35,7 @@ class WrLogsController < ApplicationController
       @wr_log.action = "worth reading"
       @wr_log.worth_reading = Time.now
       @wr_log.save
-      if @sender.email_notify?
-        UserMailer.alert_change_in_wr_log(@wr_log).deliver
-      end
+      UserMailer.alert_change_in_wr_log(@wr_log)
       if @receiver.forward?
         @receiver.subscribers.each do |subscriber|
           UserMailer.send_msg(@receiver, subscriber, @email).deliver
@@ -53,6 +51,7 @@ class WrLogsController < ApplicationController
       @wr_log.email_part = params[:more].to_i + 1
       @wr_log.worth_reading = Time.now
       @wr_log.save
+      UserMailer.alert_change_in_wr_log(@wr_log)
       @message = @wr_log.abstract_message
       respond_to do |format|
         format.html # show.html.haml
@@ -133,9 +132,7 @@ class WrLogsController < ApplicationController
       @wr_log.opened = Time.now
       @wr_log.save
       @wr_log.reload
-      if User.find(@wr_log.sender_id).email_notify?
-        UserMailer.alert_change_in_wr_log(@wr_log).deliver
-      end
+      UserMailer.alert_change_in_wr_log(@wr_log)
     end
 
     send_file Rails.root.join("public", "images", "beacon.gif"), type: "image/gif", disposition: "inline"
