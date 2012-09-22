@@ -1,0 +1,23 @@
+.row
+  .span12
+    %h1 Compose Message
+    %br/
+
+.row
+  .span6.offset3
+    = form_tag('/compose') do
+      %b To:
+      %br/
+      = text_area_tag 'to', "", class: "span6", rows: "1"
+      %br/
+
+      %b Subject:
+      %br/
+      = text_field_tag 'subject', "", class: "span6"
+      %br/
+
+      %b Body:
+      %br/
+      = text_area_tag 'body', "", class: "span6", rows: "10"
+      %br/
+      = submit_tag 'Send', class: "btn btn-primary"

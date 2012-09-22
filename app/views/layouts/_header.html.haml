@@ -28,6 +28,7 @@
         %ul.nav.pull-right
           - if signed_in?
             %li.divider-vertical
+            %li= link_to "Compose", compose_new_path
             %li= link_to "Users", users_path
           - elsif !signed_in? && current_page?(signin_path)
             %li.divider-vertical

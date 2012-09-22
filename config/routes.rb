@@ -51,7 +51,9 @@ WorthReading::Application.routes.draw do
   match  '/by_email', to: 'wr_logs#by_email'
   match '/whats_this', to: 'static_pages#whats_this'
   match '/add_sources', to: 'relationships#add_sources'
- 
+  match '/compose_new', to: 'emails#compose_new'
+  match '/compose', to: 'emails#compose'
+
   match 'wr_logs/:id/msg_opened/:token_identifier', 
     to: 'wr_logs#msg_opened',
     as: :msg_opened

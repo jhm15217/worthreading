@@ -50,9 +50,16 @@ class EmailsController < ApplicationController
   # POST /emails
   def create
     if from = email_address_parts(params['from']) and @user = find_or_register(from[:email])
+      to_list = email_address_list(params['Delivered-To']).collect do |address|
+        if m = address[:email].match(/(.*)\+(.*)@/) #It's an individual email address
+          m.captures[0] + '@' + m.captures[1]
+        else
+          address[:email]
+        end
+      end.join(', ')
       @email = @user.emails.new(
         from: @user.email,
-        to: params['Delivered-To'], 
+        to: to_list,
         subject: params['subject'],
         body: params['body-html'],
         parts: params['body-html'].split(/&lt;more&gt;|<more>/)
@@ -77,6 +84,28 @@ class EmailsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to emails_url }
     end
+  end
+
+  # GET /compose_new
+  # opens compose email window
+  def compose_new
+    puts "in compose"
+  end
+
+  # POST
+  def compose
+    @user = current_user
+    @email = @user.emails.create!(
+        from: @user.email,
+        to: params[:to],
+        subject: params[:subject],
+        body: params['body'].gsub("\n", "\n<br />"),
+        parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
+    )
+
+    @email.deliver_all(@email.process(@user))
+    redirect_to root_path, flash: { success: "Email successfully sent" }
+
   end
 
   # Brings up a page of the emails sent to a particular subscriber by a sender

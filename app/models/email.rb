@@ -31,33 +31,25 @@ class Email < ActiveRecord::Base
      nil
   end
   
+  # Takes an email and generates messages for every person on the address list
+  # If one of the "persons" is "subscribers@worth-reading.com", then a list is included in the list
   def process(sender)
     email_address_list(to).collect do |address|
-      if m = address[:email].match(/(.*)\+(.*)@/) #It's an individual email address
-        if receiver = find_or_register(m.captures[0] + '@' + m.captures[1])
-         UserMailer.send_msg(sender, receiver, self) 
-        else
-          UserMailer.error_email("Bad individual recipient: #{@email.to.match(/(.*)@/).captures[0].sub(/[+]/,"@")}",
-                                 @user, @email)
-        end
-      elsif address[:email] == "subscribers@worth-reading.org"
+      if address[:email] == "subscribers@worth-reading.org"
         if sender.subscribers.empty?
           error = "There are no subscribers on your list. Please add subscribers to your list"
           UserMailer.error_email(error, sender, self)
-
           #UserMailer.delay.send_error(error, sender, self)
         else
           sender.subscribers.collect do |subscriber|
             UserMailer.send_msg(sender, subscriber, self)
             # @user.delay.send_msg(sender, subscriber, self)
           end
-
         end
-      elsif to == 'notifications@worth-reading.org'  # log this somehow
-        #don't bounce this
-      else
-        puts Time.now.to_s + ": Bad email recipient: #{address[:email]}"
-        UserMailer.error_email("Bad email recipient: #{address[:email]}", sender, self)
+      elsif address[:email] == 'notifications@worth-reading.org'  # log this somehow
+        # ignore this address to avoid forwarding loops
+      else # It's an individual
+         UserMailer.send_msg(sender, find_or_register(address[:email]), self)
       end
     end
   end

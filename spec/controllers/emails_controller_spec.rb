@@ -37,7 +37,7 @@ describe EmailsController do
 
     it "should create the individual" do
       post :create, {'from' => user.email, 
-        'Delivered-To' => "joe+email.com@worth-reading.org", 
+        'Delivered-To' => "joe+email.com@worth-reading.org",
         'subject' => "Nothing", 
         'body-html' => "Lorem Ipsum" }
       User.find_by_email("joe@email.com").should_not be nil

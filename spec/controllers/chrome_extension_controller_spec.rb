@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe ChromeExtensionController do
   let(:user) { FactoryGirl.create(:user) }
   let(:user2) { FactoryGirl.create(:user) }
@@ -11,7 +13,7 @@ describe ChromeExtensionController do
   describe "Sending email with link" do
     it "should not raise an error" do
       puts user.subscribers
-      expect { post :create, { :subject => "A subject", 
+      expect { post :create, { :to => "subscribers@worth-reading.org", :subject => "A subject",
         :body => "Hey check out \n www.google.com" } }.
         should_not raise_error 
     end

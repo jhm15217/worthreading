@@ -2,19 +2,19 @@ module EmailsHelper
 
   def email_address_list(email_addresses)
     result = []
-    until !email_addresses
-        x = email_addresses.match('\s*("[^"]*"[^,]*|\s*[^,]*)(,(.*)|\s*)')
-        if x
-          result = result + [x.captures[0]]
-          email_addresses = x.captures[2]
-        else
-          email_addresses = nil
-        end
+    while email_addresses
+      x = email_addresses.match('\s*("[^"]*"[^,]*|\s*[^,]*)(,(.*)|\s*)')
+      if x
+        result = result + [x.captures[0]]
+        email_addresses = x.captures[2]
+      else
+        email_addresses = nil
       end
+    end
     result.map{|x| email_address_parts(x) }.select{|x|x}
   end
 
-  VALID_EMAIL_REGEX = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$'
+  VALID_EMAIL_REGEX = '^[_a-z0-9\-+]+(\.[_a-z0-9\-+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$'
 
   # Captures formats:
   # "John Doe"<johndoe@example.com>, John Doe<johndoe@example.com>, johndoe@example.com
