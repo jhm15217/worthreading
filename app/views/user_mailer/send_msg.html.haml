@@ -2,16 +2,15 @@
 %html
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-  -if @message[:more]
-    %body
+  %body
+    -if @message[:more]
       .msg-body
         -if @message[:body]
           %p= @message[:body].html_safe
       .more-button
         %p
           = link_to "More", wr_log_url(@message[:more])
-  -else
-    %body
+    -else
       .msg-body
         -if @message[:body]
           %p= @message[:body].html_safe
@@ -33,6 +32,6 @@
         .signature
           %p= @message[:signature].html_safe
 
-  .web-beacon
-    %p{ style: "visibility: hidden;", id: "web-beacon" }
-      = image_tag(@beacon_url, alt: "")
+    .web-beacon
+      %p{ style: "visibility: hidden;", id: "web-beacon" }
+        = image_tag(@beacon_url, alt: "")
