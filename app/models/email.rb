@@ -107,8 +107,8 @@ class Email < ActiveRecord::Base
 
   default_scope order: 'emails.created_at DESC'
 
-  validates :from, presence: true,
-    format: { with: VALID_EMAIL_REGEX }
-  validates :to, presence: true,
-    format: { with: VALID_EMAIL_REGEX }
+  validates :from, presence: true
+  #  ,format: { with: VALID_EMAIL_REGEX }
+  validates :to, presence: true
+  #  ,format: { with: VALID_EMAI_REGEX }
 end

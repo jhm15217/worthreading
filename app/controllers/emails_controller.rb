@@ -95,13 +95,14 @@ class EmailsController < ApplicationController
   # POST
   def compose
     @user = current_user
-    @email = @user.emails.create!(
+    @email = @user.emails.create(
         from: @user.email,
         to: params[:to],
         subject: params[:subject],
         body: params['body'].gsub("\n", "\n<br />"),
         parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
     )
+    @email.save
 
     @email.deliver_all(@email.process(@user))
     redirect_to root_path, flash: { success: "Email successfully sent" }
