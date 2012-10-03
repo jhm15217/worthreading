@@ -8,7 +8,7 @@ class ChromeExtensionController < ApplicationController
   def new
     require 'uri'
     @user = current_user
-    @to_list = user.subscribers.map{|id| User.find(id)}.
+    @to_list = @user.subscribers.map{|id| User.find(id)}.
         map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', ')
     if params[:text]
       @text = URI.unescape(params[:text]) unless URI.unescape(params[:text]).blank?
