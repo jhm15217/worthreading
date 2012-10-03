@@ -9,7 +9,7 @@
           %p= @message[:body].html_safe
       .more-button
         %p
-          = link_to "More", wr_log_url(@message[:more])
+          = link_to "Next Page", wr_log_url(@message[:more])
     -else
       .msg-body
         -if @message[:body]

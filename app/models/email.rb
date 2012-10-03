@@ -5,7 +5,7 @@ require 'emails_helper'
 #
 #  id         :integer         not null, primary key
 #  from       :string(255)
-#  to         :string(255)
+#  to         :text
 #  subject    :string(255)
 #  body       :text
 #  parts      :text            yaml
@@ -33,8 +33,10 @@ class Email < ActiveRecord::Base
   
   # Takes an email and generates messages for every person on the address list
   # If one of the "persons" is "subscribers@worth-reading.com", then a list is included in the list
+  # email_address_list(to)[1] is a list of malformed email addresses that will be ignored. Someday, it should
+  # be reported somehow.
   def process(sender)
-    email_address_list(to).collect do |address|
+    email_address_list(to)[0].collect do |address|
       if address[:email] == "subscribers@worth-reading.org"
         if sender.subscribers.empty?
           error = "There are no subscribers on your list. Please add subscribers to your list"
@@ -63,19 +65,21 @@ class Email < ActiveRecord::Base
       end
     end
   end
-    
+
+  # @param [String] email_addresses
+  # returns a 2-array [good, bad] of email addresses, bad being malformed addresses
   def email_address_list(email_addresses)
     result = []
     until !email_addresses
-        x = email_addresses.match('\s*("[^"]*"[^,]*|\s*[^,]*)(,(.*)|\s*)')
-        if x
-          result = result + [x.captures[0]]
-          email_addresses = x.captures[2]
-        else
-          email_addresses = nil
-        end
+      if x = email_addresses.match('\s*("[^"]*"[^,]*|\s*[^,]*)(,(.*)|\s*)')
+        result = result + [x.captures[0]]
+        email_addresses = x.captures[2]
+      else
+        email_addresses = nil
       end
-    result.map{|x| email_address_parts(x) }.select{|x|x}
+    end
+    t = result.zip(result.map{|x| email_address_parts(x) })
+    [ t.select{|x,y| y}.map{|p| p[1]}, t.select{|x,y| !y  }.map{|p| p[0]}]
   end
 
   VALID_EMAIL_REGEX = /^[_a-z0-9+\-]+(\.[_a-z0-9+\-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i

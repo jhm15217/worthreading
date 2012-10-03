@@ -8,24 +8,27 @@ class ChromeExtensionController < ApplicationController
   def new
     require 'uri'
     @user = current_user
+    @to_list = user.subscribers.map{|id| User.find(id)}.
+        map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', ')
     if params[:text]
       @text = URI.unescape(params[:text]) unless URI.unescape(params[:text]).blank?
       @link = params[:link]
-      @subject = URI.unescape(params[:text]).match(/^.{120,}?[.?!]+(?=\s|$)/) unless URI.unescape(params[:text]).blank?
+      @subject = URI.unescape(params[:text]).match(/^.{120,}?[.?!]+(?=\s|$)/)unless URI.unescape(params[:text]).blank?
     end
+    @body = "#{@text}\n\n#{@link}\n\n#{@user.name}"
   end
 
-  # POST 
-  # Creates the email that will include the link that will be 
+  # POST
+  # Creates the email that will include the link that will be
   # sent to a user's subscribers
   def create
     @user = current_user
     @email = @user.emails.create!(
-      from: @user.email,
-      to: params[:to],
-      subject: params[:subject],
-      body: params['body'].gsub("\n", "\n<br />"),
-      parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
+        from: @user.email,
+        to: params[:to],
+        subject: params[:subject],
+        body: params['body'].gsub("\n", "\n<br />"),
+        parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
     )
 
     @email.deliver_all(@email.process(@user))

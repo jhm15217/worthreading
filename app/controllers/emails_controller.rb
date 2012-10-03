@@ -90,6 +90,7 @@ class EmailsController < ApplicationController
   # opens compose email window
   def compose_new
     puts "in compose"
+    render 'chrome_extension/new'
   end
 
   # POST
@@ -103,7 +104,7 @@ class EmailsController < ApplicationController
         parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
     )
     @email.save
-
+    @to = @subject = @body = ''
     @email.deliver_all(@email.process(@user))
     redirect_to root_path, flash: { success: "Email successfully sent" }
 

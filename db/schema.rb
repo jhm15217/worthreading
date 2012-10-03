@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909165043) do
+ActiveRecord::Schema.define(:version => 20121002134758) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -31,13 +31,13 @@ ActiveRecord::Schema.define(:version => 20120909165043) do
 
   create_table "emails", :force => true do |t|
     t.string   "from"
-    t.string   "to"
+    t.text     "to",         :limit => 255
     t.string   "subject"
     t.text     "body"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "user_id"
-    t.text     "parts"
+    t.text     "parts",      :limit => 255
   end
 
   create_table "relationships", :force => true do |t|
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(:version => 20120909165043) do
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
     t.datetime "first_login_at"
-    t.boolean  "email_notify",           :default => true
-    t.integer  "cohort",                 :default => 0
+    t.boolean  "email_notify"
+    t.integer  "cohort"
     t.boolean  "forward"
   end
 
