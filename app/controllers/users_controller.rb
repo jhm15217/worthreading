@@ -201,6 +201,14 @@ class UsersController < ApplicationController
     redirect_to @user
   end
 
+  require 'date'#  Failed Email notice from Mailgun
+  def failure
+    puts "Email failed: "  + params[:event] + "  " + params[:recipient] + " " + params[:reason]  +
+        " " + Time.at(params[:timestamp].to_i).to_datetime.to_time.to_s
+    render text: 'Failure Acknowledged'
+
+  end
+
   private
 
   def correct_user

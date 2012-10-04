@@ -29,10 +29,11 @@ class WrLog < ActiveRecord::Base
   belongs_to :receiver, class_name: "User"
   before_create :create_token_identifier
 
-  # Return a structure describing the message, indepedent of email or web page presentation
+  # Return a structure describing the message, independent of email or web page presentation
   def abstract_message
     email = Email.find(email_id)
     body = email.parts[email_part]
+    url = Rails.env.production? ? PROD_URL : DEV_URL
     if email.parts.size == email_part + 1  # is this the last part?
       if capture = body.match(/(.*)(--.*)/m)
         body = capture[1]
@@ -41,20 +42,21 @@ class WrLog < ActiveRecord::Base
 
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
+
       { body: body,
-            image: "#{PROTOCOL}://#{PROD_URL}/assets/worth_reading_button2.png",
+            image: "#{PROTOCOL}://#{url}/assets/worth_reading_button3.png",
             worth_reading: { protocol: PROTOCOL,
-                             host: (Rails.env.production? ? PROD_URL : DEV_URL),
+                             host: url,
                              id: id,
                              worth_reading: "1",
                              token_identifier: token_identifier },
             whats_this: { id: id,
                          token_identifier: token_identifier,
-                         host: Rails.env.production? ? PROD_URL : DEV_URL,
+                         host: url,
                          protocol: PROTOCOL },
             unsubscribe: { id: relationship.id,
                           token_identifier: relationship.token_identifier,
-                          host: Rails.env.production? ? PROD_URL : DEV_URL,
+                          host: url,
                           protocol: PROTOCOL },
             signature: signature
       }
@@ -63,7 +65,7 @@ class WrLog < ActiveRecord::Base
             more: { more: email_part.to_s,
                     id: id,
                     token_identifier: token_identifier,
-                    host: (Rails.env.production? ? PROD_URL : DEV_URL),
+                    host: url,
                     protocol: PROTOCOL}
       }
     end
