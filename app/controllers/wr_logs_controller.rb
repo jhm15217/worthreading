@@ -48,8 +48,7 @@ class WrLogsController < ApplicationController
       end
     elsif params[:more]
       @wr_log.action = "more"
-      @wr_log.email_part = params[:more].to_i + 1
-      @wr_log.worth_reading = Time.now
+      @wr_log.email_part = params[:more].to_i + 1 #updated_at will show last time accessed
       @wr_log.save
       UserMailer.alert_change_in_wr_log(@wr_log)
       @message = @wr_log.abstract_message

@@ -167,7 +167,7 @@ describe WrLogsController do
                         token_identifier: wr_log.token_identifier }
           wr_log.reload
           wr_log.action.should == "more"
-          wr_log.worth_reading.should_not be_nil
+          wr_log.email_part.should == 1
         end
       end
 
@@ -179,6 +179,7 @@ describe WrLogsController do
 
           wr_log.reload
           wr_log.action.should == "more"
+          wr_log.email_part.should == 1
 
           #  TODO Needs work
           # response.should have_selector("a", href: "http://worth-reading.org/show") 

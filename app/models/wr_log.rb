@@ -34,6 +34,7 @@ class WrLog < ActiveRecord::Base
     email = Email.find(email_id)
     body = email.parts[email_part]
     url = Rails.env.production? ? PROD_URL : DEV_URL
+
     if email.parts.size == email_part + 1  # is this the last part?
       if capture = body.match(/(.*)(--.*)/m)
         body = capture[1]
@@ -42,7 +43,6 @@ class WrLog < ActiveRecord::Base
 
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
-
       { body: body,
             image: "#{PROTOCOL}://#{url}/assets/worth_reading_button3.png",
             worth_reading: { protocol: PROTOCOL,
