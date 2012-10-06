@@ -52,7 +52,7 @@ def make_users(number = 20)
   puts "Creating #{number - 1} other users..."
   (number - 1).times do |n|
     name  = Faker::Name.name
-    email = "example#{n+1}@worth-reading.org"
+    email = "example#{n+1}@nonexistent.tt"
     password  = "password"
     u = User.create!(name:     name,
                      email:    email,
@@ -87,10 +87,12 @@ def make_emails(num = 20)
     n_emails = rand(2..num)
     puts "Creating #{n_emails} for User #{user.id}"
     n_emails.times do |n|
+      body =  Faker::Lorem.paragraph
       email = user.emails.create!(to: "subscribed@worth-reading.org",
                                   from: user.email, 
                                   subject: "Message  #{n}",
-                                  body: Faker::Lorem.paragraph)
+                                  body: body,
+                                  parts: [body])
 
       subscribers[0..rand(1..subscribers.count)].each do |recipient|  # How many subscribers today?
         wr_log = email.wr_logs.create(email_id: email.id, sender_id: user.id, receiver_id:recipient.id)

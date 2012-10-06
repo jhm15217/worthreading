@@ -3,18 +3,31 @@
   %br/
 
 .row
-  %table.table.table-condensed
-    %tr
-      %th Recipient
-      %th Opened
-      %th Last Read
-      %th Liked
-    - @wr_logs.each do |log|
+  -if !@email.parts || @email.parts.length == 1
+    %table.table.table-condensed
       %tr
-        %td= link_to log.receiver.name, user_path(log.receiver)
-        %td= log.opened ? log.opened.to_formatted_s(:db) : ""
-        %td= Email.find(log.email_id).parts.length == 1 ? '' : log.email_part.to_s
-        %td= log.worth_reading ? log.worth_reading.to_formatted_s(:db) : ""
+        %th Recipient
+        %th Opened
+        %th Liked
+      - @wr_logs.each do |log|
+        %tr
+          %td= link_to log.receiver.name, user_path(log.receiver)
+          %td= log.opened ? log.opened.to_formatted_s(:db) : ""
+          %td= log.worth_reading ? log.worth_reading.to_formatted_s(:db) : ""
+
+  -else
+    %table.table.table-condensed
+      %tr
+        %th Recipient
+        %th Opened
+        %th Last Read
+        %th Liked
+      - @wr_logs.each do |log|
+        %tr
+          %td= link_to log.receiver.name, user_path(log.receiver)
+          %td= log.opened ? log.opened.to_formatted_s(:db) : ""
+          %td= log.email_part.to_s
+          %td= log.worth_reading ? log.worth_reading.to_formatted_s(:db) : ""
 
 .row
   = will_paginate @wr_logs
