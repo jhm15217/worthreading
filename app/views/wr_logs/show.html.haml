@@ -25,9 +25,7 @@
       %p
         = link_to "Unsubscribe", email_unsubscribe_relationship_url(@message[:unsubscribe])
 
-    - if @message[:signature]
-      .signature
-        %p= raw(@message[:signature])
+
   -else
     Thank you for appreciating my message! It will encourage me to send you similar messages.
     - unless @message[:registered_user]

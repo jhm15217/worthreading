@@ -36,10 +36,6 @@ class WrLog < ActiveRecord::Base
     url = Rails.env.production? ? PROD_URL : DEV_URL
 
     if email.parts.size == email_part + 1  # is this the last part?
-      if capture = body.match(/(.*)(--.*)/m)
-        body = capture[1]
-        signature = capture[2]
-      end
 
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
@@ -57,8 +53,7 @@ class WrLog < ActiveRecord::Base
             unsubscribe: { id: relationship.id,
                           token_identifier: relationship.token_identifier,
                           host: url,
-                          protocol: PROTOCOL },
-            signature: signature
+                          protocol: PROTOCOL }
       }
     else
       { body: body,

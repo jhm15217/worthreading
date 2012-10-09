@@ -80,51 +80,32 @@ describe Email do
         end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
       end    
     end
-  
-    describe "Sending a more-free message" do
-      let(:body)  { %Q{More-free, signature-free message./n} }
-      before do
-        @email.body = body
-        @email.parts = [body]  
-        @email.save
-      end
-    
-      it "should render the message successfully" do
-        lambda { @email.process(user) }.should_not raise_error
-      end
-    
-      it "should have a Worth Reading link" do
-        @email.process(user)[0][0].body.encoded.should match(/Worth Reading/m)
-      end
 
-      it "should have the correct link for the Worth Reading link" do
-        @email.process(user)[0][0].body.
-          encoded.should match("wr_logs.*token_identifier=.*;worth_reading\=1")
-      end
-
-      it "should have a web beacon" do
-        @email.process(user)[0][0].body.encoded.
-          should match("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/.*/msg_opened/.*\" />")
-      end
+  describe "Sending a more-free message" do
+    let(:body)  { %Q{More-free, signature-free message./n} }
+    before do
+      @email.body = body
+      @email.parts = [body]
+      @email.save
     end
 
-    describe "email with signature" do
-      let(:body) {"Lorem Ipsum and other stuff/n"+
-              "---Forwarded Message---/n"+
-              "some stuff/n"+
-              "-- End of message --/n"+
-              "-- Joe User/n"}
-       before do  
-         @email = user.emails.create!(to: "subscribers@worth-reading.org",
-                                         from: user.email,
-                                         subject: "Lorem Ipsum", 
-                                         body: body,
-                                         parts: body.split("<more>"))
-      end
-      it "should parse out a signature correctly and insert worth reading link in appropriate place" do
-        @email.process(user)[0][0].body.encoded.
-          should match(/Forwarded Message.*<div class='signature'>/m)
-      end
+    it "should render the message successfully" do
+      lambda { @email.process(user) }.should_not raise_error
+    end
+
+    it "should have a Worth Reading link" do
+      @email.process(user)[0][0].body.encoded.should match(/Worth Reading/m)
+    end
+
+    it "should have the correct link for the Worth Reading link" do
+      @email.process(user)[0][0].body.
+          encoded.should match("wr_logs.*token_identifier=.*;worth_reading\=1")
+    end
+
+    it "should have a web beacon" do
+      @email.process(user)[0][0].body.encoded.
+          should match("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/.*/msg_opened/.*\" />")
+    end
 
 
     it "should deliver successfully" do

@@ -27,9 +27,6 @@
         %p
           = link_to "Unsubscribe", email_unsubscribe_relationship_url(@message[:unsubscribe])
 
-      - if @message[:signature]
-        .signature
-          %p= @message[:signature].html_safe
 
     .web-beacon
       %p{ style: "visibility: hidden;", id: "web-beacon" }
