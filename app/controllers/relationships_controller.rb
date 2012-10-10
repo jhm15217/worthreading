@@ -3,7 +3,7 @@ class RelationshipsController < ApplicationController
 
   def index
     @user = current_user
-    @subscribers = @user.subscribers.paginate(page: params[:page])
+    @subscribers = @user.subscribers
     @subscriber_list = @subscribers.map do |subscriber|
       {subscriber: subscriber,
         email: subscriber.email,
@@ -11,7 +11,7 @@ class RelationshipsController < ApplicationController
         sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,
       opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened IS NOT NULL").count,
       liked: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading IS NOT NULL").count } 
-    end.sort_by {|h| -h[:liked] }
+    end.sort_by {|h| -h[:liked] }.paginate(page: params[:page], per_page:30)
   end
 
   # Adds subscribers
