@@ -36,9 +36,14 @@ class User < ActiveRecord::Base
   # WrLog Associations
   has_many :sender_wr_logs, class_name: "WrLog", foreign_key: "sender_id"
 
+  @@cohort = 1
+
   def feed
   end
 
+  def new
+    self.cohort = @@cohort
+  end
   # Like Incrementor Methods
   def incr_decr_likes(user_who_likes, incr_by, decr_by)
     self.increment!(:likes, incr_by)

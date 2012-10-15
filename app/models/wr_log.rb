@@ -35,35 +35,36 @@ class WrLog < ActiveRecord::Base
               '|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?]))'
      # Courtesy of http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 
+  SERVER_URL = Rails.env.production? ? PROD_URL : DEV_URL
+
   # Return a structure describing the message, independent of email or web page presentation
   def abstract_message
     email = Email.find(email_id)
     body = email.parts[email_part]
     if !self.url and match = body.match(URL_REGEX)
       self.url = match.captures[0]
-      body.sub!(self.url, "http://worth-reading.org/follow_url/#{id}/#{token_identifier}")
+      body.sub!(self.url, "<a href=\"http://#{SERVER_URL}/wr_logs/#{id}/follow/#{token_identifier}\">#{self.url}</a>")
       update
     end
-    url = Rails.env.production? ? PROD_URL : DEV_URL
 
     if email.parts.size == email_part + 1  # is this the last part?
 
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
       { body: body,
-            image: "#{PROTOCOL}://#{url}/assets/worth_reading_button3.png",
+            image: "#{PROTOCOL}://#{SERVER_URL}/assets/worth_reading_button3.png",
             worth_reading: { protocol: PROTOCOL,
-                             host: url,
+                             host: SERVER_URL,
                              id: id,
                              worth_reading: "1",
                              token_identifier: token_identifier },
             whats_this: { id: id,
                          token_identifier: token_identifier,
-                         host: url,
+                         host: SERVER_URL,
                          protocol: PROTOCOL },
             unsubscribe: { id: relationship.id,
                           token_identifier: relationship.token_identifier,
-                          host: url,
+                          host: SERVER_URL,
                           protocol: PROTOCOL }
       }
     else
@@ -71,7 +72,7 @@ class WrLog < ActiveRecord::Base
             more: { more: email_part.to_s,
                     id: id,
                     token_identifier: token_identifier,
-                    host: url,
+                    host: SERVER_URL,
                     protocol: PROTOCOL}
       }
     end

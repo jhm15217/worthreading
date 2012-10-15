@@ -35,6 +35,7 @@ WorthReading::Application.routes.draw do
   resources :wr_logs do
     member do
       get :msg_opened
+      get :follow
     end
   end
 
@@ -58,7 +59,10 @@ WorthReading::Application.routes.draw do
   match 'wr_logs/:id/msg_opened/:token_identifier', 
     to: 'wr_logs#msg_opened',
     as: :msg_opened
-  match 'users/:id/confirm/:confirmation_token', 
+  match 'wr_logs/:id/follow/:token_identifier',
+    to: 'wr_logs#follow',
+    as: :follow
+  match 'users/:id/confirm/:confirmation_token',
     to: 'users#confirm_email', 
     as: :confirm_email
   match 'users/:id/reset_password/:confirmation_token',
@@ -67,7 +71,6 @@ WorthReading::Application.routes.draw do
   match 'emails/:id/sent_to_subscriber/:receiver_id',
         to: 'emails#emails_sent_to_subscriber',
         as: 'emails_sent_to_subscriber'
-  match 'follow_url/:id/:token_identifier', to: 'wr_logs#follow_url'
 
   # Extension Routes
   match 'chrome_extension/new', to: 'chrome_extension#new' 

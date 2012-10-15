@@ -53,13 +53,15 @@ class UserMailer < ActionMailer::Base
         when "opened"
           @alert = "opened your email"
         when "more"
-          @alert = "turned a page"
+          @alert = "turned a page in"
+        when "follow"
+          @alert = "followed a link in"
         else
           raise "Invalid action"
       end
 
       begin
-        mail(to: @sender.email, subject: "#{@recipient.email}, #{@alert}: #{@email.subject}").deliver
+        mail(to: @sender.email, subject: "#{@recipient.email} #{@alert} #{@email.subject}").deliver
       rescue Exception
         flash.now[:error] = "Could not save client"
         render :action => "new"

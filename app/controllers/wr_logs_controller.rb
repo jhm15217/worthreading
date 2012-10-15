@@ -137,8 +137,8 @@ class WrLogsController < ApplicationController
     send_file Rails.root.join("public", "images", "beacon.gif"), type: "image/gif", disposition: "inline"
   end
 
-  # GET /wr_logs/1
-  def follow_url
+  # GET /wr_logs/1/follow/:token_identifier
+  def follow
     @wr_log = WrLog.find(params[:id])
     if params[:token_identifier] != @wr_log.token_identifier
       redirect_to root_path,
@@ -146,7 +146,10 @@ class WrLogsController < ApplicationController
     end
 
     @wr_log.followed_url= Time.now
-    @wr_log.save!
+    @wr_log.action = "follow"
+    @wr_log.save
+    @wr_log.reload
+    UserMailer.alert_change_in_wr_log(@wr_log)
 
     redirect_to @wr_log.url
   end
