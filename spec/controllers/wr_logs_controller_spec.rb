@@ -386,18 +386,16 @@ describe WrLogsController do
     end
   end
 
-  describe "GET/follow_url/1/token" do
+  describe "GET/wr_logs/1/follow/token_identifier" do
+    let (:email) { FactoryGirl.create(:email) }
+    let (:sender) { FactoryGirl.create(:user) }
+    let (:receiver) { FactoryGirl.create(:user) }
     it "redirects to original url" do
-      wr_log = WrLog.create!(sender_id: 0, receiver_id: 0, email_id: 0, url: "xxx")
-      get :follow_url, {id: wr_log.id, token_identifier: wr_log.token_identifier}
+      wr_log = WrLog.create!(sender_id: sender.id, receiver_id: receiver.id, email_id: email.id, url: "xxx")
+      get :follow, {id: wr_log.id, token_identifier: wr_log.token_identifier}
       response.should redirect_to("xxx")
     end
 
-    it "redirects to the wr_logs list" do
-      wr_log = WrLog.create! valid_attributes
-      delete :destroy, {:id => wr_log.to_param}, valid_session
-      response.should redirect_to(wr_logs_url)
-    end
   end
 
 end
