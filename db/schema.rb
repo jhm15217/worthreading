@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002134758) do
+ActiveRecord::Schema.define(:version => 20121011230644) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(:version => 20121002134758) do
     t.datetime "emailed"
     t.datetime "opened"
     t.datetime "worth_reading"
+    t.string   "url"
+    t.datetime "followed_url"
   end
 
 end

@@ -188,7 +188,7 @@ class UsersController < ApplicationController
   end
 
   # POST
-  # Adds me to a user's subcriber list from a user's show page
+  # Adds me to a user's subscriber list from a user's show page
   def subscribe_me
     @user = User.find(params[:id])
     @user.add_subscriber(current_user)

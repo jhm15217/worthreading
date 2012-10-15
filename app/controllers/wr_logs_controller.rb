@@ -137,6 +137,20 @@ class WrLogsController < ApplicationController
     send_file Rails.root.join("public", "images", "beacon.gif"), type: "image/gif", disposition: "inline"
   end
 
+  # GET /wr_logs/1
+  def follow_url
+    @wr_log = WrLog.find(params[:id])
+    if params[:token_identifier] != @wr_log.token_identifier
+      redirect_to root_path,
+                  flash: { error: "I'm sorry you are not allowed to access that page"}
+    end
+
+    @wr_log.followed_url= Time.now
+    @wr_log.save!
+
+    redirect_to @wr_log.url
+  end
+
 
   #GET /by_email
   def by_email

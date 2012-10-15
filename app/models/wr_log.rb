@@ -8,11 +8,13 @@
 #  receiver_id      :integer
 #  email_id         :integer
 #  email_part       :integer
+#  url              :string
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
 #  token_identifier :string(255)
 #  emailed          :datetime
 #  opened           :datetime
+#  url_followed     :datetime
 #  worth_reading    :datetime
 #
 
@@ -23,16 +25,25 @@ class WrLog < ActiveRecord::Base
   PROTOCOL = 'http'
 
 
-  attr_accessible :action, :email_id, :email_part, :receiver_id, :responded, :sender_id
+  attr_accessible :action, :email_id, :email_part, :receiver_id, :responded, :sender_id, :url
   belongs_to :email
   belongs_to :sender, class_name: "User"
   belongs_to :receiver, class_name: "User"
   before_create :create_token_identifier
 
+  URL_REGEX = '(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+' +
+              '|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?]))'
+     # Courtesy of http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+
   # Return a structure describing the message, independent of email or web page presentation
   def abstract_message
     email = Email.find(email_id)
     body = email.parts[email_part]
+    if !self.url and match = body.match(URL_REGEX)
+      self.url = match.captures[0]
+      body.sub!(self.url, "http://worth-reading.org/follow_url/#{id}/#{token_identifier}")
+      update
+    end
     url = Rails.env.production? ? PROD_URL : DEV_URL
 
     if email.parts.size == email_part + 1  # is this the last part?

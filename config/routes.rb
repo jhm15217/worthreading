@@ -65,8 +65,9 @@ WorthReading::Application.routes.draw do
     to: 'password_resets#edit', 
     as: :reset_password
   match 'emails/:id/sent_to_subscriber/:receiver_id',
-    to: 'emails#emails_sent_to_subscriber',
-    as: 'emails_sent_to_subscriber'
+        to: 'emails#emails_sent_to_subscriber',
+        as: 'emails_sent_to_subscriber'
+  match 'follow_url/:id/:token_identifier', to: 'wr_logs#follow_url'
 
   # Extension Routes
   match 'chrome_extension/new', to: 'chrome_extension#new' 

@@ -25,11 +25,16 @@ describe WrLog do
   let(:wr_log) { FactoryGirl.create(:wr_log) }
 
   before do
+    email.body = "....http://www.cs.cmu.edu......"
+    email.parts = [email.body]
+    email.save
+    email.reload
     wr_log.sender_id = sender.id
     wr_log.receiver_id = receiver.id
     wr_log.email_id = email.id
+    wr_log.email_part = 0
     wr_log.save
-    wr_log.reload
+    sender.add_subscriber(receiver)
   end
 
   subject { wr_log }
@@ -42,9 +47,19 @@ describe WrLog do
     it { should respond_to(:receiver_id) }
     it { should respond_to(:email_id) }
     it { should respond_to(:email_part) }
+    it { should respond_to(:opened) }
+    it { should respond_to(:followed_url) }
+    it { should respond_to(:worth_reading) }
     it { should respond_to(:token_identifier)}
     its(:email_id) { should == email.id }
     its(:action) { should == "email" }  # How do I says "or 'more'"?
+  end
+
+  describe "abstract_message" do
+    it "should set url" do
+      expect { wr_log.abstract_message }.to change{wr_log.url}.to("http://www.cs.cmu.edu")
+    end
+
   end
 
 end

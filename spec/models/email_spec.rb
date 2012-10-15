@@ -82,7 +82,7 @@ describe Email do
     end
 
   describe "Sending a more-free message" do
-    let(:body)  { %Q{More-free, signature-free message./n} }
+    let(:body)  { %Q{More-free message./n} }
     before do
       @email.body = body
       @email.parts = [body]
@@ -121,6 +121,7 @@ describe Email do
     let(:email) { FactoryGirl.create(:email) }
 
     before do
+      body = %Q{More-free message./n}
       @email = user.emails.create!(to: "subscribers@worth-reading.org",
                                       from: user1.email,
                                       subject: "Lorem Ipsum", 

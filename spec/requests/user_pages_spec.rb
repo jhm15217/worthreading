@@ -124,13 +124,13 @@ describe "User pages" do
 
         it "should decrement the other user's subscribers count" do
           expect do
-            click_button "Unsubscribe to this person"
+            click_button "Unsubscribe from this person"
           end.to change(other_user.subscribers, :count).by(-1)
         end
 
         it "should increment the user's subscribed_users count" do
           expect do
-            click_button "Unsubscribe to this person"
+            click_button "Unsubscribe from this person"
           end.to change(user.subscribed_users, :count).by(-1)
         end
       end
