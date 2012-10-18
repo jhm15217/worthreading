@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011230644) do
+ActiveRecord::Schema.define(:version => 20121018034603) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(:version => 20121011230644) do
     t.datetime "first_login_at"
     t.boolean  "email_notify"
     t.integer  "cohort"
-    t.boolean  "forward"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token"
@@ -85,7 +84,7 @@ ActiveRecord::Schema.define(:version => 20121011230644) do
     t.string   "token_identifier"
     t.datetime "emailed"
     t.datetime "opened"
-    t.datetime "worth_reading"
+    t.datetime "forwarded"
     t.string   "url"
     t.datetime "followed_url"
   end

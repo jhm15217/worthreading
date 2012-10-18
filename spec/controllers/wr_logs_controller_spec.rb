@@ -43,7 +43,7 @@ describe WrLogsController do
   end
 
   # get went to http://worth-reading/wr_log/id
-  describe "GET show with :worth_reading param" do
+  describe "GET show with :forward param" do
     let (:email) { FactoryGirl.create(:email) }
     let (:sender) { FactoryGirl.create(:user) }
     let (:receiver) { FactoryGirl.create(:user) }
@@ -58,43 +58,31 @@ describe WrLogsController do
     end
 
     it "assigns the requested wr_log as @wr_log" do
-      get :show, {:id => wr_log.id, worth_reading: "1", 
+      get :show, {:id => wr_log.id, forward: "1",
         token_identifier: wr_log.token_identifier }, valid_session
       assigns(:wr_log).should eq(wr_log)
     end
 
 
     describe "Receiver following Worth Reading link" do
-      it "updates the requested wr_log and says Tahnk you" do
-        get :show, {  id: wr_log.id, worth_reading: "1",
+      it "updates the requested wr_log" do
+        get :show, {  id: wr_log.id, forward: "1",
                       token_identifier: wr_log.token_identifier }
         # responded is set to true
         wr_log.reload
-        wr_log.action.should == "worth reading"
-        wr_log.worth_reading.should_not be_nil
+        wr_log.action.should == "forward"
+        wr_log.forwarded.should_not be_nil
 
-        # We render a page explaining what the worth reading button means and
-        # inviting him to register
-        #
-
-        ##
-        #
-        #
-        #
-        #
-        #
-        #
-        #response.should =~ /Thank you/
       end
 
       context "and receiver is registered" do
         before { receiver.add_subscriber!(sender) }
         it "updates the requested wr_log" do
-          get :show, {  id: wr_log.id, worth_reading: "1",
+          get :show, {  id: wr_log.id, forward: "1",
                         token_identifier: wr_log.token_identifier }
 
           wr_log.reload
-          wr_log.action.should == "worth reading"
+          wr_log.action.should == "forward"
 
           #  TODO Needs work
           # response.should have_selector("a", href: "http://worth-reading.org/registered") 
@@ -104,18 +92,15 @@ describe WrLogsController do
           if sender.email_notify?
             sender.toggle!(:email_notify)
           end
-          expect { get :show, {  id: wr_log.id, worth_reading: "1",
-                          token_identifier: wr_log.token_identifier } }.
-            to change(ActionMailer::Base.deliveries, :size).by(1)
-            # to change(Delayed::Job, :count).by(1)
+          get :show, {  id: wr_log.id, forward: "1",
+                          token_identifier: wr_log.token_identifier }
+          response.should have_selector("form",  action: "/forward",  method: "post")
+
 
         end
 
-        it "should notify sender that the receiver liked their email" do
-          if receiver.forward?
-            receiver.toggle!(:forward)  # make false
-          end
-          expect { get :show, {  id: wr_log.id, worth_reading: "1",
+        it "should notify sender that the receiver forwarded their email" do
+          expect { get :show, {  id: wr_log.id, forward: "1",
                           token_identifier: wr_log.token_identifier } }.
             to change(ActionMailer::Base.deliveries, :size).by(1)
             # to change(Delayed::Job, :count).by(1)
@@ -123,8 +108,7 @@ describe WrLogsController do
 
         it "should not send any email if senders email_notify and receivers forward boxes are not checked" do
           sender.toggle!(:email_notify)
-          receiver.toggle!(:forward)
-          expect { get :show, {  id: wr_log.id, worth_reading: "1",
+          expect { get :show, {  id: wr_log.id, forward: "1",
                           token_identifier: wr_log.token_identifier } }.
             to change(ActionMailer::Base.deliveries, :size).by(0)
             # to change(Delayed::Job, :count).by(0)
@@ -347,7 +331,7 @@ describe WrLogsController do
         # We render a page containing "Bleh bleh bleh". <href: ....> where the button is another more put with value
         # of 1 and the command "more"
 
-        response.body.should match("wr_logs/#{wr_log.id}.*worth_reading")
+        response.body.should match("wr_logs/#{wr_log.id}.*forward")
       end
     end
 

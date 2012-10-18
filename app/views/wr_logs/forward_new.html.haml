@@ -1,0 +1,26 @@
+.row
+  .span12
+    %h1 Forward Message
+    %br/
+
+.row
+  .span6.offset3
+    = form_tag('/forward') do
+      %b To:
+      %br/
+      = text_area_tag 'to', @to, class: "span6", rows: "1"
+      %br/
+
+      %b Subject:
+      %br/
+      = text_field_tag 'subject', @subject, class: "span6"
+      %br/
+
+      %b Body:
+      %br/
+      = @body
+      %br/
+      = submit_tag 'Send', class: "btn btn-primary"
+      %br
+      %input{:name =>  'email_id', :type => 'hidden', :value =>  @email.id.to_s}
+

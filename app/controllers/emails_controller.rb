@@ -23,7 +23,7 @@ class EmailsController < ApplicationController
 
   # GET /emails/1
   # NOTE Need to fix up user access 
-  # NOTE Need to insert worth-reading button at the bottom of last part
+  # NOTE Need to insert forward button at the bottom of last part
   def show
     @email = Email.find(params[:id])
     if params[:more] == "1" 
@@ -49,7 +49,7 @@ class EmailsController < ApplicationController
   # heroku app at app_name.herokuapp.com/emails
   # POST /emails
   def create
-    if from = email_address_parts(params['from']) and @user = find_or_register(from[:email])
+    if from = email_address_parts(params['from']) and @user = Email.find_or_register(from[:email])
       to_list = email_address_list(params['Delivered-To']).collect do |address|
         if m = address[:email].match(/(.*)\+(.*)@/) #It's an individual email address
           m.captures[0] + '@' + m.captures[1]
@@ -89,25 +89,7 @@ class EmailsController < ApplicationController
   # GET /compose_new
   # opens compose email window
   def compose_new
-    puts "in compose"
     render 'chrome_extension/new'
-  end
-
-  # POST
-  def compose
-    @user = current_user
-    @email = @user.emails.create(
-        from: @user.email,
-        to: params[:to],
-        subject: params[:subject],
-        body: params['body'].gsub("\n", "\n<br />"),
-        parts: params['body'].gsub("\n", "\n<br />").split(/&lt;more&gt;|<more>/)
-    )
-    @email.save
-    @to = @subject = @body = ''
-    @email.deliver_all(@email.process(@user))
-    redirect_to root_path, flash: { success: "Email successfully sent" }
-
   end
 
   # Brings up a page of the emails sent to a particular subscriber by a sender
@@ -125,7 +107,7 @@ class EmailsController < ApplicationController
     @email = Email.find(params[:id])
     redirect_to root_path unless current_user?(@email.user) # Restrict to only current user
 
-    @wr_logs = @email.wr_logs.select{|w| w.opened || w.email_part > 0 || w.worth_reading}.paginate(page: params[:page], per_page: 25)
+    @wr_logs = @email.wr_logs.select{|w| w.opened || w.email_part > 0 || w.forwarded}.paginate(page: params[:page], per_page: 25)
   end
 
   private

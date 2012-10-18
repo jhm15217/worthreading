@@ -10,8 +10,8 @@ class RelationshipsController < ApplicationController
         id: subscriber.id,
         sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,
       opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened IS NOT NULL").count,
-      liked: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and worth_reading IS NOT NULL").count } 
-    end.sort_by {|h| -h[:liked] }.paginate(page: params[:page], per_page:30)
+      forwarded: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and forwarded IS NOT NULL").count }
+    end.sort_by {|h| -h[:forwarded] }.paginate(page: params[:page], per_page:30)
   end
 
   # Adds subscribers
@@ -19,7 +19,7 @@ class RelationshipsController < ApplicationController
   def create
     failed_addresses = ""
     email_address_list(params[:email_addresses]).each do |user_parts|
-      @user = find_or_register(user_parts[:email])
+      @user = Email.find_or_register(user_parts[:email])
       if !@user
         failed_addresses = failed_addresses + '"' + user_parts[:name] + '"<' + user_parts[:email] + '>, '
       else
@@ -53,7 +53,7 @@ class RelationshipsController < ApplicationController
   def add_sources
     failed_addresses = ""
     email_address_list(params[:email_addresses]).each do |user_parts|
-      @user = find_or_register(user_parts[:email])
+      @user = Email.find_or_register(user_parts[:email])
       if !@user
         failed_addresses = failed_addresses + '"' + user_parts[:name] + '"<' + user_parts[:email] + '>, '
       else

@@ -20,8 +20,8 @@ describe Email do
   let(:other_user) { FactoryGirl.create(:user) }
   let(:wr_log) { FactoryGirl.create(:wr_log) }
 
-  describe "signature-free, more-free email"
-    let (:body) { "No signature, no more" }
+  describe "more-free email"
+    let (:body) { "no more" }
     before do  
       user.add_subscriber!(other_user)
       @email = user.emails.build(to: "subscribers@worth-reading.org",
@@ -93,13 +93,13 @@ describe Email do
       lambda { @email.process(user) }.should_not raise_error
     end
 
-    it "should have a Worth Reading link" do
-      @email.process(user)[0][0].body.encoded.should match(/Worth Reading/m)
+    it "should have a Forward Email link" do
+      @email.process(user)[0][0].body.encoded.should match(/Email/m)
     end
 
-    it "should have the correct link for the Worth Reading link" do
+    it "should have the correct link for the forwarding link" do
       @email.process(user)[0][0].body.
-          encoded.should match("wr_logs.*token_identifier=.*;worth_reading\=1")
+          encoded.should match("wr_logs.*forward=1.*token_identifier=.*")
     end
 
     it "should have a web beacon" do

@@ -18,7 +18,7 @@ class WrLogsController < ApplicationController
 
   # GET /wr_logs/1
   # GET /wr_logs/1.json
-  # Response page for clicking on the worth reading button
+  # Response page for clicking on the forward button
   def show
     @wr_log = WrLog.find(params[:id])
     @email = Email.find(@wr_log.email_id)
@@ -31,21 +31,16 @@ class WrLogsController < ApplicationController
       end
 
 
-    if params[:worth_reading]
-      @wr_log.action = "worth reading"
-      @wr_log.worth_reading = Time.now
+    if params[:forward]
+      @wr_log.action = "forward"
+      @wr_log.forwarded = Time.now
       @wr_log.save
       UserMailer.alert_change_in_wr_log(@wr_log)
-      if @receiver.forward?
-        @receiver.subscribers.each do |subscriber|
-          UserMailer.send_msg(@receiver, subscriber, @email).deliver
-        end
-      end
-      @message = { registered_user: @receiver.confirmed? }
-      respond_to do |format|
-        format.html # show.html.haml
-        format.json { render json: @wr_log }
-      end
+      @to = @receiver.subscribers.map{|id| User.find(id)}.
+          map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', ')
+      @subject = @email.subject
+      @body = @email.body
+      render 'forward_new'
     elsif params[:more]
       @wr_log.action = "more"
       @wr_log.email_part = params[:more].to_i + 1 #updated_at will show last time accessed
@@ -59,6 +54,15 @@ class WrLogsController < ApplicationController
     else
       redirect_to root_path, flash: { error: "Unknown request" }
     end
+  end
+
+  #POST /wr_logs/forward
+  def forward
+    @email = Email.create!(to: params[:to], from: current_user.email, subject: params[:subject],
+                           body: Email.find(params[:email_id]).body,
+                           parts: Email.find(params[:email_id]).body.split(/&lt;more&gt;|<more>/))
+    @email.deliver_all(@email.process(current_user))
+    redirect_to root_path, flash: { success: "Email successfully sent" }
   end
 
   # GET /wr_logs/new
@@ -162,25 +166,25 @@ class WrLogsController < ApplicationController
   #GET /by_sender
   def by_sender
     lines = WrLog.select('sender_id, count(sender_id) as sender_count,
-                     count(opened) as opened_count, count(worth_reading) as
+                     count(opened) as opened_count, count(forwarded) as
                      liked_count').group('sender_id')
     @percents = Array.new(lines.length){|i| { name: User.find(lines[i][:sender_id]).name,
                                              sender_count: lines[i][:sender_count],
                                              opened_percent: 100.0*(lines[i][:opened_count].to_f)/lines[i][:sender_count].to_f,
-                                             liked_percent: 100.0*(lines[i][:liked_count].to_f)/lines[i][:sender_count].to_f } }
-    @percents.sort!{|x,y| -(x[:liked_percent] <=> y[:liked_percent])}    
+                                             forwarded_percent: 100.0*(lines[i][:liked_count].to_f)/lines[i][:sender_count].to_f } }
+    @percents.sort!{|x,y| -(x[:forwarded_percent] <=> y[:forwarded_percent])}
   end
 
   #GET /by_receiver
   def by_receiver
     lines = WrLog.select('receiver_id, count(receiver_id) as receiver_count,
-                     count(opened) as opened_count, count(worth_reading) as
+                     count(opened) as opened_count, count(forwarded) as
                      liked_count').group('receiver_id')
     @percents = Array.new(lines.length){|i| { name: User.find(lines[i][:receiver_id]).name,
                                              receiver_count: lines[i][:receiver_count],
                                              opened_percent: 100.0*(lines[i][:opened_count].to_f)/lines[i][:receiver_count].to_f,
-                                             liked_percent: 100.0*(lines[i][:liked_count].to_f)/lines[i][:receiver_count].to_f } }
-    @percents.sort!{|x,y| -(x[:liked_percent] <=> y[:liked_percent])}    
+                                             forwarded_percent: 100.0*(lines[i][:liked_count].to_f)/lines[i][:receiver_count].to_f } }
+    @percents.sort!{|x,y| -(x[:forwarded_percent] <=> y[:forwarded_percent])}
   end
 
   private

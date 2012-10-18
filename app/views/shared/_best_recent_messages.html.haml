@@ -3,10 +3,10 @@
   %tr
     %th Name
     %th Subject
-    %th Liked
+    %th Forwarded
   - best_recent_emails.each do |line|
     %tr
       %td= link_to User.find(line.sender_id).name, user_path(User.find(line.sender_id))
       %td= link_to Email.find(line.email_id).subject.shorten, email_path(line.email_id)
-      %td= line.liked
+      %td= line.forwarded
 

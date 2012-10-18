@@ -11,7 +11,6 @@
 #  remember_token         :string(255)
 #  admin                  :boolean         default(FALSE)
 #  email_notify           :boolean         default(TRUE)
-#  forward                :boolean         default(TRUE)
 #  cohort                 :integer         default(0)
 #  likes                  :integer
 #  confirmed              :boolean         default(FALSE)
@@ -21,7 +20,7 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :name, :email, :password, :password_confirmation, :email_notify, :forward
+  attr_accessible :name, :email, :password, :password_confirmation, :email_notify
   has_secure_password
   has_many :emails, dependent: :destroy
 
@@ -36,14 +35,16 @@ class User < ActiveRecord::Base
   # WrLog Associations
   has_many :sender_wr_logs, class_name: "WrLog", foreign_key: "sender_id"
 
-  @@cohort = 1
+  COHORT = 1
 
   def feed
   end
 
-  def new
-    self.cohort = @@cohort
+  def initialize(attributes = nil, options = {})
+    super(attributes, options)
+    self.cohort = COHORT
   end
+
   # Like Incrementor Methods
   def incr_decr_likes(user_who_likes, incr_by, decr_by)
     self.increment!(:likes, incr_by)

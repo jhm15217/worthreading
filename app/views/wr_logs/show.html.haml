@@ -8,27 +8,15 @@
     .more-button
       %p
         = link_to "Next Page", wr_log_path(@message[:more])
-  -elsif @message[:worth_reading]
+  -elsif @message[:forward]
     .msg-body
       %p= raw(@message[:body])
     .worth-reading-link
       %p
-        = link_to image_tag(@message[:image], alt: "Worth Reading", 
-          title: "Worth Reading", 
-          width: "173px", 
-          height: "56px"),
-          wr_log_path(@message[:worth_reading])
-    .whats-this-link
-      = link_to "What's this?", whats_this_path(@message[:whats_this] )
-
-    .unsubscribe-link
-      %p
+        = link_to "Forward this Email to Friends", wr_log_url(@message[:forward])
         = link_to "Unsubscribe", email_unsubscribe_relationship_url(@message[:unsubscribe])
 
-
   -else
-    Thank you for appreciating my message! It will encourage me to send you similar messages.
-    - unless @message[:registered_user]
-      %p I am using a service called #{link_to "Worth Reading", signup_path } to help me know who likes the messages that I send.
+    %p Sorry, there has been an error.
     %br/
-    %p You can close this window now.
+    %p Just close this window and we'll pretend this never happened. :-)

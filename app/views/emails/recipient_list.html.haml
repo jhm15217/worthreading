@@ -11,7 +11,7 @@
         %th Last Read
       -if @wr_logs.first && @wr_logs.first.url
         %th Followed url
-      %th Liked
+      %th Forwarded
     - @wr_logs.each do |log|
       %tr
         %td= link_to log.receiver.name, user_path(log.receiver)
@@ -20,7 +20,7 @@
           %td= log.email_part.to_s
         -if @wr_logs.first && @wr_logs.first.url
           %td= log.followed_url ? log.followed_url.to_formatted_s(:db) : ""
-        %td= log.worth_reading ? log.worth_reading.to_formatted_s(:db) : ""
+        %td= log.worth_reading ? log.forwarded.to_formatted_s(:db) : ""
 
 
 .row

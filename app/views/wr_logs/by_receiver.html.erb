@@ -6,8 +6,8 @@
   <tr>
     <th>Receiver</th>
     <th>Message Count</th>
-    <th>% opened</th>
-    <th>% liked</th>
+    <th>%opened</th>
+    <th>%forwarded</th>
   </tr>
 
 
@@ -16,7 +16,7 @@
     <td><%= percent[:name] %></td>
     <td><%= percent[:receiver_count] %></td>
     <td><%= percent[:opened_percent].round %></td>
-    <td><%= percent[:liked_percent].round %></td>
+    <td><%= percent[:forwarded_percent].round %></td>
     <td></td>
   </tr>
 <% end %>

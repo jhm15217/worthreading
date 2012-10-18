@@ -13,7 +13,7 @@
 #  token_identifier :string(255)
 #  emailed          :datetime
 #  opened           :datetime
-#  worth_reading    :datetime
+#  forward    :datetime
 #
 
 require 'spec_helper'
@@ -49,7 +49,7 @@ describe WrLog do
     it { should respond_to(:email_part) }
     it { should respond_to(:opened) }
     it { should respond_to(:followed_url) }
-    it { should respond_to(:worth_reading) }
+    it { should respond_to(:forwarded) }
     it { should respond_to(:token_identifier)}
     its(:email_id) { should == email.id }
     its(:action) { should == "email" }  # How do I says "or 'more'"?

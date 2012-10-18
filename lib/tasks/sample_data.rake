@@ -45,8 +45,7 @@ def make_users(number = 20)
                        email:    "admin@email.com",
                        password: "foobar",
                        password_confirmation: "foobar",
-                       email_notify: false,
-                       forward: true)
+                       email_notify: false)
   admin.toggle!(:confirmed)
   admin.toggle!(:admin)
   puts "Creating #{number - 1} other users..."
@@ -58,8 +57,7 @@ def make_users(number = 20)
                      email:    email,
                      password: password,
                      password_confirmation: password,
-                     email_notify: true,
-                     forward: true )
+                     email_notify: true)
     u.toggle!(:confirmed)
     u.likes = rand(25..200) and u.save
   end
@@ -102,11 +100,11 @@ def make_emails(num = 20)
           wr_log.opened = wr_log.emailed + rand(0..3)
         end
 
-        if (rand(0..1.0) > 0.60)  # Did he like it ?
+        if (rand(0..1.0) > 0.60)  # Did he forward it ?
           if wr_log.opened  # Did he enable graphics?
-            wr_log.worth_reading = wr_log.opened + rand(0..5)
+            wr_log.forwarded = wr_log.opened + rand(0..5)
           else
-            wr_log.worth_reading = wr_log.emailed + rand(0..3)
+            wr_log.forwarded = wr_log.emailed + rand(0..3)
           end         
         end
         wr_log.save        

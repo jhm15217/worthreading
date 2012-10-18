@@ -6,7 +6,7 @@
     before(:each) do
       @message  = { body: "yyy",
         image: "image url",
-        worth_reading: "worth_reading url",
+        forward: "forward url",
         whats_this: "what's this url",
         unsubscribe: "unsubscribe url",
       }
@@ -14,7 +14,7 @@
 
      it "renders attributes in message" do
        render
-       rendered.should match(/yyy.*worth_reading%20url.*image url.*what's%20this%20url.*unsubscribe%20url/m)
+       rendered.should match(/yyy.*forward%20url.*unsubscribe%20url/m)
      end
   end
 

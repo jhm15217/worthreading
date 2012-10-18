@@ -25,8 +25,12 @@ class Email < ActiveRecord::Base
     email.to = to.downcase
   }
 
-  def find_or_register(email_address)
-     User.where(email: email_address.downcase).first_or_create!(name:"Unknown",password:"Unknown", password_confirmation:"Unknown", email_notify: true, forward: true)
+  def self.find_or_register(email_address)
+     User.where(email: email_address.downcase).
+         first_or_create!(name:"Unknown",
+                          password:"Unknown",
+                          password_confirmation:"Unknown",
+                          email_notify: true)
    rescue
      nil
   end
@@ -51,7 +55,7 @@ class Email < ActiveRecord::Base
       elsif address[:email] == 'notifications@worth-reading.org'  # log this somehow
         # ignore this address to avoid forwarding loops
       else # It's an individual
-         UserMailer.send_msg(sender, find_or_register(address[:email]), self)
+         UserMailer.send_msg(sender, Email.find_or_register(address[:email]), self)
       end
     end
   end

@@ -48,8 +48,8 @@ class UserMailer < ActionMailer::Base
 
     if @sender[:email_notify]
       case @wr_log.action
-        when "worth reading"
-          @alert = "liked your email"
+        when "forward"
+          @alert = "forwarded your email"
         when "opened"
           @alert = "opened your email"
         when "more"

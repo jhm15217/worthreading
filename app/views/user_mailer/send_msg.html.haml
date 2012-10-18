@@ -16,15 +16,7 @@
           %p= @message[:body].html_safe
       .worth-reading-link
         %p
-          = link_to image_tag(@message[:image], alt: "Worth Reading",
-            title: "Worth Reading",
-            width: "173px",
-            height: "56px"),
-            wr_log_url(@message[:worth_reading])
-          = link_to "What's this?", whats_this_url(@message[:whats_this])
-
-      .unsubscribe-link
-        %p
+          = link_to "Forward this Email to Friends", wr_log_url(@message[:forward])
           = link_to "Unsubscribe", email_unsubscribe_relationship_url(@message[:unsubscribe])
 
 

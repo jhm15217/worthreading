@@ -6,7 +6,6 @@ FactoryGirl.define do
     password_confirmation "foobar"
     confirmed true
     email_notify true
-    forward true
     first_login_at Time.now
 
     factory :admin do

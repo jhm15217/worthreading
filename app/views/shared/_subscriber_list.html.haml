@@ -19,14 +19,14 @@
         %th Name
         %th Sent
         %th Opened
-        %th Liked
+        %th Forwarded
         %th
       - @subscriber_list.each do |item|
         %tr
           %td= link_to item[:subscriber].name, user_path(item[:subscriber])
           %td= item[:sent]
           %td= item[:opened]
-          %td= item[:liked]
+          %td= item[:forwarded]
           %td= link_to 'Delete', 
             relationship_path(@user.relationships.find_by_subscriber_id(item[:id])),
             method: :delete,

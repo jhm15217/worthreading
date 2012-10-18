@@ -7,10 +7,5 @@ module UsersHelper
     gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
     image_tag(gravatar_url, alt: "Profile pic", class: "gravatar")
   end
-  
-  def find_or_register(email_address)
-     User.where(email: email_address.downcase).first_or_create!(name:"Unknown",password:"Unknown", password_confirmation:"Unknown", email_notify: true, forward: true)
-   rescue
-     nil
-  end
+
 end

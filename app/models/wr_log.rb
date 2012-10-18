@@ -15,7 +15,7 @@
 #  emailed          :datetime
 #  opened           :datetime
 #  url_followed     :datetime
-#  worth_reading    :datetime
+#  forward    :datetime
 #
 
 class WrLog < ActiveRecord::Base
@@ -52,11 +52,10 @@ class WrLog < ActiveRecord::Base
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
       { body: body,
-            image: "#{PROTOCOL}://#{SERVER_URL}/assets/worth_reading_button3.png",
-            worth_reading: { protocol: PROTOCOL,
+            forward: { protocol: PROTOCOL,
                              host: SERVER_URL,
                              id: id,
-                             worth_reading: "1",
+                             forward: "1",
                              token_identifier: token_identifier },
             whats_this: { id: id,
                          token_identifier: token_identifier,
