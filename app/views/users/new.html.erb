@@ -2,12 +2,16 @@
 <h1>Sign up</h1>
 
 <div class="row">
+
   <div class="span6 offset3">
     <%= form_for(@user) do |f| %>
-      <%= render 'fields', object: f.object, f:f %>
-      <%= f.label :email_notify, "Notify me of events by email" %>
-      <%= f.check_box :email_notify, {checked: true } %>
-      <%= f.label :email_notify, "Forward messages I like to my subscribers" %>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+
+        <%= f.label :email %>
+        <%= f.text_field :email %>
+
+        <%= render 'fields', object: f.object, f:f %>
       <p><%= f.submit "Create my account", class: "btn btn-large btn-primary" %></p>
     <% end %>
   </div>
