@@ -159,7 +159,8 @@ describe "User pages" do
         before { click_button submit }
         it { should have_selector('title', text: 'Sign up') }
         it { should have_content('error') }
-      end    end
+      end
+    end
 
     describe "with valid information" do
       let(:name) { "Example User" }

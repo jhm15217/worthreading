@@ -20,7 +20,7 @@
           %td= log.email_part.to_s
         -if @wr_logs.first && @wr_logs.first.url
           %td= log.followed_url ? log.followed_url.to_formatted_s(:db) : ""
-        %td= log.worth_reading ? log.forwarded.to_formatted_s(:db) : ""
+        %td= log.forwarded ? log.forwarded.to_formatted_s(:db) : ""
 
 
 .row

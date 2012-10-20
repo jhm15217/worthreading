@@ -15,7 +15,7 @@
 #  emailed          :datetime
 #  opened           :datetime
 #  url_followed     :datetime
-#  forward    :datetime
+#  forwarded        :datetime
 #
 
 class WrLog < ActiveRecord::Base
@@ -25,7 +25,7 @@ class WrLog < ActiveRecord::Base
   PROTOCOL = 'http'
 
 
-  attr_accessible :action, :email_id, :email_part, :receiver_id, :responded, :sender_id, :url
+  attr_accessible :action, :email_id, :email_part, :receiver_id, :sender_id, :url
   belongs_to :email
   belongs_to :sender, class_name: "User"
   belongs_to :receiver, class_name: "User"
