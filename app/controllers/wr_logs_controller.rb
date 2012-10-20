@@ -58,7 +58,8 @@ class WrLogsController < ApplicationController
 
   #POST /wr_logs/forward
   def forward
-    @email = Email.create!(to: params[:to], from: current_user.email, subject: params[:subject],
+    sender = User.find(receiver.id)
+    @email = Email.create!(to: params[:to], from: '"#{sender.name}"<#{sender.email}>', subject: params[:subject],
                            body: Email.find(params[:email_id]).body,
                            parts: Email.find(params[:email_id]).body.split(/&lt;more&gt;|<more>/))
     @email.deliver_all(@email.process(current_user))
