@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def google_analytics_js
-    '<script type="text/javascript">
+    "<script type=\"text/javascript\">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-35725991-1']);
       _gaq.push(['_trackPageview']);
@@ -22,6 +22,6 @@ module ApplicationHelper
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
-    </script>'
+    </script>"
   end
 end
