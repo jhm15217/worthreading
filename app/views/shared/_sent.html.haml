@@ -8,6 +8,7 @@
         %th Subject
         %th Sent
         %th Opened
+        %th Followed URL
         %th Forwarded
       - @emails.each do |email|
         %tr
@@ -15,6 +16,7 @@
           %td= link_to email.subject.shorten, user_email_path(@user, email)
           %td= link_to WrLog.where("email_id = #{email.id}").count, recipient_list_email_path(email.id)
           %td= WrLog.where("opened IS NOT NULL and email_id = #{email.id}").count
+          %td= WrLog.where("followed_url IS NOT NULL and email_id = #{email.id}").count
           %td= WrLog.where("forwarded IS NOT NULL and email_id = #{email.id}").count
     = will_paginate @emails, inner_window: 1 
   - else
