@@ -1,34 +1,31 @@
-.row
-  .span6
-    - if signed_in?
+- if signed_in?
+  .row
+    .span6
       - provide(:s_or_r, "Sent")
-
       = render 'shared/sent'
-
       - if current_user.first_login_at && current_user.first_login_at > 15.seconds.ago
         = render 'shared/first_time_tutorial'
+    .span6
+      =render 'shared/best_recent_messages'
+- else
+  .hero-unit
+    %h2 Welcome to Worth Reading
+    %p
+      This service allows you to send or forward emails to a list of people.
+    %ul
+      %li
+        %p Each one gets an individual message.
+      %li
+        %p You'll be notified when they open it.
+      %li
+        %p You can track their progress through it.
+      %li
+        %p You'll be notified when they follow a link.
+      %li
+        %p You' be notified when they forward the message.
+    %br/
+    %p.center
+      = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
 
-    - else
-      .hero-unit
-        %h2 Welcome to Worth Reading
-        %p
-          When you send the same message to several people would you like to:
-        %ul
-          %li 
-            %p send individual messages to each of them?
-          %li 
-            %p discover when they open the message?
-          %li 
-            %p discover if they like the message? 
-          %li 
-            %p support their forwarding it to others? 
-        %p
-          Then sign up for Worth Reading.
-        %br/
-        %p.center
-          = link_to 'Sign up', new_user_path, class: 'btn btn-large btn-primary'
 
-  .span6
-    =render 'shared/best_recent_messages'
-.row
 

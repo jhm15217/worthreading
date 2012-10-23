@@ -10,5 +10,5 @@
       - sender = User.find_by_email(email.from)
       %td= link_to sender.name, user_path(sender)
       %td= link_to email.subject.shorten, email_path(email)
-      %td= line.forwarded
+      %td= line.liked
 
