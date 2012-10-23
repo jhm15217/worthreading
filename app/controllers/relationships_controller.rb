@@ -9,9 +9,11 @@ class RelationshipsController < ApplicationController
         email: subscriber.email,
         id: subscriber.id,
         sent: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id}").count,
-      opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened IS NOT NULL").count,
-      forwarded: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and forwarded IS NOT NULL").count }
-    end.sort_by {|h| -h[:forwarded] }.paginate(page: params[:page], per_page:30)
+        opened: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and opened IS NOT NULL").count,
+        followed_url: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and followed_url IS NOT NULL").count,
+        forwarded: WrLog.where("sender_id = #{@user.id} and receiver_id = #{subscriber.id} and forwarded IS NOT NULL").count }
+    end.sort {|a,b| 4 * (b[:forwarded]<=>a[:forwarded]) + 2 * (b[:followed_url]<=>a[:followed_url]) + b[:opened]<=>a[:opened]  }
+       .paginate(page: params[:page], per_page:30)
   end
 
   # Adds subscribers
