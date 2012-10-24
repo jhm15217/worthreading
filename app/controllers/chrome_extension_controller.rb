@@ -10,6 +10,7 @@ class ChromeExtensionController < ApplicationController
     @user = current_user
     @to_list = @user.subscribers.map{|id| User.find(id)}.
         map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', ')
+    @text = "I appreciated this message and think you might, too."
     if params[:text]
       @text = URI.unescape(params[:text]) unless URI.unescape(params[:text]).blank?
       @link = params[:link]
