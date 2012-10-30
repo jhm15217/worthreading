@@ -58,7 +58,7 @@ class WrLogsController < ApplicationController
 
   #POST /wr_logs/forward
   def forward
-    sender = User.find(Wr_Log.find(params[:wr_log_id]).receiver_id)
+    sender = User.find(WrLog.find(params[:wr_log_id]).receiver_id)
     @email = Email.create!(to: params[:to], from: '"#{sender.name}"<#{sender.email}>', subject: params[:subject],
                            body: Email.find(params[:email_id]).body,
                            parts: Email.find(params[:email_id]).body.split(/&lt;more&gt;|<more>/))
