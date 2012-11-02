@@ -154,8 +154,10 @@ class WrLogsController < ApplicationController
 
     @wr_log.followed_url= Time.now
     @wr_log.action = "follow"
-    @wr_log.save
+    @wr_log.save!
     @wr_log.reload
+    puts "URL forwarded"
+    puts @wr_log.inspect
     UserMailer.alert_change_in_wr_log(@wr_log)
 
     redirect_to @wr_log.url
