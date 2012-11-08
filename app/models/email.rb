@@ -14,13 +14,27 @@ require 'emails_helper'
 #  user_id    :integer
 #
 
+MAX_EMAILS_PER_DAY = 1000
+
+t = Time.now - 24.hours
+@@previous_times = Array.new(MAX_EMAILS_PER_DAY, t)   # as if MAX mails went out 24 hours ago
+@@next_time = 0
+
+
 class Email < ActiveRecord::Base
   attr_accessible :body, :from, :to, :subject, :parts
   belongs_to :user
   has_many :wr_logs, dependent: :destroy
   serialize :parts
-  
-  before_save { |email| 
+
+  def self.refresh_previous_times       #used only for testing
+    puts "Refreshing"
+    t = Time.now - 25.hours
+    @@previous_times = Array.new(MAX_EMAILS_PER_DAY, t)   # as if MAX mails went out 24 hours ago
+    @@next_time = 0
+  end
+
+  before_save { |email|
     email.from = from.downcase
     email.to = to.downcase
   }
@@ -62,8 +76,14 @@ class Email < ActiveRecord::Base
     
   def deliver_all(list)
     list.each do |item|
-      if item.class == Mail::Message
-        item.deliver
+     if item.class == Mail::Message
+        if Time.now > @@previous_times[@@next_time] + 24.hours  # have more than 24 hours passed since MAX previous messages?
+          @@previous_times[@@next_time] = Time.now
+          @@next_time = (@@next_time +1) % MAX_EMAILS_PER_DAY
+          item.deliver
+        else
+          raise Exception.new("Maximum Emails per Day exceeded")
+        end
       else
         deliver_all(item)
       end

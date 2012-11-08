@@ -7,12 +7,14 @@
     <th>Subject</th>
     <th>Receivers</th>
     <th>opened</th>
+    <th>followed_url</th>
     <th>forwarded</th>
   </tr>
 
 
 <% WrLog.select('email_id, created_at, sender_id, count(receiver_id) as receiver_count,
-                  count(opened) as opened_count, count(forwarded) as forwarded_count').group('email_id', 'created_at', 'sender_id')
+                  count(opened) as opened_count, count(followed_url) as followed_url_count,
+                  count(forwarded) as forwarded_count').group('email_id', 'created_at', 'sender_id')
                   .order('created_at DESC').each do |line| %>
   <tr>
     <td><%= line.created_at %></td>
@@ -20,6 +22,7 @@
     <td><%= Email.find(line.email_id).subject %></td>
     <td><%= line.receiver_count %></td>
     <td><%= line.opened_count %></td>
+    <td><%= line.followed_url_count %></td>
     <td><%= line.forwarded_count %></td>
   </tr>
 <% end %>

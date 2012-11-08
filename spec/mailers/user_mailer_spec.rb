@@ -68,7 +68,7 @@ describe UserMailer do
 
   describe "when alerting a user of an error" do
     let(:error) { "There is an error" }
-    it "should render the error email without erorr" do
+    it "should render the error email without error" do
       lambda { UserMailer.error_email(error, user, email) }.should_not raise_error
     end
 
@@ -79,7 +79,7 @@ describe UserMailer do
 
 
   describe "when sending a user a password reset email" do
-    it "should render the error email without erorr" do
+    it "should render the error email without error" do
       expect { UserMailer.password_reset(user) }.should_not raise_error
     end
 

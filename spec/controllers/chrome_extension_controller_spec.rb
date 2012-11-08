@@ -5,25 +5,40 @@ describe ChromeExtensionController do
   let(:user2) { FactoryGirl.create(:user) }
   let(:user3) { FactoryGirl.create(:user) }
 
-  before do 
-    sign_in user 
+  before do
+    sign_in user
     User.all.each { |u| user.add_subscriber!(u) unless u == user }
   end
 
+
+
   describe "Sending email with link" do
     it "should not raise an error" do
-      puts user.subscribers
       expect { post :create, { :to => "subscribers@worth-reading.org", :subject => "A subject",
-        :body => "Hey check out \n www.google.com" } }.
-        should_not raise_error 
+                               :body => "Hey check out \n www.google.com" } }.
+          should_not raise_error
     end
-    
-    # TODO Rework test
-    # it "should send an email to all users" do
-    #   expect { post :create, { :subject => "A subject", 
-    #     :body => "Hey check out \n www.google.com" } }.
-    #     to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
-    # end
   end
 
+
+  describe "Sending infinite mails" do
+    after(:each) { Email.refresh_previous_times}
+    it "should raise an exception" do
+      expect { while true do
+                 post :create, { :to => "subscribers@worth-reading.org", :subject => "A subject",
+                                 :body => "It's me again." }
+               end }.should raise_exception
+    end
+
+  end
+
+
+  # TODO Rework test
+  # it "should send an email to all users" do
+  #   expect { post :create, { :subject => "A subject",
+  #     :body => "Hey check out \n www.google.com" } }.
+  #     to change(ActionMailer::Base.deliveries, :size).by(user.subscribers.count)
+  # end
 end
+
+

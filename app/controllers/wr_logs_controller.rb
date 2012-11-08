@@ -152,12 +152,10 @@ class WrLogsController < ApplicationController
                   flash: { error: "I'm sorry you are not allowed to access that page"}
     end
 
-    @wr_log.followed_url= Time.now
+    @wr_log.followed_url = Time.now
     @wr_log.action = "follow"
     @wr_log.save!
     @wr_log.reload
-    puts "URL forwarded"
-    puts @wr_log.inspect
     UserMailer.alert_change_in_wr_log(@wr_log)
 
     redirect_to @wr_log.url
