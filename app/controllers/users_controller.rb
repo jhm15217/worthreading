@@ -159,7 +159,8 @@ class UsersController < ApplicationController
       opened: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and opened IS NOT NULL").count,
       forwarded: WrLog.where("sender_id = #{subscribed.id} and receiver_id = #{@user.id} and forwarded IS NOT NULL").count,
       id: subscribed.id } 
-    end.sort_by {|h| -h[:liked] }
+    end
+    @subscribed_list = @subscribed_list.sort_by {|h| -h[:forwarded] }
   end
 
   # GET
