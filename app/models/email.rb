@@ -14,11 +14,6 @@ require 'emails_helper'
 #  user_id    :integer
 #
 
-MAX_EMAILS_PER_DAY = 1000
-
-t = Time.now - 24.hours
-@@previous_times = Array.new(MAX_EMAILS_PER_DAY, t)   # as if MAX mails went out 24 hours ago
-@@next_time = 0
 
 
 class Email < ActiveRecord::Base
@@ -27,67 +22,60 @@ class Email < ActiveRecord::Base
   has_many :wr_logs, dependent: :destroy
   serialize :parts
 
-  def self.refresh_previous_times       #used only for testing
-    puts "Refreshing"
-    t = Time.now - 25.hours
-    @@previous_times = Array.new(MAX_EMAILS_PER_DAY, t)   # as if MAX mails went out 24 hours ago
-    @@next_time = 0
-  end
-
   before_save { |email|
     email.from = from.downcase
     email.to = to.downcase
   }
 
   def self.find_or_register(email_address)
-     User.where(email: email_address.downcase).
-         first_or_create!(name:"Unknown",
-                          password:"Unknown",
-                          password_confirmation:"Unknown",
-                          email_notify: true)
-   rescue
-     nil
+    User.where(email: email_address.downcase).
+        first_or_create!(name:"Unknown",
+                         password:"Unknown",
+                         password_confirmation:"Unknown",
+                         email_notify: true)
+  rescue
+    nil
   end
-  
+
   # Takes an email and generates messages for every person on the address list
   # If one of the "persons" is "subscribers@worth-reading.com", then a list is included in the list
   # email_address_list(to)[1] is a list of malformed email addresses that will be ignored. Someday, it should
   # be reported somehow.
   def process(sender)
-    email_address_list(to)[0].collect do |address|
-      if address[:email] == "subscribers@worth-reading.org"
-        if sender.subscribers.empty?
-          error = "There are no subscribers on your list. Please add subscribers to your list"
-          UserMailer.error_email(error, sender, self)
-          #UserMailer.delay.send_error(error, sender, self)
-        else
-          sender.subscribers.collect do |subscriber|
-            UserMailer.send_msg(sender, subscriber, self)
-            # @user.delay.send_msg(sender, subscriber, self)
-          end
-        end
-      elsif address[:email] == 'notifications@worth-reading.org'  # log this somehow
-        # ignore this address to avoid forwarding loops
-      else # It's an individual
-         UserMailer.send_msg(sender, Email.find_or_register(address[:email]), self)
-      end
-    end
+    @sender = sender
+    process_helper(email_address_list(to)[0].map{|a| a[:email]})
   end
-    
+
+  def process_helper(alist)
+    if alist == []
+      []
+    else
+      address = alist.first
+      mail_list =
+          (if address == "subscribers@worth-reading.org"
+             if @sender.subscribers.empty?
+               error = "There are no subscribers on your list. Please add subscribers to your list"
+               [ UserMailer.error_email(error, @sender, self) ]
+               #UserMailer.delay.send_error(error, sender, self)
+             else
+               process_helper(@sender.subscribers.map{|receiver| receiver.email})
+             end
+           elsif address == 'notifications@worth-reading.org'
+             [] # log this somehow
+                # ignore this address to avoid forwarding loops
+           else # It's an individual
+             [ UserMailer.send_msg(@sender, Email.find_or_register(address), self) ]
+           end)
+      mail_list + process_helper(alist[1..-1])
+    end
+  rescue
+    []
+  end
+
   def deliver_all(list)
     list.each do |item|
-     if item.class == Mail::Message
-        if Time.now > @@previous_times[@@next_time] + 24.hours  # have more than 24 hours passed since MAX previous messages?
-          @@previous_times[@@next_time] = Time.now
-          @@next_time = (@@next_time +1) % MAX_EMAILS_PER_DAY
-          item.deliver
-        else
-          raise Exception.new("Maximum Emails per Day exceeded")
-        end
-      else
-        deliver_all(item)
+        item.deliver
       end
-    end
   end
 
   # @param [String] email_addresses

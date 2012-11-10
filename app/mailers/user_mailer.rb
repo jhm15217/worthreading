@@ -5,6 +5,18 @@ class UserMailer < ActionMailer::Base
   DEV_URL = "localhost:3000"
   PROTOCOL = 'http'
 
+
+  MAX_EMAILS_PER_DAY = Rails.env.test? ? 100 : 2000
+  MAX_EMAILS_PER_DAY_PER_USER = Rails.env.test? ? 100 : 200
+
+  def reset_email_counts
+    @@todays_senders = Hash.new
+    @@emails_today = 0
+    @@last_email = Time.now.yday
+  end
+
+  reset_email_counts
+
   default from: "notifications@worth-reading.org"
   #ActionMailer::Base.raise_delivery_errors = false  # until I figure out how to catch
 
@@ -69,24 +81,46 @@ class UserMailer < ActionMailer::Base
     end
   end
 
-def send_msg(sender, receiver, email)
-    wr_log = email.wr_logs.create! do |log|
-      log.action = "email"
-      log.sender_id = sender.id
-      log.receiver_id = receiver.id
-      log.email_id = email.id
-      log.email_part = 0
-      log.emailed = Time.now
+  def send_msg(sender, receiver, email)
+    if Time.now.yday != @@last_email
+      reset_email_counts
     end
-    sender.add_subscriber(receiver) unless sender.subscribed_by?(receiver)  #May already be subscribed
+    if !@@todays_senders[sender]
+      @@todays_senders[sender] = 0
+    end
+    @@emails_today =  @@emails_today + 1
+    @@todays_senders[sender] =  @@todays_senders[sender] + 1
+    if @@emails_today >= MAX_EMAILS_PER_DAY or @@todays_senders[sender] >= MAX_EMAILS_PER_DAY_PER_USER
+      if @@emails_today == MAX_EMAILS_PER_DAY or @@todays_senders[sender] == MAX_EMAILS_PER_DAY_PER_USER
+        @message = {exceeded: receiver.email}
+        mail(to: sender.email, subject: "Maximum emails per day exceeded. Please try tomorrow.")
+      else
+        raise StandardError
+      end
+    else
+      wr_log = email.wr_logs.create! do |log|
+        log.action = "email"
+        log.sender_id = sender.id
+        log.receiver_id = receiver.id
+        log.email_id = email.id
+        log.email_part = 0
+        log.emailed = Time.now
+      end
+      sender.add_subscriber(receiver) unless sender.subscribed_by?(receiver)  #May already be subscribed
 
-    @beacon_url = msg_opened_url(id: wr_log.id,
-                             token_identifier: wr_log.token_identifier,
-                             host: Rails.env.production? ? PROD_URL : DEV_URL,
-                             protocol: PROTOCOL)
-	  @message = wr_log.abstract_message
-	  mail(to: User.find(wr_log.receiver_id).email, from: User.find(wr_log.sender_id).email, subject: Email.find(wr_log.email_id).subject)
+      @beacon_url = msg_opened_url(id: wr_log.id,
+                                   token_identifier: wr_log.token_identifier,
+                                   host: Rails.env.production? ? PROD_URL : DEV_URL,
+                                   protocol: PROTOCOL)
+      @message = wr_log.abstract_message
+      mail(to: receiver.email, from: sender.email, subject: email.subject)
+    end
   end
+
+   def alert_exceeded(sender)
+     mail(to: sender.email, subject: "Emails per day exceeded")
+   end
+
 
   def error_email(error, user, email)
     @sender = user

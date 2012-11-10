@@ -94,22 +94,22 @@ describe Email do
     end
 
     it "should have a Forward Email link" do
-      @email.process(user)[0][0].body.encoded.should match(/Email/m)
+      @email.process(user)[0].body.encoded.should match(/Email/m)
     end
 
     it "should have the correct link for the forwarding link" do
-      @email.process(user)[0][0].body.
+      @email.process(user)[0].body.
           encoded.should match("wr_logs.*forward=1.*token_identifier=.*")
     end
 
     it "should have a web beacon" do
-      @email.process(user)[0][0].body.encoded.
+      @email.process(user)[0].body.encoded.
           should match("<img alt=\"\" src=\"http:\/\/localhost:3000/wr_logs/.*/msg_opened/.*\" />")
     end
 
 
     it "should deliver successfully" do
-      lambda { @email.process(user)[0][0].deliver }.should_not raise_error
+      lambda { @email.process(user)[0].deliver }.should_not raise_error
     end
   end
 
@@ -160,16 +160,16 @@ describe Email do
     end
 
     it "should not have whole message" do
-      @email.process(user)[0][0].body.encoded.should_not match(/Rest of Message./m)
+      @email.process(user)[0].body.encoded.should_not match(/Rest of Message./m)
     end
 
     it "should have a More url" do
-      @email.process(user)[0][0].body.encoded.
+      @email.process(user)[0].body.encoded.
         should match(/<div class='more-button'>.*wr_logs\/.*more\=.*/m)
     end
 
     it "should deliver successfully" do
-      lambda { @email.process(user)[0][0].deliver }.should_not raise_error
+      lambda { @email.process(user)[0].deliver }.should_not raise_error
     end
   end
 

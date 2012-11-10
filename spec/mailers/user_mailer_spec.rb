@@ -88,4 +88,16 @@ describe UserMailer do
     end
   end
 
+  describe "Sending infinite mails" do
+    it "should eventually return nils" do
+      expect {
+        while true  do
+          UserMailer.send_msg(user, other_user, email)     # Limit is about 100 for testing
+        end}.to raise_error
+      UserMailer.reset_email_counts
+    end
+
+  end
+
+
 end

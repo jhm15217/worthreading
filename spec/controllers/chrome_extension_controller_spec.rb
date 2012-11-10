@@ -21,16 +21,6 @@ describe ChromeExtensionController do
   end
 
 
-  describe "Sending infinite mails" do
-    after(:each) { Email.refresh_previous_times}
-    it "should raise an exception" do
-      expect { while true do
-                 post :create, { :to => "subscribers@worth-reading.org", :subject => "A subject",
-                                 :body => "It's me again." }
-               end }.should raise_exception
-    end
-
-  end
 
 
   # TODO Rework test
