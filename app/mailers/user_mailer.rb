@@ -17,6 +17,7 @@ class UserMailer < ActionMailer::Base
 
   reset_email_counts
 
+
   default from: "notifications@worth-reading.org"
   #ActionMailer::Base.raise_delivery_errors = false  # until I figure out how to catch
 
@@ -95,7 +96,7 @@ class UserMailer < ActionMailer::Base
         @message = {exceeded: receiver.email}
         mail(to: sender.email, subject: "Maximum emails per day exceeded. Please try tomorrow.")
       else
-        raise StandardError
+        raise "Maximum exceeded"
       end
     else
       wr_log = email.wr_logs.create! do |log|

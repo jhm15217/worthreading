@@ -10,13 +10,12 @@ class ChromeExtensionController < ApplicationController
     @user = current_user
     @to_list = @user.subscribers.map{|id| User.find(id)}.
         map{|user| '"' + user.name + '"<' + user.email + '>'}.join(', ')
-    @text = "I appreciated this message and think you might, too."
     if params[:text]
       @text = URI.unescape(params[:text]) unless URI.unescape(params[:text]).blank?
-      @link = params[:link]
       @subject = URI.unescape(params[:text]).match(/^.{120,}?[.?!]+(?=\s|$)/)unless URI.unescape(params[:text]).blank?
     end
-    @body = "#{@text}\n\n#{@link}\n\n#{@user.name}"
+    @link = params[:link]
+    @body = "I appreciated this message and think you might, too.\n#{@text}\n#{@link}\n#{@user.name}"
   end
 
   # POST

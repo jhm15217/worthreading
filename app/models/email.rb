@@ -68,7 +68,7 @@ class Email < ActiveRecord::Base
            end)
       mail_list + process_helper(alist[1..-1])
     end
-  rescue
+  rescue  "Maximum exceeded"
     []
   end
 
