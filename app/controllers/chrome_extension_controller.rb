@@ -32,6 +32,6 @@ class ChromeExtensionController < ApplicationController
     )
 
     @email.deliver_all(@email.process(@user))
-    redirect_to root_path, flash: { success: "Email successfully sent" }
+    redirect_to root_path, status: 301, flash: { success: "Email successfully sent" }
   end
 end
