@@ -203,7 +203,7 @@ class UsersController < ApplicationController
 
   require 'date'#  Failed Email notice from Mailgun
   def failure
-    puts "Email failed: "  + params[:event] + "  " + params[:recipient] + " " + params[:reason]  +
+    puts "Email failed: "  + params[:event].to_s + "  " + params[:recipient].to_s + " " + params[:reason].to_s  +
         " " + Time.at(params[:timestamp].to_i).to_datetime.to_time.to_s
     render text: 'Failure Acknowledged'
 
