@@ -14,7 +14,7 @@
 #  token_identifier :string(255)
 #  emailed          :datetime
 #  opened           :datetime
-#  url_followed     :datetime
+#  followed_url     :datetime
 #  forwarded        :datetime
 #
 

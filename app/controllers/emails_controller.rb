@@ -107,7 +107,7 @@ class EmailsController < ApplicationController
     @email = Email.find(params[:id])
     redirect_to root_path unless current_user?(@email.user) # Restrict to only current user
 
-    @wr_logs = @email.wr_logs.select{|w| w.opened || w.email_part > 0 || w.forwarded}.paginate(page: params[:page], per_page: 25)
+    @wr_logs = @email.wr_logs.select{|w| w.opened || w.email_part > 0 || w.followed_url || w.forwarded}.paginate(page: params[:page], per_page: 25)
   end
 
   private
