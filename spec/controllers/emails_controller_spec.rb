@@ -70,13 +70,29 @@ describe EmailsController do
       user.subscribed_by?(User.find_by_email("joe@email.com")).should_not be nil
     end
 
-  it "should redirect if Email could has bad sender" do
-    post :create, {'from' => " ", 
-      'Delivered-To' => "jan@mail.com", 
-      'subject' => "Nothing"}
-    response.should be_redirect
+    it "should redirect if Email could has bad sender" do
+      post :create, {'from' => " ",
+                     'Delivered-To' => "jan@mail.com",
+                     'subject' => "Nothing"}
+      response.should be_redirect
+    end
+
+    it "should not send if Email is a duplicate" do
+      post :create, {'from' => "joe@email.com",
+                     'Delivered-To' => "jan@mail.com",
+                     'subject' => "Nothing",
+                     'body-html' => "This will be be duplicated"
+      }
+      expect { post :create, {'from' => "joe@email.com",
+                              'Delivered-To' => "jan@mail.com",
+                              'subject' => "Nothing",
+                              'body-html' => "This will be be duplicated"
+      }
+      }.to  change(ActionMailer::Base.deliveries, :size).by(0)
+
+    end
+
   end
-end
 
 #    it "should report error if Email could has bad receiver" do
 #      post :create, {'from' => user.email, 

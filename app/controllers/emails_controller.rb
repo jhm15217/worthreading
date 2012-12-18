@@ -50,6 +50,7 @@ class EmailsController < ApplicationController
   # POST /emails
   def create
     if from = email_address_parts(params['from']) and @user = Email.find_or_register(from[:email])
+      render text: "Email Received"
       to_list = email_address_list(params['Delivered-To']).collect do |address|
         if m = address[:email].match(/(.*)\+(.*)@/) #It's an individual email address
           m.captures[0] + '@' + m.captures[1]
@@ -64,12 +65,12 @@ class EmailsController < ApplicationController
         body: params['body-html'],
         parts: params['body-html'].split(/&lt;more&gt;|<more>/)
       )
-      if @email.save
-        render text: "Email Received"
-      else
-        puts "Bad email: " + @email.inspect
+      begin
+        @email.save #checks for duplicate to_list and body to avoid spaming
+        @email.deliver_all(@email.process(@user))
+      rescue ActiveRecord::StatementInvalid
+        puts "Bad or duplicated email: " + @email.inspect
       end
-      @email.deliver_all(@email.process(@user))
     else
       redirect_to root_path  ## params['sender'] is bad 
     end

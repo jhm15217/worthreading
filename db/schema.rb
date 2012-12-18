@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121018034603) do
+ActiveRecord::Schema.define(:version => 20121218181627) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20121018034603) do
     t.integer  "user_id"
     t.text     "parts",      :limit => 255
   end
+
+  add_index "emails", ["to", "body"], :name => "index_emails_on_to_and_body", :unique => true
 
   create_table "relationships", :force => true do |t|
     t.datetime "created_at",       :null => false

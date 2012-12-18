@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
 
 
   MAX_EMAILS_PER_DAY = Rails.env.test? ? 100 : 2000
-  MAX_EMAILS_PER_DAY_PER_USER = Rails.env.test? ? 100 : 400
+  MAX_EMAILS_PER_DAY_PER_USER = Rails.env.test? ? 100 : 200
 
   def reset_email_counts
     @@todays_senders = Hash.new
