@@ -65,11 +65,10 @@ class EmailsController < ApplicationController
         body: params['body-html'],
         parts: params['body-html'].split(/&lt;more&gt;|<more>/)
       )
-      begin
-        @email.save #checks for duplicate to_list and body to avoid spaming
+      if @email.save
         @email.deliver_all(@email.process(@user))
-      rescue ActiveRecord::StatementInvalid
-        puts "Bad or duplicated email: " + @email.inspect
+      else
+        puts "Bad email: " + @email.inspect
       end
     else
       redirect_to root_path  ## params['sender'] is bad 

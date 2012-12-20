@@ -40,8 +40,6 @@ ActiveRecord::Schema.define(:version => 20121218181627) do
     t.text     "parts",      :limit => 255
   end
 
-  add_index "emails", ["to", "body"], :name => "index_emails_on_to_and_body", :unique => true
-
   create_table "relationships", :force => true do |t|
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false

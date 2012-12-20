@@ -145,9 +145,9 @@ describe Email do
   end
 
   describe "Sending a message with a <more>" do
-    let(:body)  { %Q{/Beginnging of Message<more>Rest of Message.} }
+    let(:body)  { %Q{/Start of Message<more>Rest of Message.} }
 
-    before do  
+    before do
       @email = user.emails.create!(to: "subscribers@worth-reading.org",
                                       from: user.email,
                                       subject: "Lorem Ipsum", 
