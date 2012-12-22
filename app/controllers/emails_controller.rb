@@ -5,6 +5,7 @@ class EmailsController < ApplicationController
   # This is used to disable Rails request forger protection for this controller
   # since we are receiving post data from mailgun
   skip_before_filter :verify_authenticity_token, only: [:create]
+  @@last = { to:"", subject:"", body: ""}
 
   # GET /emails
   def index
@@ -65,10 +66,12 @@ class EmailsController < ApplicationController
         body: params['body-html'],
         parts: params['body-html'].split(/&lt;more&gt;|<more>/)
       )
-      if @email.save
+
+      if !(@email.to == @@last[:to] and @email.subject == @@last[:subject] and @email.body == @@last[:body]) and @email.save
+        @@last = @email
         @email.deliver_all(@email.process(@user))
       else
-        puts "Bad email: " + @email.inspect
+        puts "Bad or duplicate email: " + @email.inspect
       end
     else
       redirect_to root_path  ## params['sender'] is bad 
