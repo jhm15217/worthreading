@@ -60,9 +60,9 @@ class Email < ActiveRecord::Base
              else
                process_helper(@sender.subscribers.map{|receiver| receiver.email})
              end
-           elsif address == 'notifications@worth-reading.org'
+           elsif address.match('@worth-reading.org')
+             puts "Ignore #{address} to avoid forwarding loop."
              [] # log this somehow
-                # ignore this address to avoid forwarding loops
            else # It's an individual
              [ UserMailer.send_msg(@sender, Email.find_or_register(address), self) ]
            end)

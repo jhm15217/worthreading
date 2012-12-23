@@ -92,6 +92,16 @@ describe EmailsController do
 
     end
 
+    it "should not send if to worth-reading.org" do
+      expect { post :create, {'from' => "joe@email.com",
+                              'Delivered-To' => "jan@worth-reading.org",
+                              'subject' => "Nothing",
+                              'body-html' => "This will be be duplicated"
+      }
+      }.to  change(ActionMailer::Base.deliveries, :size).by(0)
+
+    end
+
   end
 
 #    it "should report error if Email could has bad receiver" do

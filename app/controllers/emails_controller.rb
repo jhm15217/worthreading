@@ -67,7 +67,8 @@ class EmailsController < ApplicationController
         parts: params['body-html'].split(/&lt;more&gt;|<more>/)
       )
 
-      if !(@email.to == @@last[:to] and @email.subject == @@last[:subject] and @email.body == @@last[:body]) and @email.save
+      if !(@email.to == @@last[:to] and @email.subject == @@last[:subject] and @email.body == @@last[:body]) and
+          @email.save
         @@last = @email
         @email.deliver_all(@email.process(@user))
       else
