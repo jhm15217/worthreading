@@ -93,7 +93,7 @@ def make_emails(num = 20)
                                   parts: [body])
 
       subscribers[0..rand(1..subscribers.count)].each do |recipient|  # How many subscribers today?
-        wr_log = email.wr_logs.create(email_id: email.id, sender_id: user.id, receiver_id:recipient.id)
+        wr_log = email.wr_logs.create(email_id: email.id, sender_id: user.id, receiver_id:recipient.id, email_part:0)
         wr_log.emailed = DateTime.now + rand(0..3)
 
         if rand(0..1.0) > 0.40 # Did he open it?

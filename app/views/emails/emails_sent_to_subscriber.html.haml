@@ -13,9 +13,9 @@
     - @wr_logs.each do |log|
       %tr
         %td= log.email.subject
-        %td= log.emailed.to_formatted_s(:db) 
-        %td= log.opened ? log.opened.to_formatted_s(:db) : "Undetermined"
-        %td= log.forwarded ? log.forwarded.to_formatted_s(:db) : "No response"
+        %td= log.emailed.to_formatted_s(:short)
+        %td= log.opened ? log.opened.to_formatted_s(:short) : "Undetermined"
+        %td= log.forwarded ? log.forwarded.to_formatted_s(:short) : "No response"
         %td= link_to 'Show', user_email_path(@user, log.email)
 
 .row
