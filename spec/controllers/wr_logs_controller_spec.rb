@@ -375,7 +375,7 @@ describe WrLogsController do
     let (:sender) { FactoryGirl.create(:user) }
     let (:receiver) { FactoryGirl.create(:user) }
     it "redirects to original url" do
-      wr_log = WrLog.create!(sender_id: sender.id, receiver_id: receiver.id, email_id: email.id, url: "xxx")
+      wr_log = WrLog.create!(sender_id: sender.id, receiver_id: receiver.id, email_id: email.id, email_part: 0, url: "xxx")
       get :follow, {id: wr_log.id, token_identifier: wr_log.token_identifier}
       response.should redirect_to("xxx")
     end

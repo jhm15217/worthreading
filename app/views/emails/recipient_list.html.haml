@@ -15,12 +15,12 @@
     - @wr_logs.each do |log|
       %tr
         %td= link_to log.receiver.name, user_path(log.receiver)
-        %td= log.opened ? log.opened.to_formatted_s(:db) : ""
+        %td= log.opened ? log.opened.to_formatted_s(:short) : ""
         -if @email.parts && @email.parts.length > 1
           %td= log.email_part.to_s
         -if @wr_logs.first && @wr_logs.first.url
-          %td= log.followed_url ? log.followed_url.to_formatted_s(:db) : ""
-        %td= log.forwarded ? log.forwarded.to_formatted_s(:db) : ""
+          %td= log.followed_url ? log.followed_url.to_formatted_s(:short) : ""
+        %td= log.forwarded ? log.forwarded.to_formatted_s(:short) : ""
 
 
 .row
