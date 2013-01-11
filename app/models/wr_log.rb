@@ -84,7 +84,5 @@ class WrLog < ActiveRecord::Base
   # Validataions
   validates :sender_id, presence: true
   validates :email_id, presence:   true
-  validates :receiver_id, presence:   true
-  validates :email_part, presence:   true
-
+  validates :receiver_id, presence:   true  
 end
