@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121218181627) do
+ActiveRecord::Schema.define(:version => 20121018034603) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20121218181627) do
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
     t.integer  "user_id"
-    t.text     "parts",      :limit => 255
+    t.text     "parts"
   end
 
   create_table "relationships", :force => true do |t|
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(:version => 20121218181627) do
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
     t.datetime "first_login_at"
-    t.boolean  "email_notify"
-    t.integer  "cohort"
+    t.boolean  "email_notify",           :default => true
+    t.integer  "cohort",                 :default => 0
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token"
