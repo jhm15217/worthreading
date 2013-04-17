@@ -43,7 +43,7 @@ class WrLog < ActiveRecord::Base
     body = email.parts[email_part]
     if !self.url and match = body.match(URL_REGEX)
       self.url = match.captures[0]
-      body.sub!(self.url, "<a href=\"http://#{SERVER_URL}/wr_logs/#{id}/follow/#{token_identifier}\">#{self.url}</a>")
+      body.sub!(self.url,"http://#{SERVER_URL}/wr_logs/#{id}/follow/#{token_identifier}")
       update
     end
 
@@ -51,28 +51,28 @@ class WrLog < ActiveRecord::Base
 
       relationship = Relationship.where(subscriber_id: receiver.id,
                                         subscribed_id: sender.id).first!
-      { body: body,
-            forward: { protocol: PROTOCOL,
-                             host: SERVER_URL,
-                             id: id,
-                             forward: "1",
-                             token_identifier: token_identifier },
-            whats_this: { id: id,
-                         token_identifier: token_identifier,
-                         host: SERVER_URL,
-                         protocol: PROTOCOL },
-            unsubscribe: { id: relationship.id,
-                          token_identifier: relationship.token_identifier,
-                          host: SERVER_URL,
-                          protocol: PROTOCOL }
+      {body: body,
+       forward: {protocol: PROTOCOL,
+                 host: SERVER_URL,
+                 id: id,
+                 forward: "1",
+                 token_identifier: token_identifier},
+       whats_this: {id: id,
+                    token_identifier: token_identifier,
+                    host: SERVER_URL,
+                    protocol: PROTOCOL},
+       unsubscribe: {id: relationship.id,
+                     token_identifier: relationship.token_identifier,
+                     host: SERVER_URL,
+                     protocol: PROTOCOL}
       }
     else
       { body: body,
-            more: { more: email_part.to_s,
-                    id: id,
-                    token_identifier: token_identifier,
-                    host: SERVER_URL,
-                    protocol: PROTOCOL}
+        more: { more: email_part.to_s,
+                id: id,
+                token_identifier: token_identifier,
+                host: SERVER_URL,
+                protocol: PROTOCOL}
       }
     end
   end
